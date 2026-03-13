@@ -1,0 +1,70 @@
+{
+  "bookSourceUrl": "https://akk.ajszxfx.com/",
+  "bookSourceName": "顶点小说",
+  "bookSourceGroup": "",
+  "loginUrl": "",
+  "bookUrlPattern": "https://akk\\.ajszxfx\\.com/book/\\d+\\.html",
+  "searchUrl": "/search/,{\"method\":\"POST\",\"body\":\"searchkey={{key}}\"}",
+  "exploreUrl": "玄幻小说::/sort/1/{{page}}/\n修真小说::/sort/2/{{page}}/\n都市小说::/sort/3/{{page}}/\n穿越小说::/sort/4/{{page}}/\n网游小说::/sort/5/{{page}}/\n科幻小说::/sort/6/{{page}}/\n其他小说::/sort/7/{{page}}/\n现代言情::/sort/8/{{page}}/\n古代言情::/sort/9/{{page}}/\n短故事::/sort/10/{{page}}/",
+  "ruleSearch": {
+    "bookList": ".hot_sale",
+    "name": ".title@text",
+    "author": ".author@text",
+    "kind": "",
+    "wordCount": "",
+    "lastChapter": "",
+    "intro": ".review@text",
+    "coverUrl": "",
+    "bookUrl": "a@href"
+  },
+  "ruleExplore": {
+    "bookList": ".hot_sale",
+    "name": ".title@text",
+    "author": ".author@text",
+    "kind": "",
+    "wordCount": "",
+    "lastChapter": "",
+    "intro": ".review@text",
+    "coverUrl": "",
+    "bookUrl": "a@href",
+    "nextContentUrl": ".pager a[href*='/sort/']@href"
+  },
+  "ruleBookInfo": {
+    "name": ".booktitle h1@text",
+    "author": ".bookinfo p@text",
+    "kind": "",
+    "wordCount": "",
+    "lastChapter": "",
+    "intro": ".intro_des@text",
+    "coverUrl": "img@src",
+    "tocUrl": "",
+    "canReName": "0"
+  },
+  "ruleToc": {
+    "chapterList": ".directoryArea p a",
+    "chapterName": "a@text",
+    "chapterUrl": "a@href",
+    "updateTime": "",
+    "volumeName": "",
+    "volumeUrl": "",
+    "nextContentUrl": ""
+  },
+  "ruleContent": {
+    "content": "#article p@text",
+    "nextContentUrl": "#pt_next@href",
+    "webContent": ""
+  },
+  "charset": "UTF-8",
+  "concurrentRate": "",
+  "comment": "网站有 WAF 验证码保护，搜索功能需要手动验证。建议使用分类浏览功能。",
+  "enabled": true,
+  "enabledExplore": true,
+  "enabledCookieJar": false,
+  "loginCheckJs": "(function(a){var r=a.url(),o=a.body(),t=a.code();if(o&&(403===t||503===t||502===t||200===t&&(o.includes('Verify Yourself')||o.includes('GOEDGE_WAF_CAPTCHA')))){var c=source.get('cf_count')||'0';c=parseInt(c)+1;source.put('cf_count',c);if(c<=3){for(var i=0;i<2;i++){try{var h=java.webView(r,r,'setTimeout(function(){window.legado.getHTML(document.documentElement.outerHTML);},5000);');if(h&&!h.includes('Verify Yourself')&&200===java.connect(r).code()){source.put('cf_count','0');return a}}catch(e){}}}java.toast('需要 WAF 验证');java.startBrowserAwait(r,'验证');source.put('cf_count','0');return java.connect(r)}return a})(result)",
+  "coverDecodeJs": "",
+  "exploreScreen": "",
+  "respondTime": "180000",
+  "timeout": "10000",
+  "header": "",
+  "variableComment": ""
+}
