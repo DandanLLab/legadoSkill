@@ -1009,7 +1009,7 @@ smart_fetch_html(
 **对照知识库、真实分析结果和真实模板验证**：
 - ✅ 选择器语法是否符合 `CSS选择器@提取类型` 格式？
 - ✅ 提取类型是否正确（@text, @html, @ownText, @textNode, @href, @src等）？
-- ✅ 正则表达式是否正确？（##正则表达式##替换内容）
+- ✅ 正则表达式是否正确？（##正则表达式##替换内容），必须亲自验证正则正确可用再写入书源中
 - ✅ JSON结构是否包含所有必需字段？
 - ✅ POST请求配置是否符合知识库规范？（如果涉及POST请求）
 - ✅ 必须基于真实HTML结构？
@@ -1092,7 +1092,18 @@ smart_fetch_html(
 | 正常网站 | ❌ 不需要 |
 | 需要登录的网站 | ❌ 使用loginUrl字段 |
 
+### 记忆口诀
 
+```
+Cloudflare验证看状态，
+403、503要警惕。
+页面包含Just a moment，
+loginCheckJs来处理。
+自动重试三次数，
+失败弹出浏览器。
+验证通过继续读，
+书源功能更完善。
+```
 
 ### ⚠️ 注意事项
 
@@ -2338,6 +2349,15 @@ smart_fetch_html(
 - 如果按钮文字包含"页"、"阅读" → **留空**
 - 仍然不确定时，优先选择 **留空**
 
+#### 💡 记忆口诀
+
+```
+章节号变，设置它；
+页码变多，留空它。
+"下一章"是真的下一章，
+"下一页"是同一页。
+看URL来定，最靠谱！
+```
 
 #### 🚨 错误示例
 
@@ -2812,1205 +2832,50 @@ var option = {
 3. ✅ 在后续所有工具调用中使用检测到的编码
 4. ✅ 在书源配置中正确设置 charset 参数
 
+### 记忆口诀
 
+```
+编码检测要先行，
+一次检测全程用。
+UTF-8 默认不用配，
+GBK 必须要声明。
+乱码问题早避免，
+编码配置要记清！
+```
 
 ---
 
 **知识库是权威，必须通过工具查询知识库！**
 **必须查询134个真实书源分析结果！**
-**必须检测网站编码（在获取HTML之前）！**
+**必须检测网站编码（在获取HTML之前）！** ⭐ 新增！
 **必须访问真实网页，获取完整HTML源代码！**
 **必须基于真实HTML结构编写规则！**
 **必须处理特殊情况（无封面、懒加载、信息合并）！**
 **必须查询并参考真实书源模板！**
 **必须符合真实书源的常见模式！**
-**编码只需要检测一次，后续全程使用！**
+**编码只需要检测一次，后续全程使用！** ⭐ 新增！
 
 ---
 
-## 🛠️ 核心工具代码参考
-
-以下是从 `src` 目录中提取的核心工具代码，供开发者参考。
-
-### 0. 文件整理工具 (file_organizer.py)
-
-```python
-"""
-Book Source File Organizer
-Automatically organizes generated files into book source specific folders
-"""
-
-import os
-import shutil
-from typing import Dict, List, Optional, Tuple
-from dataclasses import dataclass, field
-from pathlib import Path
-
-
-@dataclass
-class FileOrganizeResult:
-    success: bool
-    message: str
-    book_source_name: str = ""
-    subfolder_path: str = ""
-    moved_files: List[str] = field(default_factory=list)
-    errors: List[str] = field(default_factory=list)
-
-
-class BookSourceFileOrganizer:
-    """书源文件整理器"""
-    
-    def __init__(self, project_root: str = None):
-        if project_root:
-            self.project_root = Path(project_root)
-        else:
-            self.project_root = Path(__file__).parent.parent.parent
-        
-        self.temp_folder = self.project_root / "temp"
-        self.session_files: Dict[str, List[str]] = {}
-        self.current_session_id: Optional[str] = None
-    
-    def start_session(self, session_id: str = None) -> str:
-        """启动新的文件跟踪会话"""
-        if not session_id:
-            import time
-            session_id = f"session_{int(time.time() * 1000)}"
-        
-        self.current_session_id = session_id
-        self.session_files[session_id] = []
-        return session_id
-    
-    def register_file(self, file_path: str, session_id: str = None) -> bool:
-        """注册文件到当前会话"""
-        if not session_id:
-            session_id = self.current_session_id
-        
-        if not session_id or session_id not in self.session_files:
-            return False
-        
-        abs_path = str(Path(file_path).resolve())
-        if abs_path not in self.session_files[session_id]:
-            self.session_files[session_id].append(abs_path)
-        
-        return True
-    
-    def organize_files(
-        self,
-        book_source_name: str,
-        files_to_move: List[str] = None,
-        session_id: str = None,
-        copy_mode: bool = False
-    ) -> FileOrganizeResult:
-        """
-        整理文件到书源专属文件夹
-        
-        参数:
-            book_source_name: 书源名称
-            files_to_move: 要移动的文件列表（可选，不提供则使用会话文件）
-            session_id: 会话ID（可选）
-            copy_mode: 是否使用复制模式（默认移动模式）
-        
-        返回:
-            FileOrganizeResult 整理结果
-        """
-        result = FileOrganizeResult(
-            success=False,
-            message="",
-            book_source_name=book_source_name
-        )
-        
-        try:
-            # 确保temp文件夹存在
-            if not self.temp_folder.exists():
-                self.temp_folder.mkdir(parents=True, exist_ok=True)
-            
-            # 创建书源专属子文件夹
-            sanitized_name = self._sanitize_folder_name(book_source_name)
-            subfolder_path = self.temp_folder / sanitized_name
-            
-            if not subfolder_path.exists():
-                subfolder_path.mkdir(parents=True, exist_ok=True)
-            
-            result.subfolder_path = str(subfolder_path)
-            
-            # 获取要整理的文件列表
-            if files_to_move is None:
-                if not session_id:
-                    session_id = self.current_session_id
-                
-                if session_id and session_id in self.session_files:
-                    files_to_move = self.session_files[session_id]
-                else:
-                    files_to_move = []
-            
-            if not files_to_move:
-                result.success = True
-                result.message = f"已创建/确认书源文件夹: {subfolder_path}"
-                return result
-            
-            # 整理文件
-            import time
-            for file_path in files_to_move:
-                try:
-                    source_path = Path(file_path)
-                    if not source_path.exists():
-                        result.errors.append(f"文件不存在: {file_path}")
-                        continue
-                    
-                    dest_path = subfolder_path / source_path.name
-                    
-                    # 处理文件名冲突
-                    if dest_path.exists():
-                        timestamp = int(time.time())
-                        stem = source_path.stem
-                        suffix = source_path.suffix
-                        dest_path = subfolder_path / f"{stem}_{timestamp}{suffix}"
-                    
-                    # 移动或复制文件
-                    if copy_mode:
-                        shutil.copy2(source_path, dest_path)
-                    else:
-                        shutil.move(str(source_path), dest_path)
-                    
-                    result.moved_files.append(str(dest_path))
-                    
-                except Exception as e:
-                    result.errors.append(f"处理文件失败 {file_path}: {str(e)}")
-            
-            # 生成结果消息
-            result.success = True
-            moved_count = len(result.moved_files)
-            error_count = len(result.errors)
-            
-            if moved_count > 0 and error_count == 0:
-                result.message = f"✅ 文件整理成功！\n\n📁 书源文件夹: {subfolder_path}\n📄 已整理文件数: {moved_count}"
-            elif moved_count > 0 and error_count > 0:
-                result.message = f"⚠️ 部分文件整理成功\n\n📁 书源文件夹: {subfolder_path}\n✅ 成功: {moved_count} 个文件\n❌ 失败: {error_count} 个文件"
-            else:
-                result.message = f"❌ 文件整理失败\n\n📁 书源文件夹: {subfolder_path}\n❌ 失败: {error_count} 个文件"
-            
-        except Exception as e:
-            result.success = False
-            result.message = f"❌ 整理过程出错: {str(e)}"
-            result.errors.append(str(e))
-        
-        return result
-    
-    def _sanitize_folder_name(self, name: str) -> str:
-        """清理文件夹名称，移除非法字符"""
-        invalid_chars = '<>:"/\\|?*'
-        sanitized = ''.join(c for c in name if c not in invalid_chars)
-        sanitized = sanitized.strip()
-        if not sanitized:
-            import time
-            sanitized = f"unnamed_{int(time.time())}"
-        return sanitized
-
-
-# 便捷函数
-def organize_book_source_files(
-    book_source_name: str,
-    files_to_move: List[str] = None,
-    session_id: str = None,
-    copy_mode: bool = False
-) -> FileOrganizeResult:
-    """
-    整理书源文件的便捷函数
-    
-    使用示例:
-        # 直接整理指定文件
-        result = organize_book_source_files(
-            book_source_name="笔趣阁hk",
-            files_to_move=["笔趣阁hk.json", "search.html"]
-        )
-        
-        # 使用会话模式
-        session_id = start_file_session()
-        register_generated_file("笔趣阁hk.json")
-        result = organize_book_source_files(
-            book_source_name="笔趣阁hk",
-            session_id=session_id
-        )
-    """
-    global _global_organizer
-    if _global_organizer is None:
-        _global_organizer = BookSourceFileOrganizer()
-    return _global_organizer.organize_files(book_source_name, files_to_move, session_id, copy_mode)
-
-
-def start_file_session(session_id: str = None) -> str:
-    """启动文件跟踪会话"""
-    global _global_organizer
-    if _global_organizer is None:
-        _global_organizer = BookSourceFileOrganizer()
-    return _global_organizer.start_session(session_id)
-
-
-def register_generated_file(file_path: str, session_id: str = None) -> bool:
-    """注册生成的文件到当前会话"""
-    global _global_organizer
-    if _global_organizer is None:
-        _global_organizer = BookSourceFileOrganizer()
-    return _global_organizer.register_file(file_path, session_id)
-```
-
-### 1. 智能请求工具 (smart_request.py)
-
-```python
-"""
-智能请求工具
-支持各种HTTP请求方法，确保用正确的方式获取真实内容
-"""
-
-import requests
-import json
-import re
-import chardet
-from typing import Dict, List, Any, Optional, Union
-from urllib.parse import urlencode
-
-
-class SmartRequest:
-    """智能请求工具"""
-    
-    def __init__(self, timeout: int = 30, max_retries: int = 3):
-        self.timeout = timeout
-        self.max_retries = max_retries
-        
-        self.default_headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1'
-        }
-    
-    def _detect_encoding(self, response: requests.Response, charset: Optional[str] = None) -> str:
-        """
-        智能检测响应编码
-        
-        优先级：
-        1. 用户指定的 charset 参数
-        2. HTTP Content-Type header 中的 charset
-        3. HTML meta 标签中的 charset
-        4. chardet 库检测
-        5. 默认 utf-8
-        """
-        if charset:
-            charset_lower = charset.lower()
-            if charset_lower in ['gbk', 'gb2312', 'gb18030']:
-                return 'gbk'
-            elif charset_lower in ['utf-8', 'utf8']:
-                return 'utf-8'
-            else:
-                return charset_lower
-        
-        content_type = response.headers.get('Content-Type', '')
-        if 'charset=' in content_type:
-            match = re.search(r'charset=([^\s;]+)', content_type, re.IGNORECASE)
-            if match:
-                detected = match.group(1).strip('"\'').lower()
-                if detected in ['gbk', 'gb2312', 'gb18030']:
-                    return 'gbk'
-                elif detected in ['utf-8', 'utf8']:
-                    return 'utf-8'
-                return detected
-        
-        try:
-            content_preview = response.content[:2048].decode('latin-1', errors='ignore')
-            meta_patterns = [
-                r'<meta\s+charset=["\']?([^"\'>\s]+)',
-                r'<meta\s+http-equiv=["\']?content-type["\']?\s+content=["\']?[^"\']*charset=([^"\'>\s;]+)',
-            ]
-            for pattern in meta_patterns:
-                match = re.search(pattern, content_preview, re.IGNORECASE)
-                if match:
-                    detected = match.group(1).lower()
-                    if detected in ['gbk', 'gb2312', 'gb18030']:
-                        return 'gbk'
-                    elif detected in ['utf-8', 'utf8']:
-                        return 'utf-8'
-                    return detected
-        except Exception:
-            pass
-        
-        try:
-            detected = chardet.detect(response.content)
-            if detected and detected.get('encoding'):
-                encoding = detected['encoding'].lower()
-                confidence = detected.get('confidence', 0)
-                if confidence > 0.7:
-                    if encoding in ['gbk', 'gb2312', 'gb18030']:
-                        return 'gbk'
-                    elif encoding in ['utf-8', 'utf8']:
-                        return 'utf-8'
-                    return encoding
-        except Exception:
-            pass
-        
-        return 'utf-8'
-    
-    def fetch(
-        self,
-        url: str,
-        method: str = 'GET',
-        params: Optional[Dict[str, Any]] = None,
-        data: Optional[Union[Dict, str, bytes]] = None,
-        json_data: Optional[Dict] = None,
-        headers: Optional[Dict[str, str]] = None,
-        cookies: Optional[Dict[str, str]] = None,
-        allow_redirects: bool = True,
-        verify_ssl: bool = True,
-        charset: Optional[str] = None,
-        url_charset: Optional[str] = None,
-        encoded_data: Optional[str] = None,
-        encoded_params: Optional[str] = None
-    ) -> Dict[str, Any]:
-        """发送HTTP请求（支持所有方法）"""
-        final_headers = self.default_headers.copy()
-        if headers:
-            final_headers.update(headers)
-        
-        last_error = None
-        for attempt in range(self.max_retries):
-            try:
-                response = requests.request(
-                    method=method.upper(),
-                    url=url,
-                    params=params,
-                    data=data,
-                    json=json_data,
-                    headers=final_headers,
-                    cookies=cookies,
-                    allow_redirects=allow_redirects,
-                    verify=verify_ssl,
-                    timeout=self.timeout
-                )
-                
-                detected_encoding = self._detect_encoding(response, charset)
-                
-                try:
-                    html_text = response.content.decode(detected_encoding, errors='replace')
-                except (UnicodeDecodeError, LookupError):
-                    html_text = response.content.decode('utf-8', errors='replace')
-                    detected_encoding = 'utf-8'
-                
-                return {
-                    'success': True,
-                    'status_code': response.status_code,
-                    'url': response.url,
-                    'method': method.upper(),
-                    'headers': dict(response.headers),
-                    'cookies': dict(response.cookies),
-                    'encoding': detected_encoding,
-                    'html': html_text,
-                    'content': response.content,
-                    'size': len(response.content),
-                    'redirect_count': len(response.history),
-                    'final_url': response.url,
-                    'is_real': True
-                }
-                
-            except requests.exceptions.Timeout:
-                last_error = f"请求超时（{self.timeout}秒）"
-            except requests.exceptions.ConnectionError:
-                last_error = "连接错误"
-            except requests.exceptions.SSLError as e:
-                last_error = f"SSL错误: {str(e)}"
-            except Exception as e:
-                last_error = str(e)
-        
-        return {
-            'success': False,
-            'error': last_error,
-            'url': url,
-            'method': method.upper()
-        }
-```
-
-### 2. 规则验证器 (rule_validator.py)
-
-```python
-"""
-规则验证和优化引擎
-验证选择器和规则的正确性，优化性能，提供改进建议
-"""
-
-import re
-import json
-from typing import Dict, List, Any, Optional, Tuple
-from dataclasses import dataclass
-from bs4 import BeautifulSoup
-from lxml import etree, html as lxml_html
-
-
-@dataclass
-class ValidationIssue:
-    """验证问题"""
-    severity: str  # error, warning, info
-    type: str
-    message: str
-    location: str
-    suggestion: str
-
-
-class RuleValidator:
-    """规则验证器"""
-    
-    def __init__(self, html: str):
-        self.html = html
-        self.soup = BeautifulSoup(html, 'html.parser')
-        self.lxml_doc = lxml_html.fromstring(html)
-        self.issues = []
-        self.suggestions = []
-    
-    def validate_rule(
-        self,
-        rule_type: str,
-        rule_value: str,
-        context: Optional[Dict] = None
-    ) -> Dict[str, Any]:
-        """验证规则"""
-        context = context or {}
-        
-        validation_result = {
-            'rule_type': rule_type,
-            'rule_value': rule_value,
-            'valid': True,
-            'issues': [],
-            'suggestions': [],
-            'test_results': {}
-        }
-        
-        if rule_type == 'css':
-            validation_result.update(self._validate_css(rule_value, context))
-        elif rule_type == 'xpath':
-            validation_result.update(self._validate_xpath(rule_value, context))
-        elif rule_type == 'regex':
-            validation_result.update(self._validate_regex(rule_value, context))
-        
-        return validation_result
-    
-    def _validate_css(self, selector: str, context: Dict) -> Dict:
-        """验证CSS选择器"""
-        result = {'valid': True, 'issues': []}
-        
-        if not selector or not selector.strip():
-            result['valid'] = False
-            result['issues'].append({
-                'severity': 'error',
-                'type': 'empty_selector',
-                'message': 'CSS选择器不能为空',
-                'suggestion': '请提供有效的CSS选择器'
-            })
-            return result
-        
-        try:
-            elements = self.soup.select(selector)
-        except Exception as e:
-            result['valid'] = False
-            result['issues'].append({
-                'severity': 'error',
-                'type': 'syntax_error',
-                'message': f'CSS选择器语法错误: {str(e)}',
-                'suggestion': '请检查选择器语法'
-            })
-            return result
-        
-        if not elements:
-            result['issues'].append({
-                'severity': 'warning',
-                'type': 'no_match',
-                'message': '选择器未匹配到任何元素',
-                'suggestion': '请检查选择器是否正确'
-            })
-        
-        return result
-    
-    def _validate_xpath(self, xpath: str, context: Dict) -> Dict:
-        """验证XPath"""
-        result = {'valid': True, 'issues': []}
-        
-        if not xpath or not xpath.strip():
-            result['valid'] = False
-            result['issues'].append({
-                'severity': 'error',
-                'type': 'empty_xpath',
-                'message': 'XPath不能为空',
-                'suggestion': '请提供有效的XPath表达式'
-            })
-            return result
-        
-        try:
-            elements = self.lxml_doc.xpath(xpath)
-        except Exception as e:
-            result['valid'] = False
-            result['issues'].append({
-                'severity': 'error',
-                'type': 'syntax_error',
-                'message': f'XPath语法错误: {str(e)}',
-                'suggestion': '请检查XPath语法'
-            })
-            return result
-        
-        if not elements:
-            result['issues'].append({
-                'severity': 'warning',
-                'type': 'no_match',
-                'message': 'XPath未匹配到任何元素',
-                'suggestion': '请检查XPath是否正确'
-            })
-        
-        return result
-    
-    def _validate_regex(self, pattern: str, context: Dict) -> Dict:
-        """验证正则表达式"""
-        result = {'valid': True, 'issues': []}
-        
-        if not pattern or not pattern.strip():
-            result['valid'] = False
-            result['issues'].append({
-                'severity': 'error',
-                'type': 'empty_pattern',
-                'message': '正则表达式不能为空',
-                'suggestion': '请提供有效的正则表达式'
-            })
-            return result
-        
-        try:
-            re.compile(pattern)
-        except Exception as e:
-            result['valid'] = False
-            result['issues'].append({
-                'severity': 'error',
-                'type': 'syntax_error',
-                'message': f'正则表达式语法错误: {str(e)}',
-                'suggestion': '请检查正则表达式语法'
-            })
-            return result
-        
-        matches = re.findall(pattern, self.html)
-        if not matches:
-            result['issues'].append({
-                'severity': 'warning',
-                'type': 'no_match',
-                'message': '正则表达式未匹配到任何内容',
-                'suggestion': '请检查正则表达式是否正确'
-            })
-        
-        return result
-```
-
-### 3. 多模式提取器 (multi_mode_extractor.py)
-
-```python
-"""
-多模式提取引擎
-支持CSS选择器、XPath、正则表达式、JSONPath等多种提取方式
-"""
-
-import re
-import json
-from typing import List, Dict, Any, Optional, Union
-from dataclasses import dataclass
-from bs4 import BeautifulSoup
-from lxml import etree, html as lxml_html
-
-
-@dataclass
-class ExtractionResult:
-    """提取结果"""
-    content: Union[str, List[str]]
-    method: str
-    selector: str
-    success: bool
-    confidence: float
-    error_message: Optional[str] = None
-    sample_items: List[str] = None
-    extracted_count: int = 0
-
-
-class MultiModeExtractor:
-    """多模式提取器"""
-    
-    def __init__(self, html: str):
-        self.html = html
-        self.soup = BeautifulSoup(html, 'html.parser')
-        self.lxml_doc = lxml_html.fromstring(html)
-        self.results = {}
-    
-    def extract(
-        self,
-        selector: str,
-        method: str = 'auto',
-        extract_attr: str = None,
-        extract_all: bool = True
-    ) -> ExtractionResult:
-        """提取内容"""
-        if method == 'auto':
-            method = self._detect_method(selector)
-        
-        if method == 'css':
-            return self._extract_css(selector, extract_attr, extract_all)
-        elif method == 'xpath':
-            return self._extract_xpath(selector, extract_attr, extract_all)
-        elif method == 'regex':
-            return self._extract_regex(selector, extract_all)
-        elif method == 'json':
-            return self._extract_json(selector, extract_attr)
-        
-        return ExtractionResult(
-            content='',
-            method=method,
-            selector=selector,
-            success=False,
-            confidence=0.0,
-            error_message=f'不支持的提取方法: {method}',
-            extracted_count=0
-        )
-    
-    def _detect_method(self, selector: str) -> str:
-        """自动检测提取方法"""
-        if selector.startswith('//') or selector.startswith('/'):
-            return 'xpath'
-        if selector.startswith('regex:') or selector.startswith('re:'):
-            return 'regex'
-        if selector.startswith('json:') or selector.startswith('jsonPath:'):
-            return 'json'
-        return 'css'
-    
-    def _extract_css(
-        self,
-        selector: str,
-        extract_attr: str = None,
-        extract_all: bool = True
-    ) -> ExtractionResult:
-        """使用CSS选择器提取"""
-        try:
-            if extract_all:
-                elements = self.soup.select(selector)
-            else:
-                element = self.soup.select_one(selector)
-                elements = [element] if element else []
-            
-            if not elements:
-                return ExtractionResult(
-                    content=[],
-                    method='css',
-                    selector=selector,
-                    success=True,
-                    confidence=0.0,
-                    extracted_count=0
-                )
-
-            if extract_attr:
-                contents = [elem.get(extract_attr, '') for elem in elements if elem.get(extract_attr)]
-            else:
-                contents = [elem.get_text(strip=True) for elem in elements]
-
-            contents = [c for c in contents if c]
-            extracted_count = len(contents)
-
-            return ExtractionResult(
-                content=contents if extract_all else (contents[0] if contents else ''),
-                method='css',
-                selector=selector,
-                success=True,
-                confidence=min(extracted_count / max(1, len(elements)), 1.0),
-                sample_items=contents[:5],
-                extracted_count=extracted_count
-            )
-            
-        except Exception as e:
-            return ExtractionResult(
-                content=[],
-                method='css',
-                selector=selector,
-                success=False,
-                confidence=0.0,
-                error_message=str(e)
-            )
-    
-    def _extract_xpath(
-        self,
-        selector: str,
-        extract_attr: str = None,
-        extract_all: bool = True
-    ) -> ExtractionResult:
-        """使用XPath提取"""
-        try:
-            if extract_all:
-                elements = self.lxml_doc.xpath(selector)
-            else:
-                elements = self.lxml_doc.xpath(f'{selector}[1]')
-            
-            if not elements:
-                return ExtractionResult(
-                    content=[],
-                    method='xpath',
-                    selector=selector,
-                    success=True,
-                    confidence=0.0,
-                    extracted_count=0
-                )
-
-            if extract_attr:
-                contents = [elem.get(extract_attr, '') for elem in elements if hasattr(elem, 'get')]
-            else:
-                contents = [elem.text_content().strip() for elem in elements if hasattr(elem, 'text_content')]
-
-            contents = [c for c in contents if c]
-            extracted_count = len(contents)
-
-            return ExtractionResult(
-                content=contents if extract_all else (contents[0] if contents else ''),
-                method='xpath',
-                selector=selector,
-                success=True,
-                confidence=min(extracted_count / max(1, len(elements)), 1.0),
-                sample_items=contents[:5],
-                extracted_count=extracted_count
-            )
-            
-        except Exception as e:
-            return ExtractionResult(
-                content=[],
-                method='xpath',
-                selector=selector,
-                success=False,
-                confidence=0.0,
-                error_message=str(e)
-            )
-    
-    def _extract_regex(
-        self,
-        selector: str,
-        extract_all: bool = True
-    ) -> ExtractionResult:
-        """使用正则表达式提取"""
-        try:
-            pattern = selector.replace('regex:', '').replace('re:', '')
-            matches = re.findall(pattern, self.html)
-            
-            if not matches:
-                return ExtractionResult(
-                    content=[],
-                    method='regex',
-                    selector=pattern,
-                    success=True,
-                    confidence=0.0,
-                    extracted_count=0
-                )
-
-            if extract_all:
-                contents = matches
-                extracted_count = len(matches) if isinstance(matches, list) else 1
-            else:
-                contents = matches[0]
-                extracted_count = 1
-
-            return ExtractionResult(
-                content=contents,
-                method='regex',
-                selector=pattern,
-                success=True,
-                confidence=1.0,
-                sample_items=matches[:5] if isinstance(matches, list) else [str(matches)],
-                extracted_count=extracted_count
-            )
-            
-        except Exception as e:
-            return ExtractionResult(
-                content=[],
-                method='regex',
-                selector=selector,
-                success=False,
-                confidence=0.0,
-                error_message=str(e)
-            )
-```
-
-### 4. 知识库工具 (knowledge_tools.py)
-
-```python
-"""
-知识验证和测试工具
-验证知识的正确性，确保AI真正"学会"了知识
-"""
-
-import os
-import json
-import sys
-from typing import Dict, List, Any
-from langchain.tools import tool, ToolRuntime
-from coze_coding_utils.runtime_ctx.context import new_context
-
-workspace_path = os.getenv("COZE_WORKSPACE_PATH", "/workspace/projects")
-utils_path = os.path.join(workspace_path, "src", "utils")
-if utils_path not in sys.path:
-    sys.path.insert(0, utils_path)
-
-from utils.knowledge_enhanced_analyzer import get_global_analyzer
-
-
-@tool
-def learn_knowledge_base(
-    force: bool = False,
-    runtime: ToolRuntime = None
-) -> str:
-    """
-    学习知识库 - 让AI真正学会知识（仅作参考）
-    
-    功能：
-    - 读取assets目录下的所有知识文件
-    - 解析并学习书源规则、CSS选择器、技术文档
-    - 构建知识关联和索引
-    - 保存学习结果供后续使用
-    
-    参数:
-        force: 是否强制重新学习（默认False）
-    
-    返回:
-        学习统计和状态报告
-    """
-    ctx = runtime.context if runtime else new_context(method="learn_knowledge_base")
-    
-    try:
-        analyzer = get_global_analyzer()
-        stats = analyzer.learn_knowledge(force=force)
-        
-        report = f"""
-## 知识库学习完成
-
-### 学习统计
-- **处理文件**: {stats['total_files']}
-- **学习条目**: {stats['learned_entries']}
-- **书源数量**: {stats['book_sources']}
-- **模式数量**: {stats['patterns']}
-- **选择器数量**: {stats['selectors']}
-
-### 学习状态
-- **知识库**: 已加载
-- **知识条目**: {len(analyzer.learner.knowledge_entries)}
-- **书源库**: {len(analyzer.learner.book_sources)}
-- **模式库**: {len(analyzer.learner.patterns)}
-- **选择器库**: {len(analyzer.learner.selectors)}
-
-**AI已成功学会知识库中的所有知识！（仅作参考）**
-"""
-        
-        return report.strip()
-        
-    except Exception as e:
-        import traceback
-        error_detail = traceback.format_exc()
-        return f"知识学习失败: {str(e)}\n{error_detail}"
-
-
-@tool
-def search_knowledge(
-    query: str,
-    category: str = "",
-    limit: int = 5,
-    runtime: ToolRuntime = None
-) -> str:
-    """
-    搜索知识库 - 查询已学习的知识（仅作参考）
-    
-    功能：
-    - 根据关键词搜索知识
-    - 按类别过滤（css、rule、bookinfo等）
-    - 返回相关知识条目和示例
-    
-    参数:
-        query: 搜索关键词
-        category: 知识类别（可选）
-        limit: 返回结果数量（默认5）
-    
-    返回:
-        知识条目列表，包含标题、内容、示例等（仅供参考）
-    """
-    ctx = runtime.context if runtime else new_context(method="search_knowledge")
-    
-    try:
-        analyzer = get_global_analyzer()
-        
-        if not analyzer.is_learned:
-            analyzer.learn_knowledge()
-        
-        results = analyzer.get_knowledge_by_query(query, limit=limit)
-        
-        if not results:
-            return f"未找到相关知识: {query}"
-        
-        report = f"## 知识搜索结果（仅供参考）\n\n"
-        report += f"**查询**: {query}\n"
-        report += f"**找到**: {len(results)} 条知识\n\n"
-        
-        for i, result in enumerate(results, 1):
-            report += f"### 结果 {i}: {result['title']}\n\n"
-            report += f"**类型**: {result['type']}\n"
-            report += f"**类别**: {result['category']}\n"
-            report += f"**置信度**: {result['confidence']:.2f}\n\n"
-            report += f"**内容**:\n```\n{result['content'][:300]}{'...' if len(result['content']) > 300 else ''}\n```\n\n"
-        
-        return report.strip()
-        
-    except Exception as e:
-        import traceback
-        return f"搜索失败: {str(e)}"
-
-
-@tool
-def get_book_source_examples(
-    element_type: str,
-    limit: int = 3,
-    runtime: ToolRuntime = None
-) -> str:
-    """
-    获取书源示例 - 查看实际书源中的规则示例
-    
-    参数:
-        element_type: 元素类型（bookinfo、toc、content、search等）
-        limit: 返回示例数量（默认3）
-    
-    返回:
-        书源示例列表
-    """
-    ctx = runtime.context if runtime else new_context(method="get_book_source_examples")
-    
-    try:
-        analyzer = get_global_analyzer()
-        
-        if not analyzer.is_learned:
-            analyzer.learn_knowledge()
-        
-        examples = analyzer.get_book_source_examples(element_type, limit=limit)
-        
-        if not examples:
-            return f"未找到相关书源示例: {element_type}"
-        
-        report = f"## 书源示例 - {element_type}\n\n"
-        report += f"找到 {len(examples)} 个书源示例\n\n"
-        
-        for i, example in enumerate(examples, 1):
-            report += f"### 示例 {i}: {example['source_name']}\n\n"
-            report += f"**URL**: {example['source_url']}\n"
-            report += f"**标签**: {', '.join(example['tags'])}\n\n"
-            report += f"**规则示例**:\n"
-            for pattern in example['patterns'][:5]:
-                report += f"```\n{pattern}\n```\n"
-            report += "\n"
-        
-        return report.strip()
-        
-    except Exception as e:
-        return f"获取示例失败: {str(e)}"
-```
-
-### 5. 智能网站分析器 (smart_web_analyzer.py)
-
-```python
-"""
-智能网站分析器
-自动分析网站结构，智能构建请求，获取正确的列表内容
-"""
-
-import re
-import json
-from typing import Dict, List, Optional, Tuple
-from urllib.parse import urlparse, parse_qs, urlunparse, urlencode, urljoin as _urljoin
-from bs4 import BeautifulSoup
-import requests
-from langchain.tools import tool, ToolRuntime
-from coze_coding_utils.runtime_ctx.context import new_context
-from tools.charset_detector import detect_charset
-from utils.smart_request import SmartRequest
-
-
-def urljoin(base: str, url: str) -> str:
-    """简单的URL拼接"""
-    return _urljoin(base, url)
-
-
-@tool
-def smart_analyze_website(url: str, runtime: ToolRuntime = None) -> str:
-    """
-    智能分析网站结构，自动识别搜索、分页、列表等关键信息
-
-    参数:
-        url: 网站URL
-
-    返回:
-        网站结构分析报告
-    """
-    ctx = runtime.context if runtime else new_context(method="smart_analyze_website")
-
-    try:
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
-        response = requests.get(url, headers=headers, timeout=30)
-        response.raise_for_status()
-        html = response.text
-
-        soup = BeautifulSoup(html, 'html.parser')
-
-        charset_info = None
-        try:
-            charset_result = detect_charset(url, runtime=runtime)
-            charset_info = json.loads(charset_result)
-        except Exception as e:
-            charset_info = {
-                "charset": "utf-8",
-                "confidence": 0.0,
-                "source": "error",
-                "error": str(e)
-            }
-
-        analysis = {
-            'url': url,
-            'charset_info': charset_info,
-            'search_info': _analyze_search_form(soup, url),
-            'pagination_info': _analyze_pagination(soup, url),
-            'list_structure': _analyze_list_structure(soup),
-            'ajax_info': _analyze_ajax(soup),
-            'security_info': _analyze_security(soup)
-        }
-
-        report = _generate_analysis_report(analysis)
-
-        return report
-
-    except Exception as e:
-        return f"智能分析失败：{str(e)}"
-
-
-def _analyze_search_form(soup: BeautifulSoup, base_url: str) -> Dict:
-    """分析搜索表单"""
-    forms = soup.find_all('form')
-    search_forms = []
-
-    for form in forms:
-        form_info = {
-            'action': urljoin(base_url, str(form.get('action', ''))),
-            'method': str(form.get('method', 'GET')).upper(),
-            'inputs': []
-        }
-
-        inputs = form.find_all('input')
-        for inp in inputs:
-            input_info = {
-                'type': inp.get('type', 'text'),
-                'name': inp.get('name', ''),
-                'id': inp.get('id', ''),
-                'placeholder': inp.get('placeholder', ''),
-                'value': inp.get('value', '')
-            }
-            if input_info['name']:
-                form_info['inputs'].append(input_info)
-
-        is_search = False
-        search_keywords = ['search', 'query', 'keyword', 'q']
-        for keyword in search_keywords:
-            if keyword in form_info['action'].lower():
-                is_search = True
-                break
-            for inp in form_info['inputs']:
-                if keyword in inp['name'].lower() or keyword in inp.get('placeholder', '').lower():
-                    is_search = True
-                    break
-            if is_search:
-                break
-
-        if is_search:
-            search_forms.append(form_info)
-
-    return {
-        'found': len(search_forms) > 0,
-        'forms': search_forms
-    }
-
-
-def _analyze_pagination(soup: BeautifulSoup, base_url: str) -> Dict:
-    """分析分页信息"""
-    pagination_info = {
-        'found': False,
-        'type': None,
-        'page_param': None,
-        'selectors': [],
-        'total_pages': None
-    }
-
-    pagination_keywords = ['page', 'pagination', 'pager', 'nav', 'next', 'prev', '上一页', '下一页']
-
-    for keyword in pagination_keywords:
-        by_class = soup.find_all(class_=lambda x: x and keyword in str(x).lower())
-        by_id = soup.find_all(id=lambda x: x and keyword in str(x).lower())
-
-        if by_class or by_id:
-            pagination_info['found'] = True
-            for elem in by_class[:3]:
-                class_name = ' '.join(elem.get('class', []))
-                pagination_info['selectors'].append(f".{class_name}")
-            for elem in by_id[:3]:
-                elem_id = elem.get('id')
-                pagination_info['selectors'].append(f"#{elem_id}")
-            break
-
-    links = soup.find_all('a', href=True)
-    page_pattern = re.compile(r'[?&](p|page|offset)=(\d+)', re.IGNORECASE)
-
-    for link in links:
-        href = link.get('href', '')
-        match = page_pattern.search(href)
-        if match:
-            pagination_info['found'] = True
-            pagination_info['type'] = 'url_param'
-            pagination_info['page_param'] = match.group(1)
-            break
-
-    return pagination_info
-
-
-def _analyze_list_structure(soup: BeautifulSoup) -> Dict:
-    """分析列表结构"""
-    list_selectors = []
-    list_keywords = ['list', 'item', 'book', 'article', 'post', 'content', 'card']
-
-    for keyword in list_keywords:
-        by_class = soup.find_all(class_=lambda x: x and keyword in str(x).lower())
-        for elem in by_class[:5]:
-            class_name = ' '.join(elem.get('class', []))
-            children = elem.find_all(recursive=False)
-            if len(children) >= 3:
-                list_selectors.append(f".{class_name}")
-
-    for tag in ['ul', 'ol']:
-        lists = soup.find_all(tag)
-        for lst in lists[:3]:
-            items = lst.find_all('li', recursive=False)
-            if len(items) >= 3:
-                if lst.get('class'):
-                    class_name = ' '.join(lst.get('class', []))
-                    list_selectors.append(f"{tag}.{class_name}")
-                elif lst.get('id'):
-                    list_selectors.append(f"{tag}#{lst.get('id')}")
-                else:
-                    list_selectors.append(tag)
-
-    return {
-        'list_selectors': list_selectors[:10],
-        'recommended': list_selectors[0] if list_selectors else None
-    }
-```
+## 🛠️ 核心工具代码
+
+核心工具代码已迁移到 `scripts/` 目录，按需加载使用：
+
+| 脚本文件 | 功能说明 |
+|----------|----------|
+| `scripts/file_organizer.py` | 文件整理工具，自动整理书源文件到专属文件夹 |
+| `scripts/smart_request.py` | 智能请求工具，支持GET/POST，自动检测编码 |
+| `scripts/rule_validator.py` | 规则验证器，验证CSS/XPath/正则表达式 |
+| `scripts/multi_mode_extractor.py` | 多模式提取器，支持CSS/XPath/正则/JSONPath |
+| `scripts/knowledge_tools.py` | 知识库工具，查询和管理知识库 |
+| `scripts/smart_web_analyzer.py` | 智能网站分析器，自动分析网站结构 |
+
+**使用方式**：需要时读取对应脚本文件，根据项目环境调整后使用。
 
 ---
 
 **以上核心工具代码仅供参考，实际使用时需要根据项目环境进行调整。**
 
----
 
 ## 🎯 CSS选择器规则速查
 
@@ -4550,6 +3415,9 @@ response = requests.get(api_url)
    ```
    ❌ 盲目测试各种URL格式
    ✅ 分析JS代码找API调用
+   ✅ 先分析html中的内联js代码，再分析外部js文件
+   ✅ 不要忽略关键线索，比如看到了特殊的变量一定要理解其作用。动态加载一定要注意变量
+   ✅ 仔细阅读代码，尤其是ajax相关的代码
    ```
 
 2. **备用域名也有API**
@@ -4569,6 +3437,11 @@ response = requests.get(api_url)
   
 4. **有时可能需要特殊的请求头或者需要cookie**
 
+5. ❌ 错误流程：
+  看到变量 → 忽略 → 猜测API → 失败 → 再猜 → 再失败...
+
+  ✅ 正确流程：
+  看到变量 → 追问用途 → 查找使用位置 → 发现ajax调用 → 仔细阅读 → 成功！
 ---
 
 ## ⚠️ java.webView 的 JavaScript 限制（重要！）
@@ -4618,6 +3491,18 @@ var content = html.replace(/<script[\s\S]*?<\/script>/g, '');  // Rhino环境，
 2. **使用传统函数而不是箭头函数**（更稳定）
 3. **在 js 参数中使用浏览器 API，返回后在 Rhino 中处理**
 
+### 记忆口诀
+
+```
+WebView的js参数，
+浏览器环境执行。
+返回后的处理，
+Rhino环境执行。
+只能用ES5语法，
+var和function最稳。
+环境分清楚，
+各司其职好！
+```
 
 ---
 
@@ -4633,6 +3518,8 @@ var content = html.replace(/<script[\s\S]*?<\/script>/g, '');  // Rhino环境，
 用户提供知识
     ↓
 验证知识正确性
+    ↓
+转化为口诀/规则
     ↓
 添加到技能包对应章节
     ↓
@@ -4652,8 +3539,15 @@ var content = html.replace(/<script[\s\S]*?<\/script>/g, '');  // Rhino环境，
 - 文件名格式：`{书源名称}.json`
 - 保存路径：`legadoSkill/{书源名称}.json`
 
+**转化为口诀**：
+```
+书源创建完成后，
+JSON文件存根目录。
+文件名称书源名，
+方便管理和复用。
+```
 
-##### 2. 正则表达式替换规则（修正）
+##### 2. 正则表达式替换规则
 
 **用户反馈**：如果不写末尾的##，就是替换为空白
 
@@ -4662,7 +3556,13 @@ var content = html.replace(/<script[\s\S]*?<\/script>/g, '');  // Rhino环境，
 - `##正则表达式##替换内容` - 末尾写`##替换内容`，表示替换为指定内容
 - 多规则：`##规则1|规则2|规则3` - 删除所有匹配内容
 
-
+**转化为口诀**：
+```
+正则替换看末尾，
+不写##就是删。
+写了##替换掉，
+多规则用|分隔开。
+```
 
 **错误写法**：
 ```js
@@ -4813,7 +3713,15 @@ result = organize_book_source_files(book_source_name="笔趣阁hk", session_id=s
 - 只要有分页按钮（无论是"下一章"还是"下一页"），**都必须设置** `nextContentUrl`
 - 只有单页正文（无分页按钮）才留空
 
-
+**转化为口诀**：
+```
+分页按钮必须配，
+无论下章或下页。
+nextContentUrl要设置，
+Legado自动合并文。
+只有单页才留空，
+这是规则要记清。
+```
 
 **正确规则对照表**：
 
@@ -4885,6 +3793,15 @@ $.getJSON("/user/search.html?q="+q, function(data){
 </script>
 ```
 
+**转化为口诀**：
+```
+搜索URL别瞎猜，
+先看HTML和JS。
+表单action看仔细，
+JS代码找API。
+分析之后再测试，
+效率提升好几倍！
+```
 
 **工作流程对比**：
 
@@ -5001,6 +3918,27 @@ loginCheckJs是通用，
 
 ```markdown
 #### 📅 YYYY-MM-DD 进化内容
+
+##### N. 知识标题（新增/修正/优化）
+
+**用户反馈**：用户原话
+
+**吸收内容**：
+- 具体知识点1
+- 具体知识点2
+
+
+**示例代码**（如有）：
+```js
+// 代码示例
+```
+```
+
+---
+
+**技能包会持续进化，每次对话中的知识点都会被吸收和整合！**
+
+### 📅 YYYY-MM-DD 进化内容
 
 ##### N. 知识标题（新增/修正/优化）
 

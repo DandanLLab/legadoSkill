@@ -1,0 +1,37 @@
+[
+  {
+    "bookSourceName": "北趣阁",
+    "bookSourceUrl": "https://www.beiquge.com",
+    "bookSourceType": 0,
+    "enabled": true,
+    "enabledExplore": true,
+    "exploreUrl": "玄幻小说::/sort/1_{{page}}.html\n武侠小说::/sort/2_{{page}}.html\n都市小说::/sort/3_{{page}}.html\n历史小说::/sort/4_{{page}}.html\n科幻小说::/sort/5_{{page}}.html\n网游小说::/sort/6_{{page}}.html\n女生小说::/sort/7_{{page}}.html\n其他小说::/sort/8_{{page}}.html",
+    "ruleExplore": {
+      "bookList": ".item",
+      "name": "dt a@text",
+      "author": "dt span@text",
+      "bookUrl": "dt a@href",
+      "coverUrl": ".image img@src",
+      "intro": "dd@text"
+    },
+    "ruleBookInfo": {
+      "name": ".info h1@text",
+      "author": ".info p a@text",
+      "coverUrl": ".imgbox img@src",
+      "intro": ".desc@text||.m-desc@text",
+      "kind": ".info p.xs-show.0@text##类.*：##",
+      "lastChapter": ".section-list li.0 a@text",
+      "tocUrl": "",
+      "wordCount": ".info p span@text"
+    },
+    "ruleToc": {
+      "chapterList": ".section-list li",
+      "chapterName": "a@text",
+      "chapterUrl": "a@href"
+    },
+    "ruleContent": {
+      "content": "@js:\nvar html = result;\nvar aidMatch = html.match(/var READ_AID\\s*=\\s*(\\d+)/);\nvar cidMatch = html.match(/var READ_CID\\s*=\\s*(\\d+)/);\nvar bucketMatch = html.match(/var READ_BUCKET\\s*=\\s*(\\d+)/);\nvar signMatch = html.match(/var READ_SIGN\\s*=\\s*['\"]([^'\"]+)['\"]/);\nif (!aidMatch || !cidMatch || !bucketMatch || !signMatch) {\n  return '参数提取失败';\n}\nvar aid = aidMatch[1];\nvar cid = cidMatch[1];\nvar bucket = bucketMatch[1];\nvar sign = signMatch[1];\nvar ts = new Date().getTime();\nvar sourceUrl = source.getKey();\nvar apiUrl = sourceUrl + '/book/' + aid + '/' + cid + '.html?ajax=1&aid=' + aid + '&cid=' + cid + '&bk=' + bucket + '&sign=' + sign + '&_=' + ts;\nvar contentHtml = java.ajax(apiUrl);\ncontentHtml",
+      "nextContentUrl": "text.下一页@href"
+    }
+  }
+]

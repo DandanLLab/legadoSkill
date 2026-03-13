@@ -1,0 +1,44 @@
+[
+  {
+    "bookSourceName": "笔趣阁北趣阁",
+    "bookSourceUrl": "https://www.beiquge.com",
+    "bookSourceType": 0,
+    "searchUrl": "/search/,{\"method\":\"POST\",\"body\":\"searchkey={{key}}\"}",
+    "exploreUrl": "玄幻小说::/sort/1_{{page}}.html\n武侠小说::/sort/2_{{page}}.html\n都市小说::/sort/3_{{page}}.html\n历史小说::/sort/4_{{page}}.html\n科幻小说::/sort/5_{{page}}.html\n网游小说::/sort/6_{{page}}.html\n女生小说::/sort/7_{{page}}.html\n其他小说::/sort/8_{{page}}.html",
+    "ruleSearch": {
+      "bookList": "ul.txt-list li",
+      "name": "span.s2 a@text",
+      "author": "span.s4@text",
+      "kind": "span.s1@text##\\[|\\]",
+      "lastChapter": "span.s3 a@text",
+      "bookUrl": "span.s2 a@href"
+    },
+    "ruleExplore": {
+      "bookList": "ul.txt-list li",
+      "name": "span.s2 a@text",
+      "author": "span.s4@text",
+      "kind": "span.s1@text##\\[|\\]",
+      "lastChapter": "span.s3 a@text",
+      "bookUrl": "span.s2 a@href"
+    },
+    "ruleBookInfo": {
+      "name": "h1@text",
+      "author": ".info p a@text",
+      "coverUrl": ".imgbox img@src",
+      "intro": ".desc@text",
+      "kind": ".info p.xs-show.0@text##类\\s*别：",
+      "lastChapter": ".section-list li.0 a@text",
+      "status": ".info p.xs-show.1@text##状\\s*态：",
+      "wordCount": ".info p span@text"
+    },
+    "ruleToc": {
+      "chapterList": ".section-list li a",
+      "chapterName": "text",
+      "chapterUrl": "href##$##,{\"webView\":true}"
+    },
+    "ruleContent": {
+      "content": "#content@html##章节内容加载中…|<script[\\s\\S]*?</script>",
+      "nextContentUrl": "a#next_url@href"
+    }
+  }
+]

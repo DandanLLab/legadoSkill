@@ -1,0 +1,40 @@
+{
+  "bookSourceName": "蚂蚁文学",
+  "bookSourceUrl": "https://www.mayiwsk.com",
+  "bookSourceType": 0,
+  "bookSourceComment": "蚂蚁文学，无弹窗小说阅读网",
+  "searchUrl": "/modules/article/search.php?searchkey={{key}}",
+  "ruleSearch": {
+    "bookList": "id.nr",
+    "name": "tag.td.0@tag.a@text",
+    "author": "tag.td.2@text",
+    "bookUrl": "tag.td.0@tag.a@href",
+    "lastChapter": "tag.td.1@tag.a@text",
+    "wordCount": "tag.td.3@text"
+  },
+  "exploreUrl": "玄幻小说::/xuanhuanxiaoshuo/\n修真小说::/xiuzhenxiaoshuo/\n都市小说::/dushixiaoshuo/\n穿越小说::/chuanyuexiaoshuo/\n网游小说::/wangyouxiaoshuo/\n科幻小说::/kehuanxiaoshuo/\n完本小说::/wanben/\n排行榜::/paihangbang/",
+  "ruleExplore": {
+    "bookList": "class.item",
+    "name": "tag.dt@tag.a@text",
+    "author": "tag.dt@tag.span@text",
+    "bookUrl": "tag.dt@tag.a@href",
+    "coverUrl": "class.image@tag.a@tag.img@src",
+    "intro": "tag.dd@text"
+  },
+  "ruleBookInfo": {
+    "name": "id.info@tag.h1@text",
+    "author": "id.info@tag.p.0@text##作\\s*者：",
+    "coverUrl": "id.fmimg@tag.img@src",
+    "intro": "id.intro@tag.p@text",
+    "lastChapter": "id.info@tag.p.3@tag.a@text",
+    "tocUrl": "text.章节目录@href"
+  },
+  "ruleToc": {
+    "chapterList": "id.list@tag.dd@tag.a",
+    "chapterName": "text",
+    "chapterUrl": "href"
+  },
+  "ruleContent": {
+    "content": "id.content@html##最新网址.*|<div[^>]*>.*?</div>"
+  }
+}

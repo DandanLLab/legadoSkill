@@ -1,0 +1,67 @@
+{
+  "bookSourceName": "风车漫画",
+  "bookSourceUrl": "https://www.fengchemh.com",
+  "bookSourceGroup": "漫画",
+  "bookSourceType": 2,
+  "bookSourceComment": "风车漫画 - 为看漫画的人而生\n\n⚠️ 重要说明：\n本站使用Cloudflare保护，需要WebView支持\n章节图片通过JS加密动态加载\n\n功能：\n1. 发现页：国产漫画、日本漫画、韩国漫画、欧美漫画\n2. 章节图片需等待WebView加载\n\n使用方法：\n1. 在Legado设置中启用WebView\n2. 首次访问可能需要等待Cloudflare验证\n3. 验证通过后可正常使用",
+  "searchUrl": "",
+  "ruleSearch": {
+    "bookList": "",
+    "name": "",
+    "author": "",
+    "bookUrl": "",
+    "coverUrl": "",
+    "intro": "",
+    "kind": "",
+    "lastChapter": ""
+  },
+  "ruleExplore": {
+    "bookList": "li.col-xs-4",
+    "name": "h3 a@text",
+    "author": "",
+    "bookUrl": "h3 a@href",
+    "coverUrl": "div.img-wrapper@data-original",
+    "intro": "",
+    "kind": "",
+    "lastChapter": "p.item-status@text"
+  },
+  "exploreUrl": "国产漫画::/category/list/1/{{page}},{\"webView\":true}\n日本漫画::/category/list/2/{{page}},{\"webView\":true}\n韩国漫画::/category/list/3/{{page}},{\"webView\":true}\n欧美漫画::/category/list/4/{{page}},{\"webView\":true}\n最近更新::/custom/update/{{page}},{\"webView\":true}\n排行榜::/custom/top/{{page}},{\"webView\":true}",
+  "ruleBookInfo": {
+    "name": "h1 a@text",
+    "author": "@css:.info p:contains(作者)@text##作者：",
+    "coverUrl": "div.pic img@src",
+    "intro": "div.more-box p@text",
+    "kind": "@css:.info p:contains(标签)@text##标签：",
+    "lastChapter": "@css:.info p:contains(最新) a@text",
+    "tocUrl": "",
+    "canReName": ""
+  },
+  "ruleToc": {
+    "chapterList": "li.ewave-playlist-item a",
+    "chapterName": "text",
+    "chapterUrl": "href",
+    "isVip": "",
+    "isPay": "",
+    "updateTime": ""
+  },
+  "ruleContent": {
+    "content": "",
+    "nextContentUrl": "text.下一章@href",
+    "sourceRegex": "",
+    "webJs": "(function(){var imgs=document.querySelectorAll('.more-box img');if(imgs.length>0){var arr=[];for(var i=0;i<imgs.length;i++){if(imgs[i].src)arr.push(imgs[i].src);}return arr.join('\\n');}return '';})()",
+    "payAction": "",
+    "contentReplace": ""
+  },
+  "ruleReview": {},
+  "loginUrl": "",
+  "loginUi": "",
+  "loginCheckJs": "",
+  "header": "{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\",\"Accept\":\"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\",\"Accept-Language\":\"zh-CN,zh;q=0.9,en;q=0.8\"}",
+  "concurrentRate": "3000",
+  "customOrder": 0,
+  "enabled": true,
+  "enabledExplore": true,
+  "weight": 0,
+  "lastUpdateTime": 0,
+  "respondTime": 0
+}

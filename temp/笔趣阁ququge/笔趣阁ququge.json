@@ -1,0 +1,38 @@
+[
+  {
+    "bookSourceName": "笔趣阁ququge",
+    "bookSourceUrl": "https://www.ququge.cc",
+    "bookSourceType": 0,
+    "bookSourceComment": "笔趣阁小说网站，无弹窗免费阅读",
+    "searchUrl": "/searchd2.html?searchkey={{key}}",
+    "ruleSearch": {
+      "bookList": ".novel-item",
+      "name": ".novel-title@text",
+      "author": ".novel-meta@text##作者：##",
+      "bookUrl": "a@href",
+      "coverUrl": "",
+      "intro": "",
+      "kind": "",
+      "lastChapter": ""
+    },
+    "ruleBookInfo": {
+      "name": "#info h1@text",
+      "author": "#info p.0 a@text",
+      "coverUrl": "#fmimg img@data-original",
+      "intro": "#intro@text",
+      "kind": "#info p.0 a@text",
+      "lastChapter": "#info p.4 a@text",
+      "tocUrl": "a.chapterlist@href"
+    },
+    "ruleToc": {
+      "chapterList": "#list dl a",
+      "chapterName": "dd@text",
+      "chapterUrl": "@href",
+      "nextTocUrl": "select#indexselect option:not([selected])@value"
+    },
+    "ruleContent": {
+      "content": "#booktxt@html##本章未完，点击下一页继续阅读。",
+      "nextContentUrl": "a[rel=\"next\"]@href"
+    }
+  }
+]

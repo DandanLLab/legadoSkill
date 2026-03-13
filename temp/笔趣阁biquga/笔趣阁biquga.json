@@ -1,0 +1,42 @@
+[
+  {
+    "bookSourceName": "笔趣阁",
+    "bookSourceUrl": "https://www.biquga.com",
+    "bookSourceType": 0,
+    "searchUrl": "/search.html,{\"method\":\"POST\",\"body\":\"s={{key}}\",\"headers\":{\"User-Agent\":\"Mozilla/5.0\"}}",
+    "exploreUrl": "玄幻小说::/list/1/{{page}}.html\n修真小说::/list/2/{{page}}.html\n都市小说::/list/3/{{page}}.html\n历史小说::/list/4/{{page}}.html\n网游小说::/list/5/{{page}}.html\n科幻小说::/list/6/{{page}}.html\n其他小说::/list/7/{{page}}.html",
+    "ruleSearch": {
+      "bookList": ".txt-list li",
+      "name": ".s2 a@text",
+      "author": ".s3 a@text",
+      "bookUrl": ".s2 a@href",
+      "kind": ".s1@text",
+      "lastChapter": ".s4 a@text"
+    },
+    "ruleExplore": {
+      "bookList": ".layout-col3 .item",
+      "name": "dt a@text",
+      "author": "dt span@text",
+      "bookUrl": "dt a@href",
+      "coverUrl": ".image img@src",
+      "intro": "dd@text"
+    },
+    "ruleBookInfo": {
+      "name": ".info h1@text",
+      "author": ".p_author a@text",
+      "coverUrl": ".imgbox img@src",
+      "intro": ".desc@text",
+      "kind": ".xs-show.0@text##类　　别：",
+      "lastChapter": "p a.-1@text",
+      "status": ".xs-show.1@text##状　　态："
+    },
+    "ruleToc": {
+      "chapterList": ".section-list.fix a",
+      "chapterName": "text",
+      "chapterUrl": "href"
+    },
+    "ruleContent": {
+      "content": "@js:\nvar html = result;\nvar pattern = /qsbs\\.bb\\('([^']+)'/g;\nvar matches = [];\nvar match;\nwhile ((match = pattern.exec(html)) !== null) {\n    matches.push(match[1]);\n}\nvar content = '';\nfor (var i = 0; i < matches.length; i++) {\n    try {\n        var decoded = java.base64Decode(matches[i]);\n        content += decoded;\n    } catch (e) {\n        \n    }\n}\ncontent;"
+    }
+  }
+]

@@ -1,0 +1,67 @@
+{
+  "bookSourceName": "漫画吧",
+  "bookSourceUrl": "https://www.manhuaba.com",
+  "bookSourceGroup": "漫画",
+  "bookSourceType": 2,
+  "bookSourceComment": "漫画吧 - 为看漫画的人而生\n\n⚠️ 重要说明：\n本站漫画图片使用JavaScript加密加载，需要WebView支持\n\n功能：\n1. 发现页：国产漫画、日本漫画、韩国漫画、欧美漫画、最新更新、漫画热榜\n2. 章节图片需等待WebView加载\n\n使用方法：\n1. 在Legado设置中启用WebView\n2. 等待页面加载完成后查看漫画",
+  "searchUrl": "/search?key={{key}}",
+  "ruleSearch": {
+    "bookList": "a.module-poster-item",
+    "name": ".module-poster-item-title@text",
+    "author": "",
+    "bookUrl": "@href",
+    "coverUrl": "img@data-original||img@src",
+    "intro": "",
+    "kind": "",
+    "lastChapter": ".module-item-note@text"
+  },
+  "ruleExplore": {
+    "bookList": "a.module-poster-item",
+    "name": ".module-poster-item-title@text",
+    "author": "",
+    "bookUrl": "@href",
+    "coverUrl": "img@data-original||img@src",
+    "intro": "",
+    "kind": "",
+    "lastChapter": ".module-item-note@text"
+  },
+  "exploreUrl": "国产漫画::/category/list/1/{{page}}\n日本漫画::/category/list/2/{{page}}\n韩国漫画::/category/list/3/{{page}}\n欧美漫画::/category/list/4/{{page}}\n最新更新::/custom/update/{{page}}\n漫画热榜::/custom/top/{{page}}",
+  "ruleBookInfo": {
+    "name": "h1@text",
+    "author": ".module-info-item.1 .module-info-item-content@text",
+    "coverUrl": ".module-item-pic img@data-original||.module-item-pic img@src",
+    "intro": ".module-info-introduction-content p@text",
+    "kind": ".module-info-item.2 .module-info-item-content a@text",
+    "lastChapter": ".module-info-item.4 .module-info-item-content@text",
+    "tocUrl": "",
+    "canReName": ""
+  },
+  "ruleToc": {
+    "chapterList": "a.module-play-list-link",
+    "chapterName": "span@text",
+    "chapterUrl": "@href",
+    "isVip": "",
+    "isPay": "",
+    "updateTime": ""
+  },
+  "ruleContent": {
+    "content": "@js:var html=java.webView(null,result.url,'setTimeout(function(){var imgs=document.querySelectorAll(\"#images img\");var arr=[];for(var i=0;i<imgs.length;i++){if(imgs[i].src)arr.push(imgs[i].src);}window.legado.getHTML(arr.join(\"\\n\"));},3000);');html;",
+    "nextContentUrl": "text.下一章@href",
+    "sourceRegex": "",
+    "webJs": "",
+    "payAction": "",
+    "contentReplace": ""
+  },
+  "ruleReview": {},
+  "loginUrl": "",
+  "loginUi": "",
+  "loginCheckJs": "",
+  "header": "{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\",\"Accept\":\"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\",\"Accept-Language\":\"zh-CN,zh;q=0.9,en;q=0.8\"}",
+  "concurrentRate": "3000",
+  "customOrder": 0,
+  "enabled": true,
+  "enabledExplore": true,
+  "weight": 0,
+  "lastUpdateTime": 0,
+  "respondTime": 0
+}

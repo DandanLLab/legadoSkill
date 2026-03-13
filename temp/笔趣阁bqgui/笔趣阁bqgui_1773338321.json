@@ -1,0 +1,48 @@
+[
+  {
+    "bookSourceName": "笔趣阁bqgui",
+    "bookSourceUrl": "https://www.bqgui.cc",
+    "bookSourceType": 0,
+    "bookSourceComment": "笔趣阁小说站，搜索返回JSON格式，正文通过备用域名API获取绕过验证。",
+    "searchUrl": "/user/search.html?q={{key}}",
+    "exploreUrl": "玄幻::https://5b78c.bqg353.xyz/api/sort?sort=xuanhuan&page={{page}}\n武侠::https://5b78c.bqg353.xyz/api/sort?sort=wuxia&page={{page}}\n都市::https://5b78c.bqg353.xyz/api/sort?sort=dushi&page={{page}}\n历史::https://5b78c.bqg353.xyz/api/sort?sort=lishi&page={{page}}\n网游::https://5b78c.bqg353.xyz/api/sort?sort=wangyou&page={{page}}\n科幻::https://5b78c.bqg353.xyz/api/sort?sort=kehuan&page={{page}}\n女生::https://5b78c.bqg353.xyz/api/sort?sort=mm&page={{page}}\n完本::https://5b78c.bqg353.xyz/api/sort?sort=finish&page={{page}}",
+    "ruleSearch": {
+      "bookList": "$[*]",
+      "name": "$.articlename",
+      "author": "$.author",
+      "bookUrl": "$.url_list",
+      "coverUrl": "$.url_img",
+      "intro": "$.intro"
+    },
+    "ruleExplore": {
+      "bookList": "$.data[*]",
+      "name": "$.title",
+      "author": "$.author",
+      "bookUrl": "@js:var id = result.id; 'https://www.bqgui.cc/book/' + id + '/';",
+      "coverUrl": "@js:var id = result.id; 'https://www.bqgui.cc/bookimg/' + Math.floor(id/1000) + '/' + id + '.jpg';",
+      "intro": "$.intro",
+      "kind": "$.sortname"
+    },
+    "ruleBookInfo": {
+      "name": "h1@text",
+      "author": ".small span.0@text##作者：##",
+      "coverUrl": ".cover img@src",
+      "intro": ".intro dd@text",
+      "kind": ".path a.-1@text",
+      "lastChapter": ".small a@text",
+      "status": ".small span.1@text##状态：##",
+      "init": "@js:var idx = baseUrl.indexOf('book/'); if(idx > -1){var idx2 = baseUrl.indexOf('/', idx+5); var bookId = baseUrl.substring(idx+5, idx2); var bookInfo = java.ajax('https://5b78c.bqg353.xyz/api/book?id=' + bookId); var data = JSON.parse(bookInfo); source.put('dirid', data.dirid || bookId); source.put('bookId', bookId);} result;"
+    },
+    "ruleToc": {
+      "chapterList": ".listmain dd a",
+      "chapterName": "text",
+      "chapterUrl": "href"
+    },
+    "ruleContent": {
+      "content": "@js:\nvar url = String(result);\nvar idx1 = url.indexOf('book/');\nvar idx2 = url.indexOf('/', idx1 + 5);\nvar idx3 = url.indexOf('.html', idx2);\nif(idx1 < 0 || idx2 < 0 || idx3 < 0){\n  '章节URL格式错误: ' + url;\n}else{\n  var bookId = url.substring(idx1 + 5, idx2);\n  var chapterId = url.substring(idx2 + 1, idx3);\n  var dirid = source.get('dirid');\n  if(!dirid){\n    var bookInfo = java.ajax('https://5b78c.bqg353.xyz/api/book?id=' + bookId);\n    var data = JSON.parse(bookInfo);\n    dirid = data.dirid || bookId;\n    source.put('dirid', dirid);\n  }\n  var apiUrl = 'https://5b78c.bqg353.xyz/api/chapter?id=' + dirid + '&chapterid=' + chapterId;\n  try{\n    var jsonStr = java.ajax(apiUrl);\n    var data = JSON.parse(jsonStr);\n    if(data && data.txt){\n      var txt = data.txt.replace(/\\n/g, '<br>');\n      txt = txt.replace(/请收藏本站.*|手机版.*|bqg\\d+\\.com/gi, '');\n      txt;\n    }else{\n      '获取正文失败';\n    }\n  }catch(e){\n    'API调用失败: ' + e;\n  }\n}"
+    },
+    "enabled": true,
+    "enabledExplore": true,
+    "weight": 0
+  }
+]
