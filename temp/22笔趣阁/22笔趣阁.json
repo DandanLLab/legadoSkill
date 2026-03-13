@@ -3,17 +3,20 @@
     "bookSourceName": "22笔趣阁",
     "bookSourceUrl": "https://www.22biqu.com",
     "bookSourceType": 0,
-    "searchUrl": "https://m.22biqu.com/ss/,{'method':'POST','body':'searchkey={{key}}'}",
-    "exploreUrl": "玄幻小说::/fenlei/1_{{page}}.html\n武侠小说::/fenlei/2_{{page}}.html\n都市小说::/fenlei/3_{{page}}.html\n历史小说::/fenlei/4_{{page}}.html\n科幻小说::/fenlei/6_{{page}}.html\n游戏小说::/fenlei/5_{{page}}.html\n女生小说::/fenlei/7_{{page}}.html\n其他小说::/fenlei/8_{{page}}.html\n完本小说::/quanben/fenlei/{{page}}.html",
+    "bookSourceComment": "22笔趣阁小说网站，提供各类小说免费阅读。\n\n【特点】\n- PC站：www.22biqu.com，移动站：m.22biqu.com\n- 搜索使用移动端POST请求\n- 提供分类和完本发现功能\n\n【注意】searchUrl格式：URL与请求参数用逗号分隔时，URL末尾不加斜线",
+    "enabled": true,
+    "enabledExplore": true,
+    "searchUrl": "https://m.22biqu.com/ss,{'method':'POST','body':'searchkey={{key}}'}",
     "ruleSearch": {
       "bookList": ".bookbox",
       "name": ".bookname a@text",
-      "author": ".author.0@text##作者：##",
+      "author": ".author.0@text##作者：",
       "bookUrl": ".bookname a@href",
       "coverUrl": ".bookimg img@src",
-      "kind": ".author.1@text##类型：##",
+      "kind": ".author.1@text##类型：",
       "lastChapter": ".update a@text"
     },
+    "exploreUrl": "玄幻小说::/fenlei/1_{{page}}.html\n武侠小说::/fenlei/2_{{page}}.html\n都市小说::/fenlei/3_{{page}}.html\n历史小说::/fenlei/4_{{page}}.html\n科幻小说::/fenlei/6_{{page}}.html\n游戏小说::/fenlei/5_{{page}}.html\n女生小说::/fenlei/7_{{page}}.html\n其他小说::/fenlei/8_{{page}}.html\n完本小说::/quanben/fenlei/{{page}}.html\n最近更新::/fenlei/1.html\n全部小说::/fenlei/1.html",
     "ruleExplore": {
       "bookList": ".item",
       "name": "dt a@text",
@@ -24,11 +27,13 @@
     },
     "ruleBookInfo": {
       "name": ".info .top h1@text",
-      "author": ".info .fix p.0@text##作.*?：##",
+      "author": ".info .fix p.0@text##作.*?：",
       "coverUrl": ".imgbox img@src",
       "intro": ".desc@text",
-      "kind": ".info .fix p.1@text##类.*?：##",
-      "lastChapter": ".info .fix p.4 a@text"
+      "kind": ".info .fix p.1@text##类.*?：",
+      "lastChapter": ".info .fix p.4 a@text",
+      "status": ".info .fix p.2@text##状.*?：",
+      "updateTime": ".info .fix p.3@text##时.*?："
     },
     "ruleToc": {
       "chapterList": "class.section-box.-1@class.section-list@tag.li@tag.a",
@@ -37,8 +42,9 @@
       "nextTocUrl": "#indexselect option@value"
     },
     "ruleContent": {
-      "content": "#content@html##『记住本站最新地址.*?』",
+      "content": "#content@html##『记住本站最新地址.*?』##本站域名.*?##一秒记住.*?",
       "nextContentUrl": "#next_url@href"
-    }
+    },
+    "httpUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
   }
 ]

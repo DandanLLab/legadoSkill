@@ -1,0 +1,56 @@
+[
+  {
+    "bookSourceName": "思怡小说网",
+    "bookSourceUrl": "https://www.siyixs.com",
+    "bookSourceType": 0,
+    "bookSourceComment": "思怡小说网PC站，提供各类小说阅读。\n\n【特点】\n- 网站有WAF保护，首次访问需要WebView验证\n- 搜索URL格式：/s?q=关键字（GET请求）\n- 书籍详情页格式：/book/数字ID.html\n- 提供发现（排行榜和分类）功能\n\n【使用方法】\n1. 首次使用时，如果搜索失败，请先打开任意书籍详情页触发WebView验证\n2. 验证通过后Cookie会自动保存，后续访问正常\n3. 如果遇到401错误，等待几分钟后重试",
+    "enabled": true,
+    "enabledExplore": true,
+    "enabledCookieJar": true,
+    "searchUrl": "/s?q={{key}}",
+    "ruleSearch": {
+      "bookList": ".item,.hot_sale",
+      "name": "a@text,h2@text",
+      "author": ".author@text##作者：",
+      "bookUrl": "a@href",
+      "coverUrl": "img@src",
+      "intro": ".intro@text",
+      "kind": ".category@text",
+      "lastChapter": ".update@text##最新："
+    },
+    "exploreUrl": "排行榜::\n排行作品::/rank/{{page}}.html\n更新作品::/update/{{page}}.html\n完结作品::/finish/{{page}}.html\n分类::\n玄幻小说::/xuanhuan/{{page}}.html\n武侠仙侠::/wuxia/{{page}}.html\n衍生同人::/tongren/{{page}}.html\n科幻小说::/kehuan/{{page}}.html\n架空历史::/lishi/{{page}}.html\n恐怖小说::/kongbu/{{page}}.html\n古代言情::/gudai/{{page}}.html\n都市生活::/dushi/{{page}}.html\n都市言情::/dushiqing/{{page}}.html",
+    "ruleExplore": {
+      "bookList": ".item,.hot_sale",
+      "name": "a@text,h2@text",
+      "author": ".author@text##作者：",
+      "bookUrl": "a@href",
+      "coverUrl": "img@src",
+      "intro": ".intro@text",
+      "kind": ".category@text",
+      "lastChapter": ".update@text##最新："
+    },
+    "ruleBookInfo": {
+      "init": "@js:\nif(result.indexOf('loading')>-1||result.indexOf('WAF')>-1||result.length<500){\n    result=java.webView(baseUrl,baseUrl,'setTimeout(function(){window.legado.getHTML(document.documentElement.outerHTML);},5000);');\n}\nresult;",
+      "name": "h1@text",
+      "author": ".info p:eq(0)@text##作者：",
+      "coverUrl": ".cover img@src,.bookimg img@src",
+      "intro": ".intro@text",
+      "kind": ".info p:eq(1)@text##分类：",
+      "lastChapter": ".info p:eq(3) a@text",
+      "status": ".info p:eq(2)@text##状态：",
+      "updateTime": ".info p:eq(4)@text##更新：",
+      "tocUrl": "text.阅读@href"
+    },
+    "ruleToc": {
+      "chapterList": "#list li a,#chapterlist li a",
+      "chapterName": "text",
+      "chapterUrl": "href"
+    },
+    "ruleContent": {
+      "content": "@js:\nif(result.indexOf('loading')>-1||result.indexOf('WAF')>-1||result.length<500){\n    result=java.webView(baseUrl,baseUrl,'setTimeout(function(){window.legado.getHTML(document.documentElement.outerHTML);},5000);');\n}\nresult;\n##<script[\\s\\S]*?</script>|请收藏.*|一秒记住.*|思怡小说网.*|本站域名.*",
+      "nextContentUrl": "text.下一页@href,text.下一章@href"
+    },
+    "httpUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "respondTime": 180000
+  }
+]
