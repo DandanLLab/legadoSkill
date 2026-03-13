@@ -40,7 +40,7 @@
 | `source` | BaseSource类 | 书源配置操作 |
 | `cookie` | CookieStore类 | Cookie管理 |
 | `cache` | CacheManager类 | 缓存管理 |
-
+**要注意这几个变量是阅读自带的，以后定义一个新变量时要避免使用这些变量名**
 ---
 
 ## 网络请求方法
@@ -48,22 +48,47 @@
 ```javascript
 // 简单请求
 java.ajax(url)                    // 返回字符串
-java.connect(url)                 // 返回StrResponse
+java.connect(url)                 // 返回 StrResponse
 
-// HTTP方法
-java.get(url, headers, timeout)
-java.post(url, body, headers, timeout)
+// HTTP 方法
+java.get(url, headers, timeout)   // GET 请求，返回字符串
+java.post(url, body, headers, timeout) // POST 请求，返回字符串
 java.head(url, headers, timeout)
 
 // 并发请求
 java.ajaxAll(urlList)             // 批量请求
 
-// WebView请求
-java.webView(html, url, js)       // 执行JS获取内容
-java.webViewGetOverrideUrl(html, url, js, regex)  // 获取跳转URL
-java.webViewGetSource(html, url, js, regex)       // 获取资源URL
+// WebView 请求
+java.webView(html, url, js)       // 执行 JS 获取内容
+java.webViewGetOverrideUrl(html, url, js, regex)  // 获取跳转 URL
+java.webViewGetSource(html, url, js, regex)       // 获取资源 URL
 ```
 
+### 网络请求方法详细对比
+
+| 方法 | 返回值 | 复杂度 | 适用场景 | 示例 |
+|------|--------|--------|----------|------|
+| `java.get(url)` | String | 简单 | 快速获取网页 HTML | `var html = java.get('https://example.com/');` |
+| `java.ajax(url)` | String | 中等 | 需要书源配置支持的请求 | `var html = java.ajax('https://example.com/');` |
+| `java.connect(url)` | StrResponse | 中等 | 需要获取状态码等元数据 | `var resp = java.connect(url); var html = resp.body;` |
+| `java.get(url, headers, timeout)` | String | 复杂 | 需要自定义请求头 | `var html = java.get(url, headers, 10000);` |
+| `java.post(url, body, headers, timeout)` | String | 复杂 | POST 请求 | `var html = java.post(url, body, headers, 10000);` |
+
+**核心区别：**
+
+1. **`java.get(url)`** - 最简单的 GET 请求，直接返回 HTML 字符串，适合快速抓取网页
+2. **`java.ajax(url)`** - 功能更强大，支持书源配置（如 Cookie、请求头等），返回 HTML 字符串
+3. **`java.connect(url)`** - 返回 StrResponse 对象，可访问 `body`（内容）、`code`（状态码）等属性
+4. **`java.get(url, headers, timeout)`** - 可自定义请求头和超时时间的 GET 请求
+5. **`java.post(url, body, headers, timeout)`** - POST 请求，用于提交数据
+
+**选择建议：**
+- 简单抓取网页 → 使用 `java.get(url)`
+- 需要书源配置支持 → 使用 `java.ajax(url)`
+- 需要检查状态码 → 使用 `java.connect(url)`
+- 需要自定义请求头 → 使用 `java.get(url, headers, timeout)`
+- 提交表单数据 → 使用 `java.post(url, body, headers, timeout)`
+- 注意使用时要把url参数补全
 ---
 
 ## 编码解码方法

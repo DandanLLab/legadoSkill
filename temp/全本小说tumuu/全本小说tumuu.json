@@ -1,0 +1,42 @@
+{
+  "bookSourceUrl": "https://www.tumuu.com",
+  "bookSourceName": "全本小说tumuu",
+  "bookSourceGroup": "小说",
+  "bookSourceType": "Local",
+  "concurrentRate": "",
+  "header": "",
+  "loginUrl": "",
+  "bookInfoPattern": "",
+  "exploreUrl": "",
+  "ruleExplore": {},
+  "searchUrl": "/user/search.html,{\n  \"method\": \"POST\",\n  \"charset\": \"utf-8\",\n  \"headers\": {\n    \"Referer\": \"https://www.tumuu.com/user/search.html\",\n    \"X-Requested-With\": \"XMLHttpRequest\",\n    \"Origin\": \"https://www.tumuu.com\"\n  },\n  \"body\": @js:\nvar result = java.get('/user/search.html');\nvar html = result || '';\nvar vars = {};\nvar regex = /var\\s+(\\w+)\\s*=\\s*[\"']([^\"']+)[\"'];/g;\nvar match;\nwhile ((match = regex.exec(html)) !== null) {\n  if (match[1] !== 'phone_link') vars[match[1]] = match[2];\n}\nvar params = 'q=' + encodeURIComponent(key);\nfor (var k in vars) params += '&' + k + '=' + encodeURIComponent(vars[k]);\nparams\n",
+  "ruleSearch": {
+    "bookList": "$.data.search[*]",
+    "name": "$.title",
+    "author": "$.author",
+    "bookUrl": "https://www.tumuu.com{{$.book_detail_url}}",
+    "coverUrl": "https://www.tumuu.com{{$.cover}}",
+    "intro": "$.intro",
+    "kind": "$.cate_name",
+    "wordCount": "",
+    "lastChapter": "$.latest_chapter_name"
+  },
+  "ruleBookInfo": {
+    "author": "",
+    "coverUrl": "",
+    "intro": "",
+    "kind": "",
+    "lastChapter": "",
+    "name": "",
+    "wordCount": ""
+  },
+  "ruleToc": {
+    "chapterList": "",
+    "chapterName": "",
+    "chapterUrl": ""
+  },
+  "ruleContent": {
+    "content": "",
+    "nextContentUrl": ""
+  }
+}

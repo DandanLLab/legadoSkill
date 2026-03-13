@@ -1,0 +1,67 @@
+{
+  "bookSourceUrl": "https://www.shuhaixsw.com/",
+  "bookSourceName": "书海小说网",
+  "bookSourceGroup": "小说",
+  "bookSourceType": 0,
+  "bookSourceComment": "免费小说阅读网，提供男生、女生、二次元等多类型小说",
+  "loginUrl": "",
+  "loginUi": "",
+  "loginCheckJs": "",
+  "concurrentRate": "",
+  "header": "{\"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36\"}",
+  "exploreUrl": "男生::/list-1-{{page}}/\n女生::/list-2-{{page}}/\n二次元::/list-3-{{page}}/\n玄幻小说::/list-4-{{page}}/\n奇幻小说::/list-5-{{page}}/\n武侠小说::/list-6-{{page}}/\n仙侠小说::/list-7-{{page}}/\n都市小说::/list-8-{{page}}/\n军事小说::/list-9-{{page}}/\n历史小说::/list-10-{{page}}/\n游戏小说::/list-11-{{page}}/\n体育小说::/list-12-{{page}}/\n科幻小说::/list-13-{{page}}/\n诸天无限::/list-14-{{page}}/\n悬疑小说::/list-15-{{page}}/",
+  "enabled": true,
+  "enabledExplore": true,
+  "weight": 0,
+  "customOrder": 0,
+  "lastUpdateTime": 0,
+  "ruleSearch": {
+    "bookList": "",
+    "name": "",
+    "author": "",
+    "coverUrl": "",
+    "bookUrl": "",
+    "intro": "",
+    "kind": "",
+    "wordCount": "",
+    "lastChapter": ""
+  },
+  "ruleExplore": {
+    "bookList": ".chanIBox .list li",
+    "name": ".name a@text",
+    "author": ".author@text",
+    "coverUrl": ".pic img@src",
+    "bookUrl": ".pic a@href",
+    "intro": ".intro@text",
+    "kind": "",
+    "wordCount": "",
+    "lastChapter": ""
+  },
+  "ruleBookInfo": {
+    "name": ".book .txtb .name h1@text",
+    "author": ".intro .item.0 a@text",
+    "coverUrl": ".book .pic img@src",
+    "intro": ".conCZ .intro@text",
+    "kind": ".label span.2@text",
+    "wordCount": ".about .t_c.0 b@text##万字",
+    "lastChapter": ".intro .item.0 span.1@text",
+    "tocUrl": ".btnW a.0@href",
+    "init": ""
+  },
+  "ruleToc": {
+    "chapterList": ".chapListBody ul li",
+    "chapterName": "a@text",
+    "chapterUrl": "a@href",
+    "nextTocUrl": ".chapter_page .next@href",
+    "init": ""
+  },
+  "ruleContent": {
+    "content": ".content@text",
+    "nextContentUrl": ".btnW a.1@href",
+    "replaceRegex": "##\\s+",
+    "imageStyle": "",
+    "imageSelector": "",
+    "webJs": "",
+    "init": ""
+  }
+}

@@ -18,6 +18,29 @@
 
 ---
 
+
+## API发现三步法
+
+```
+第一步：获取首页HTML，先在里面的js代码里找api或某些特殊变量
+
+第二步：在首页HTML,查找外部JS文件
+  → <script src="/js/main.js">
+  → <script src="/js/api.js">
+  → 等等
+
+第二步：分析JS文件，查找API调用
+  → $.ajax('/api/chapter')
+  → getJSON('/json_book?id=')
+  → fetch('/api/content')
+  → 等等形态
+
+第三步：测试发现的API
+  → 验证API是否可用
+  → 分析返回数据格式
+```
+---
+
 ## 正确方法：分析JS代码找API
 
 **错误做法**：盲目猜测测试
@@ -88,24 +111,6 @@ response = requests.get(api_url)
 - `/json_book?id=` - 返回章节列表（JSON格式）
 - 从JS代码中直接发现，无需猜测！
 
----
-
-## API发现三步法
-
-```
-第一步：获取首页HTML，查找外部JS文件
-  → <script src="/js/main.js">
-  → <script src="/js/api.js">
-
-第二步：分析JS文件，查找API调用
-  → $.ajax('/api/chapter')
-  → getJSON('/json_book?id=')
-  → fetch('/api/content')
-
-第三步：测试发现的API
-  → 验证API是否可用
-  → 分析返回数据格式
-```
 
 ---
 
