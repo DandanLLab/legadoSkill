@@ -1,0 +1,43 @@
+{
+  "bookSourceComment": "笔趣阁小说网站书源，支持搜索、目录和正文阅读",
+  "bookSourceGroup": "小说",
+  "bookSourceName": "笔趣阁",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://www.22biqu.com",
+  "customOrder": 0,
+  "enabled": true,
+  "enabledExplore": false,
+  "lastUpdateTime": 0,
+  "respondTime": 0,
+  "ruleBookInfo": {
+    "author": ".info .fix p:0@ownText##作.*?者：##",
+    "coverUrl": ".imgbox img@src",
+    "intro": ".desc@text",
+    "kind": ".info .fix .xs-show:0@ownText##类.*?别：##",
+    "lastChapter": ".info .fix p a@text",
+    "name": "h1@text"
+  },
+  "ruleContent": {
+    "content": "#content@html##『记住.*?』##"
+  },
+  "ruleExplore": {},
+  "ruleSearch": {
+    "author": "span.s4@text",
+    "bookList": "ul.txt-list li",
+    "bookUrl": "span.s2 a@href",
+    "checkKeyWord": "斗罗大陆",
+    "coverUrl": "",
+    "intro": "",
+    "kind": "span.s1@text##\\[|\\]##",
+    "lastChapter": "span.s3 a@text",
+    "name": "span.s2 a@text",
+    "wordCount": ""
+  },
+  "ruleToc": {
+    "chapterList": ".section-list li",
+    "chapterName": "a@text",
+    "chapterUrl": "a@href"
+  },
+  "searchUrl": "/ss/,{'method':'POST','body':'searchkey={{key}}','charset':'GBK'}",
+  "weight": 0
+}

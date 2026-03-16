@@ -1,0 +1,21 @@
+[
+  {
+    "bookSourceName": "22笔趣阁(搜索)",
+    "bookSourceUrl": "https://www.22biqu.com",
+    "bookSourceType": 0,
+    "bookSourceComment": "22笔趣阁小说网站搜索书源\n\n【搜索功能】\n- 搜索URL: https://m.22biqu.com/ss\n- 使用POST请求\n- 参数: searchkey={{key}}\n\n【注意】\n- 此书源仅包含搜索功能\n- 建议搜索三个字及以上的书籍名字",
+    "enabled": true,
+    "enabledExplore": false,
+    "searchUrl": "https://m.22biqu.com/ss,{'method':'POST','body':'searchkey={{key}}'}",
+    "ruleSearch": {
+      "bookList": ".bookbox",
+      "name": ".bookname a@text",
+      "author": ".author.0@text##作者：",
+      "bookUrl": ".bookname a@href",
+      "coverUrl": ".bookimg img@src",
+      "kind": ".author.1@text##类型：",
+      "lastChapter": ".update a@text"
+    },
+    "httpUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  }
+]
