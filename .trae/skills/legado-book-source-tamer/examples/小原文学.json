@@ -1,0 +1,49 @@
+{
+  "bookSourceComment": "26.3.16\n动态获取发现",
+  "bookSourceGroup": "#其他大佬",
+  "bookSourceName": "小原文学",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://min-yuan.com/",
+  "bookUrlPattern": "https?://min-yuan.com/txt/\\w+/",
+  "customOrder": 9,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "exploreUrl": "@js:\nvar result = [];\njava.toast(\"🔥动态获取发现中……\");\n \nvar push = (title, url, size) => result.push({\n    \"title\": title,\n    \"url\": url,\n    \"style\": {\n        \"layout_flexGrow\": 1,\n        \"layout_flexBasisPercent\": size \n    }\n});\n \nvar fl = java.ajax(source.key);\nif (fl) {\n    var a = org.jsoup.Jsoup.parse(fl).select(\".m6-puk3-ecvn-rb3u a\");\n    push(\"༺ˇ»`ʚ最近更新ɞ´«ˇ༻\", null, 1);\n    \n    for(var i = 0; i < a.length; i++) {\n        var title = a[i].text();\n        var url = a[i].attr(\"href\");\n        var size = 0.25;\n        url = String(url).replace(/\\/$/, \"/{{page}}.html\");\n        push(title, url, size);\n    };\n    \n    \n} else {\n    java.toast(\"🚫发现获取失败……\");\n}\n \nJSON.stringify(result);",
+  "lastUpdateTime": 1773678945200,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "[property$=author]@content",
+    "coverUrl": "[property$=image]@content",
+    "intro": "🕰  更新时间：\n{{@@[property$=update_time]@content##\\s.*}}\n📜  内容简介：\n{{@@[property$=description]@content}}##(^|[。！？……；]+[”」）】]?)##$1<br>",
+    "kind": "[property~=category|status|update_time]@content##\\s.*",
+    "lastChapter": "{{@@[property$=chapter_name]@content##正文卷.|正文.|VIP卷.|默认卷.|卷_|VIP章节.|免费章节.|章节目录.|最新章节.|[\\(（【].*?[求含理更谢乐发推票盟补加字].*?[】）\\)]}}•{{@@[property$=update_time]@content##\\s.*}}\n@js:result\n.replace(\"••\",\"\")\n.replace(/^(\\d+).第/,'第')\n.replace(/^(\\d+)[、．]第.+章/,'第$1章')\n.replace(/^(\\d+)、\\d+、/,'第$1章 ')\n.replace(/^(\\d+)、\\d+/,'第$1章')\n.replace(/^(\\d+)、/,'第$1章 ')\n.replace(/^(第.+章)\\s?第.+章/,'$1')\n.replace(/第\\s(.+)\\s章/,'第$1章')\n.replace(/.*(chapter|Chapter)\\s?(\\d+)\\s?/,'$1 $2 ')\n.replace(/\\(.+\\)/,'')\n.replace(/\\[|。/,'')\n.replace(/第([零一二两三四五六七八九十百千]+)章/g,java.toNumChapter(result))\n##(章)([^\\s]+)(\\s·)##$1 $2$3",
+    "name": "[property$=book_name]@content"
+  },
+  "ruleContent": {
+    "content": "#booktxt@p@text",
+    "nextContentUrl": "text.下一章@href",
+    "replaceRegex": "##.本章完."
+  },
+  "ruleExplore": {
+    "author": ".btm@textNodes",
+    "bookList": ".m6-zktl-mlxq-o3jz",
+    "bookUrl": "a.0@href",
+    "coverUrl": "img@data-original",
+    "intro": "dd@text",
+    "kind": "em.-1@text",
+    "name": "dt@a@text"
+  },
+  "ruleReview": {
+    "enabled": false
+  },
+  "ruleSearch": {
+    "checkKeyWord": "https://min-yuan.com/txt/snm/"
+  },
+  "ruleToc": {
+    "chapterList": "#newlist@dd@a",
+    "chapterName": "text",
+    "chapterUrl": "href"
+  },
+  "weight": 0
+}

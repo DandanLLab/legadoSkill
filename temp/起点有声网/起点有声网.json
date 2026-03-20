@@ -1,0 +1,45 @@
+{
+  "bookSourceName": "起点有声网",
+  "bookSourceUrl": "https://www.qdysw.com",
+  "bookSourceGroup": "有声书",
+  "bookSourceType": 1,
+  "bookSourceComment": "起点有声网 - 免费在线听书网，音频来自酷我音乐CDN",
+  "concurrentRate": "",
+  "enabled": true,
+  "enabledExplore": true,
+  "exploreUrl": "有声小说::/book/all/lastupdate.html\n长篇评书::/book/pingshu/lastupdate.html\n玄幻奇幻::/book/xhqh/lastupdate.html\n影视原著::/book/ysyz/lastupdate.html\n武侠仙侠::/book/wxxx/lastupdate.html\n穿越架空::/book/cyjk/lastupdate.html\n悬疑推理::/book/xytl/lastupdate.html\n科幻竞技::/book/khjj/lastupdate.html\n历史军事::/book/lsjs/lastupdate.html\n现代言情::/book/xdyq/lastupdate.html\n青春校园::/book/qcxy/lastupdate.html\n幻想言情::/book/hxyq/lastupdate.html\n古代言情::/book/gdyq/lastupdate.html\n文学名著::/book/wxmz/lastupdate.html\n乡村生活::/book/xcsh/lastupdate.html\n儿童::/book/ertong/lastupdate.html\n国学经典::/book/gxjd/lastupdate.html\n博闻杂谈::/book/bxzt/lastupdate.html\n职场干货::/book/zcgh/lastupdate.html\n名家传记::/book/mjcj/lastupdate.html\n档案纪实::/book/dajs/lastupdate.html\n相声曲艺::/book/xsqy/lastupdate.html\n自我提升::/book/zwts/lastupdate.html\n明星电台::/book/mxdt/lastupdate.html\n其他有声::/book/qita/lastupdate.html",
+  "searchUrl": "/search.html,{\"method\":\"POST\",\"body\":\"searchword={{key}}\"}",
+  "ruleSearch": {
+    "bookList": "ul.list-works > li",
+    "name": "dt.list-book-dt > a@text",
+    "author": "dd.list-book-cs > span.book-author > a@text",
+    "bookUrl": "dt.list-book-dt > a@href",
+    "coverUrl": "div.list-imgbox img@data-original",
+    "intro": "dd.list-book-des@text"
+  },
+  "ruleExplore": {
+    "bookList": "ul.list-works > li",
+    "name": "dt.list-book-dt > a@text",
+    "author": "dd.list-book-cs > span.book-author > a@text",
+    "bookUrl": "dt.list-book-dt > a@href",
+    "coverUrl": "div.list-imgbox img@data-original",
+    "intro": "dd.list-book-des@text"
+  },
+  "ruleBookInfo": {
+    "name": "h1.book-title@text",
+    "author": "class.book-info@tag.dd.4@tag.a@text",
+    "coverUrl": "class.book-img@tag.img@src",
+    "intro": "class.book-intro@text",
+    "kind": "class.book-info@tag.dd.0@tag.a@text",
+    "lastChapter": "class.playlist@tag.li.0@tag.a@text"
+  },
+  "ruleToc": {
+    "chapterList": "@css:#playlist li",
+    "chapterName": "a@text",
+    "chapterUrl": "a@href"
+  },
+  "ruleContent": {
+    "content": "@js:\nlet url = baseUrl;\nlet m = url.match(/tingshu\\/(\\d+)\\/(\\d+)\\.html/);\nif(!m) return '';\nlet html = java.ajax('https://www.qdysw.com/player.html?nid=' + m[1] + '&cid=' + m[2] + '&site=16');\nlet u = html.match(/url\\d+\\s*=\\s*'(https?:\\/\\/[^']+)'/);\nlet ext = html.match(/murl\\d+\\s*=\\s*'([^']+)'/);\nif(u && ext) return u[1] + ext[1];\nreturn '';",
+    "sourceRegex": ".*\\.mp3.*"
+  }
+}

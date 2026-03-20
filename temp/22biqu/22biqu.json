@@ -1,0 +1,57 @@
+﻿[
+  {
+    "bookSourceName": "22 笔趣阁",
+    "bookSourceGroup": "笔趣阁",
+    "bookSourceType": 0,
+    "bookSourceUrl": "https://m.22biqu.com",
+    "bookSourceComment": "22 笔趣阁，提供玄幻小说、武侠小说、都市小说、历史小说、科幻小说等网络小说免费阅读",
+    "enabled": true,
+    "enabledExplore": true,
+    "enabledCookieJar": false,
+    "header": "{\"User-Agent\":\"Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36\"}",
+    "searchUrl": "https://m.22biqu.com/modules/article/search.php?searchtype=articlename&searchkey={{key}}",
+    "exploreUrl": "[{\"title\":\"玄幻小说\",\"url\":\"/xuanhuan/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"武侠小说\",\"url\":\"/wuxia/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"都市小说\",\"url\":\"/dushi/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"历史小说\",\"url\":\"/lishi/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"科幻小说\",\"url\":\"/kehuan/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"游戏小说\",\"url\":\"/youxi/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"女生小说\",\"url\":\"/nvsheng/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"其他小说\",\"url\":\"/qita/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"完本小说\",\"url\":\"/wanjie/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}}]",
+    "ruleBookInfo": {
+      "name": "h1@text",
+      "author": ".author@text##^作者：##",
+      "coverUrl": ".cover img@src",
+      "intro": ".intro@text",
+      "kind": ".author@text##^[^|]*##",
+      "lastChapter": ".author a@text",
+      "tocUrl": "",
+      "wordCount": ""
+    },
+    "ruleSearch": {
+      "bookList": ".item",
+      "name": ".title a@text",
+      "author": ".author@text##^作者：##",
+      "bookUrl": ".title a@href",
+      "coverUrl": "img@src",
+      "intro": "",
+      "kind": ".author@text##^[^|]*##",
+      "lastChapter": ".author a@href"
+    },
+    "ruleToc": {
+      "chapterList": ".chapter-list a",
+      "chapterName": "a@text",
+      "chapterUrl": "a@href",
+      "nextTocUrl": ""
+    },
+    "ruleContent": {
+      "content": "#chaptercontent@text",
+      "nextContentUrl": "a:contains(\"下一章\")@href",
+      "prevContentUrl": "a:contains(\"上一章\")@href",
+      "replaceRegex": "##<script.*?</script>##<style.*?</style>##<!--.*?-->##"
+    },
+    "ruleExplore": {
+      "bookList": ".item",
+      "name": ".title a@text",
+      "author": ".author@text##^作者：##",
+      "bookUrl": ".title a@href",
+      "coverUrl": "img@src",
+      "intro": "",
+      "kind": ".author@text##^[^|]*##",
+      "lastChapter": ".author a@href"
+    }
+  }
+]

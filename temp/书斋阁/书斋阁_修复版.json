@@ -1,0 +1,65 @@
+{
+  "bookSourceGroup": "📚",
+  "bookSourceName": "📚 书斋阁",
+  "bookSourceUrl": "https://www.shuzhaige.com",
+  "bookSourceType": 0,
+  "bookUrlPattern": "https://www\\.shuzhaige\\.com/[^/]+/$",
+  "header": "{\"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\"}",
+  "loginUrl": "",
+  "loginCheckJs": "",
+  "loginUi": "",
+  "customOrder": 0,
+  "concurrentRate": "",
+  "ruleSearch": {
+    "bookList": "table.table-striped tbody tr",
+    "name": "td:nth-child(1) a@text",
+    "author": "td:nth-child(3)@text",
+    "bookUrl": "td:nth-child(1) a@href",
+    "coverUrl": "",
+    "intro": "",
+    "wordCount": "",
+    "latestChapter": "td:nth-child(2) a@text",
+    "updateTime": "td:nth-child(4)@text"
+  },
+  "ruleFind": {
+    "bookList": ".m-rec-list ul li",
+    "name": "p.dsbn a@text",
+    "author": "p.dszz@text",
+    "bookUrl": "p.dsbn a@href",
+    "coverUrl": "img@src",
+    "intro": "",
+    "wordCount": "",
+    "latestChapter": "",
+    "updateTime": ""
+  },
+  "ruleToc": {
+    "chapterList": "#play_0 ul li",
+    "chapterName": "a@text",
+    "chapterUrl": "a@href",
+    "nextTocUrl": "",
+    "hasContent": ""
+  },
+  "ruleContent": {
+    "content": "#content@text",
+    "nextContentUrl": ".m-zpage ul li:nth-child(2) a@href",
+    "title": ".m-title h1@text"
+  },
+  "searchUrl": "/e/search/index.php",
+  "method": "POST",
+  "encoding": "utf-8",
+  "postData": "tbname=bookname&show=title,writer&tempid=1&keyboard={{key}}",
+  "exploreUrl": [
+    "古典文学::/gudianwenxue/\n世界名著::/shijiemingzhu/\n影视原著::/yingshi/\n作家::/writer/"
+  ],
+  "ruleExplore": {
+    "bookList": ".m-rec-list ul li",
+    "name": "p.dsbn a@text",
+    "author": "p.dszz@text",
+    "bookUrl": "p.dsbn a@href",
+    "coverUrl": "img@src",
+    "intro": "",
+    "wordCount": "",
+    "latestChapter": "",
+    "updateTime": ""
+  }
+}

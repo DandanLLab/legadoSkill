@@ -1,0 +1,48 @@
+{
+  "bookSourceGroup": "",
+  "bookSourceName": "狗耳听书",
+  "bookSourceType": 1,
+  "bookSourceUrl": "https://www.abcd.com",
+  "customButton": false,
+  "customOrder": 96,
+  "enabled": false,
+  "enabledCookieJar": true,
+  "enabledExplore": false,
+  "eventListener": false,
+  "exploreUrl": "",
+  "lastUpdateTime": 1734842669721,
+  "respondTime": 6795,
+  "ruleBookInfo": {
+    "intro": "class.intro-content@html||$.info.sound.intro",
+    "kind": "class.detail-count@text&&class.detail-newest@text&&class.detail-author@text&&class.detail-type@text&&class.detail-tags@text##类型：|标签：无|标签：",
+    "tocUrl": "@js:\nif(baseUrl.match(/dramaapi|mdrama/)){\nresult='https://www.abcd.com/dramaapi/getdrama?drama_id='+baseUrl.match(/(\\d+)/)[1]\n}"
+  },
+  "ruleContent": {
+    "content": "$.info.sound.soundurl_128||$.info.sound.soundurl"
+  },
+  "ruleExplore": {
+    "bookList": "$.info.Datas",
+    "bookUrl": "https://www.abcd.com/mdrama/drama/{{$.id}},{\"webView\":true}",
+    "coverUrl": "$.cover",
+    "kind": "$.type_name",
+    "lastChapter": "$.newest",
+    "name": "$.name"
+  },
+  "ruleSearch": {
+    "author": "$.username||$.author",
+    "bookList": "<js>\nkey=java.get('key');\npage=java.get('page');\n\n//创建两个空数组\njson=[];json2=[];\n\n//判定json里是否有列表\nif(JSON.parse(result).info.Datas){\njson=JSON.parse(result).info.Datas;}\n\n//加载单曲搜索页面并转为json\njson1=JSON.parse(java.ajax('https://www.abcd.com/sound/getsearch?s='+key+'&type=3&page_size=10&p='+page));\n\n//判定json里是否有列表\nif(json1.info.Datas){\njson2=json1.info.Datas\n}\n\n//剧集搜索列表与单曲搜索列表拼接\nlist=json.concat(json2);\n\nresult=JSON.stringify(list)\n</js>\n$.[*]",
+    "bookUrl": "<js>\nid=String(result).match(/id=(\\d+)/)[1];\nif(!String(result).match(/catalog_name/)){\nresult='https://www.abcd.com/sound/getsound?soundid='+id\n}else{result='https://www.abcd.com/dramaapi/getdrama?drama_id='+id}\n</js>",
+    "coverUrl": "$.front_cover||$.cover",
+    "intro": "$.abstract",
+    "kind": "{$.type_name},{$.catalog_name}##\\{.*?\\}",
+    "lastChapter": "$.newest",
+    "name": "$.soundstr||$.name"
+  },
+  "ruleToc": {
+    "chapterList": "<js>'['+result+']'</js>\n$..info.episodes.episode[*]||$..info.episodes.music[*]||$.[*]",
+    "chapterName": "$.name||$.info.sound.soundstr",
+    "chapterUrl": "https://www.abcd.com/sound/getsound?soundid={{$.sound_id||$.info.sound.id}}"
+  },
+  "searchUrl": "https://www.abcd.com/dramaapi/search?s={{key}}&page={{page}}\n@js:java.put('key',key);java.put('page',page);result",
+  "weight": 0
+}

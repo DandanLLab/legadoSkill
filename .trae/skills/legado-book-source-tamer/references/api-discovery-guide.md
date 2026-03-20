@@ -307,3 +307,96 @@ if(match){
 | 关注变量 | 看到特殊变量一定要理解其作用 |
 | 备用域名也有 API | 主域名失败时分析备用域名 |
 | 注意请求头 | 有时需要特殊的请求头或 Cookie |
+
+### 6. 使用搜索引擎搜索（无搜索接口时）
+
+当网站本身没有搜索功能或搜索接口难以获取时，可以使用搜索引擎搜索目标站点：
+
+**原理**：利用搜索引擎的 `site:` 语法限定搜索范围
+
+**常用搜索引擎**：
+
+| 搜索引擎 | 搜索URL格式 |
+|----------|-------------|
+| 神马搜索 | `https://m.sm.cn/s?q={{key}}%20site:example.com` |
+| 夸克搜索 | `https://quark.sm.cn/s?q={{key}}%20site:example.com` |
+| 百度搜索 | `https://www.baidu.com/s?wd={{key}}%20site:example.com` |
+
+**书源示例**：
+
+```json
+{
+  "searchUrl": "https://m.sm.cn/s?q={{java.encodeURI(key)+\"%20\"+java.encodeURI(\"篱笆好\")}}&from=smor&safe=1&snum=10"
+}
+```
+
+**关键技术**：
+1. `java.encodeURI(key)` 对搜索关键词进行URL编码
+2. `%20` 表示空格，连接关键词和站点名
+3. 搜索结果需要过滤出目标站点的链接
+
+**搜索结果过滤示例**：
+
+```javascript
+// bookList 规则
+".qk-card a\n@js:\nvar list = [];\nfor (var i = 0; i < result.length; i++) {\n\tvar e = result[i];\n\tvar se = String(e);\n\tif (se.includes(\"libahao.com\")) {\n\t\tlist.push(e)\n\t}\n}\nlist"
+```
+
+**适用场景**：
+- 网站无搜索功能
+- 搜索接口需要登录
+- 搜索接口有复杂加密
+- 搜索接口频繁触发验证
+
+### 7. 百度搜索（intitle + site 语法）
+
+使用百度搜索可以更精准地定位目标内容：
+
+**搜索URL格式**：
+
+```json
+{
+  "searchUrl": "https://m.baidu.com/s?wd=intitle:{{key}}+site%3Aexample.com&pn={{(page - 1) * 10}},{\"headers\":{\"User-Agent\":\"Mozilla/5.0...\"},\"webView\":true}"
+}
+```
+
+**关键技术**：
+
+| 参数 | 说明 |
+|------|------|
+| `intitle:{{key}}` | 搜索标题包含关键词的页面 |
+| `site%3Aexample.com` | 限定搜索范围为指定站点（`%3A`是`:`的URL编码） |
+| `pn={{(page - 1) * 10}}` | 百度分页参数，每页10条 |
+| `webView: true` | 使用WebView加载，处理百度验证 |
+
+**不同页面使用不同UA**：
+
+```json
+{
+  "header": "{\"User-Agent\": \"Mozilla/5.0 (Linux; Android 14) Mobile Safari/537.36\"}",
+  "searchUrl": "https://m.baidu.com/s?wd=...,{\"headers\":{\"User-Agent\":\"Mozilla/5.0 (X11; Linux x86_64) Chrome/127.0.0.0 Safari/537.36\"},\"webView\":true}"
+}
+```
+
+**技巧**：
+- 书源默认使用手机UA（header字段）
+- 搜索URL中单独指定电脑UA，解决搜索下一页问题
+- 百度搜索结果页用电脑UA更稳定
+
+**百度搜索结果提取**：
+
+```javascript
+// bookList 规则
+".c-result"
+
+// bookUrl 规则 - 从JSON数据中提取真实URL
+"@js:String(result).split(\"&quot;mu&quot;:&quot;\")[1].split(\"&quot;\")[0]"
+
+// name 规则 - 清理百度标记
+".cu-title@text##小说\\|.*##"
+```
+
+**百度搜索结果特点**：
+- 结果包含在 `.c-result` 元素中
+- 真实URL存储在元素的JSON数据中（`&quot;mu&quot;:&quot;URL&quot;`）
+- 标题可能带有"小说|"等前缀，需要清理

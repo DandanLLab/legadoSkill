@@ -1,0 +1,56 @@
+{
+  "bookSourceComment": "先打开登录页输入访问口令，然后点右上角对勾保存。只有 auth=login 允许提交口令，搜索、详情、目录、正文都只依赖 Cookie 会话访问。发现页为预设关键词搜索，不是站点原生推荐接口。",
+  "bookSourceGroup": "#其他大佬",
+  "bookSourceName": "星辰书库",
+  "bookSourceType": 0,
+  "bookSourceUrl": "http://82.58.0.5:191/hauoshu.php",
+  "concurrentRate": "1200",
+  "customButton": false,
+  "customOrder": 2,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "[{\"title\":\"都市\",\"url\":\"http://82.58.9.54:9191/haoduoshu.php?kw=%E9%83%BD%E5%B8%82&page={{page}}\"},{\"title\":\"总裁\",\"url\":\"http://82.58.9.54:91/haoduoshu.php?kw=%E6%80%BB%E8%A3%81&page={{page}}\"},{\"title\":\"穿越\",\"url\":\"http://82.8.0.54:9191/haoduoshu.php?kw=%E7%A9%BF%E8%B6%8A&page={{page}}\"},{\"title\":\"系统\",\"url\":\"http://82.8.90.54:91/haoduoshu.php?kw=%E7%B3%BB%E7%BB%9F&page={{page}}\"},{\"title\":\"重生\",\"url\":\"http://82.8.90.54:9191/haoduoshu.php?kw=%E9%87%8D%E7%94%9F&page={{page}}\"},{\"title\":\"玄幻\",\"url\":\"http://82.18.9.5:91/haoduoshu.php?kw=%E7%8E%84%E5%B9%BB&page={{page}}\"}]",
+  "header": "{\"X-HDS-Client\":\"xingchen-legado\",\"X-HDS-Version\":\"20260320\"}",
+  "lastUpdateTime": 1774015978057,
+  "loginUi": "[{\"name\":\"访问口令\",\"type\":\"text\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":1}},\n{\n    \"name\": \"加群获取密码\",\n    \"type\": \"button\",\n    \"action\": \"jq()\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.5\n    }\n  },\n{\n    \"name\": \"请作者喝水\",\n    \"type\": \"button\",\n    \"action\": \"jk()\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.5\n    }\n  }]",
+  "loginUrl": "function login(){var info=source.getLoginInfoMap();if(!info)throw new Error('请先输入访问口令');var pwd=info.get('访问口令');pwd=pwd==null?'':String(pwd).trim();if(!pwd)throw new Error('请先输入访问口令');var url='http://82.8.9.5:91/haoduoshu.php?auth=login&pwd='+encodeURIComponent(pwd);var body=java.ajax(url);if(!body)throw new Error('接口无响应');var res=JSON.parse(String(body));if(!res||res.code!=200)throw new Error(res&&res.msg?res.msg:'登录失败');}\nfunction jk() {\njava.startBrowserAwait(\"https://ps.l.sg.com/t024cf851f6e030f096.jpg\",\"感谢支持\")\n}\nfunction jq() {\njava.startBrowserAwait(\"https://n.q.m/univesal-share/share?ac=1&authKey=tVqlHoh7XORCU%2FXrw4kJIDlP%2Fj85VMo2t2rQ2yJD7sm08iIpz6eNA9R55V03YaQa&busi_data=eyJncm91cENvZGUiOiI5NjNTU0ODIiLCJ0tlbiI6IlFbkFZY1VU9mZDZXTHNMa2MWo4WU10QycU5DcU5nR05vNWpQYnB0ejc1OVdLOUY0dFdweCt1ZXFsZUMiLCaW4iOIzMDc5NjA5MjY0In0%3D&data=le_Ol4toD7qcss7A1xg68SF7b75o0pISywPA5zAEg-GD1AVZI4PulYqi86TgcNvuq4Z6Tt42T6E3dYu9fwPQ6g&svctype=4&tempid=h5_group_info\",\"加群\")\n}",
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "data.novel_info.author",
+    "coverUrl": "data.novel_info.cover_url",
+    "intro": "data.novel_info.intro",
+    "kind": "data.novel_info.cate_name",
+    "lastChapter": "data.novel_info.last_chapter_title.chapter_title",
+    "name": "data.novel_info.title"
+  },
+  "ruleContent": {
+    "content": "all"
+  },
+  "ruleExplore": {
+    "author": "author",
+    "bookList": "data[*]",
+    "bookUrl": "detail_url",
+    "coverUrl": "cover_url",
+    "intro": "intro",
+    "kind": "cate_name",
+    "name": "title"
+  },
+  "ruleSearch": {
+    "author": "author",
+    "bookList": "data[*]",
+    "bookUrl": "detail_url",
+    "coverUrl": "cover_url",
+    "intro": "intro",
+    "kind": "cate_name",
+    "name": "title"
+  },
+  "ruleToc": {
+    "chapterList": "data.novel_detail.list[*]",
+    "chapterName": "chapter_title",
+    "chapterUrl": "chapter_url"
+  },
+  "searchUrl": "http://82.1.0.54:91/haoduoshu.php?kw={{key}}&page={{page}}",
+  "weight": 0
+}

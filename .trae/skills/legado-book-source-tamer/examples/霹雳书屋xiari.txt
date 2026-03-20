@@ -1,0 +1,55 @@
+{
+  "bookSourceComment": "//\n这种是遇到验证就用内置浏览器打开过验证，然后再访问源码\n\n\n//By情无羁,25.02.08,请勿频繁搜索,需等十秒\n备用网址(失效自行替换)：\nhttps://www.xiarishuwu.com\nhttps://www.pilibook.net\nhttps://www.pilishuwu.com",
+  "bookSourceGroup": "#其他大佬",
+  "bookSourceName": "霹雳书屋xiari",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://www.xiarishuwu.com",
+  "customButton": false,
+  "customOrder": 39,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "[\n{\n    \"title\": \"♕ 书库 ♕\",\n    \"url\": \"\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 1\n    }\n  },\n  {\n    \"title\": \"全部小说\",\n    \"url\": \"/0/list/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"男频网文\",\n    \"url\": \"/1/list/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"女频言情\",\n    \"url\": \"/2/list/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"电子图书\",\n    \"url\": \"/3/list/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"无CP小说\",\n    \"url\": \"/4/list/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"纯爱小说\",\n    \"url\": \"/5/list/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"百合小说\",\n    \"url\": \"/6/list/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"轻小说\",\n    \"url\": \"/8/list/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"♕ 排行 ♕\",\n    \"url\": \"\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 1\n    }\n  },\n  {\n    \"title\": \"最新入库\",\n    \"url\": \"/top/list/0/1/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"全部点击\",\n    \"url\": \"/top/list/0/2/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"本年点击\",\n    \"url\": \"/top/list/0/3/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"本月点击\",\n    \"url\": \"/top/list/0/4/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"本周点击\",\n    \"url\": \"/top/list/0/5/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  },\n  {\n    \"title\": \"本日点击\",\n    \"url\": \"/top/list/0/6/{{page}}.html\",\n    \"style\": {\n      \"layout_flexGrow\": 1,\n      \"layout_flexBasisPercent\": 0.25\n    }\n  }\n]\n",
+  "header": "{\"User-Agent\": \"Mozilla/5.0 (Linux; U; Android 14; zh-cn; en-us; M2102K1AC Build/UKQ1.231207.002) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/109.0.5414.118 Mobile Safari/537.36 MQQBrowser/10.1.0\"}",
+  "lastUpdateTime": 1773382514759,
+  "respondTime": 329170,
+  "ruleBookInfo": {
+    "author": ".x-detail__info--author@text",
+    "coverUrl": ".x-book__coverbox.0@img@src",
+    "intro": ".x-detail__intro--content@html",
+    "kind": ".x-detail__info--words@text&&.x-detail__info--reads@text##进程：|分类：",
+    "lastChapter": ".x-catalog__new@ownText",
+    "name": ".x-detail__info--title@text",
+    "tocUrl": ".x-catalog__more@a@href"
+  },
+  "ruleContent": {
+    "content": "<js>\nif(result.match(/请稍候/)){\n\tjava.startBrowserAwait(baseUrl,\"验证\");\n\tresult=java.ajax(baseUrl);\n}result;\n</js>\n.read-section@p@html"
+  },
+  "ruleExplore": {
+    "author": ".x-book__info--author@ownText||span.1@text",
+    "bookList": "<js>\nif(result.match(/Just a moment/)){\n\tjava.startBrowserAwait(baseUrl,\"验证\");\n\tresult=java.ajax(baseUrl);\n}result;\n</js>\n.x-book||.x-book",
+    "bookUrl": "a.0@href",
+    "coverUrl": "a.0@img@data-src",
+    "intro": ".x-book__info--chapter@text||.x-info__intro@text",
+    "kind": ".red@text||.x-info__author@ownText",
+    "name": ".x-book__info--name@text||.x-info__name@text"
+  },
+  "ruleSearch": {
+    "author": ".book-info-status@span.0@text",
+    "bookList": "<js>\nif(result.match(/Tis/)){\n\tjava.toast('请不要频繁刷新，请休息几秒再试吧')\n}\nif(result.match(/Just a moment/)){\n\tjava.startBrowserAwait(baseUrl,\"验证\");\n\tresult=java.ajax(baseUrl);\n}result;\n</js>\n.x-book",
+    "bookUrl": "a.0@href",
+    "coverUrl": "a.0@img@src",
+    "intro": "p.-1@text",
+    "kind": ".book-info-status@span.1@text",
+    "name": "p.0@text",
+    "wordCount": ".book-info-status@span.2@text"
+  },
+  "ruleToc": {
+    "chapterList": ".chapter@a",
+    "chapterName": "text",
+    "chapterUrl": "href##$##,{'webView': true}"
+  },
+  "searchUrl": "/search/0/{{key}}/{{page}}.html",
+  "weight": 0
+}

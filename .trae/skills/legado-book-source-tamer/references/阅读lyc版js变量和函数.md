@@ -604,8 +604,8 @@ java.getElements(ruleStr)
 //内容设置
 java.setContent(content,baseUrl)
 
-CSS选择器语法规范
-@css:开头：CSS选择器语法
+CSS语法规范
+@css:开头：CSS语法
 @@或@开头：普通语法
 变量绑定上下文可省略声明：{{@@txt@html}}
 直接使用建议添加声明保证兼容性

@@ -1,0 +1,56 @@
+{
+  "bookSourceComment": "26.03.15@小说迷  增加uc搜索\n\n搜索时尽量搜索全名，第一次搜索或频繁搜索会触发人机验证",
+  "bookSourceGroup": "#其他大佬",
+  "bookSourceName": "篱笆好文学m神马",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://m.libahao.com/#",
+  "bookUrlPattern": "https://m.libahao.com/book/.+",
+  "customButton": false,
+  "customOrder": 11,
+  "enabled": false,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "[{\"title\":\"首页\",\"url\":\"/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"玄幻魔法\",\"url\":\"/xuanhuan/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"武侠修真\",\"url\":\"/xiuzhen/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"都市言情\",\"url\":\"/dushi/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"历史军事\",\"url\":\"/lishi/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"游戏竞技\",\"url\":\"/wangyou/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"科幻灵异\",\"url\":\"/kehuan/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"女生言情\",\"url\":\"/nvpin/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"其他小说\",\"url\":\"/qita/\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}}]",
+  "lastUpdateTime": 1773566931025,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "[property=\"og:novel:author\"]@content",
+    "canReName": "1",
+    "coverUrl": "img@src",
+    "intro": "[property=\"og:description\"]@content",
+    "kind": "[property~=category|status|update_time]@content",
+    "lastChapter": "[property~=las?test_chapter_name]@content",
+    "name": "[property=\"og:novel:book_name\"]@content",
+    "tocUrl": "[property=\"og:novel:read_url\"]@content"
+  },
+  "ruleContent": {
+    "content": ".chapter-content@html",
+    "nextContentUrl": "text.下一页@href",
+    "replaceRegex": "##本章.*，点击继续阅读.*|已无最新章节请等待更新!"
+  },
+  "ruleExplore": {
+    "author": ".book-author@text",
+    "bookList": ".book-item",
+    "bookUrl": "href",
+    "coverUrl": "img@src",
+    "intro": ".book-description@text",
+    "name": ".book-title@text"
+  },
+  "ruleSearch": {
+    "author": ".qk-title-text@textNodes##(?s).*作者\\s(.*)\\-(?s).*##$1\n<js>result = /第.*章/.test(result) ? \"\" : result</js>",
+    "bookList": "<js>\nif(result.match(/_____tmd_____/)){\n\txb=baseUrl\njava.startBrowserAwait(xb,\"验证\")\nresult=java.ajax(xb)\n\t}\n\tresult\n</js>\n.qk-card a\n@js:\nvar list = [];\nfor (var i = 0; i < result.length; i++) {\n\tvar e = result[i];\n\tvar se = String(e);\n\tif (se.includes(\"libahao.com\")) {\n\t\tlist.push(e)\n\t\t}\n\t}\nlist",
+    "bookUrl": "a.0@href##.*libahao.com/book/(.*)_(.*)/(.*)?##https://m.libahao.com/book/$1_$2/",
+    "checkKeyWord": "没钱修什么仙",
+    "coverUrl": "a.0@href##.*libahao.com/book/(.*)_(.*)/(.*)?##https://m.libahao.com/data/image/$2.jpg",
+    "intro": "a.0@href##.*libahao.com/book/(.*)_(.*)/(.*)?##https://m.libahao.com/book/$1_$2/",
+    "name": ".qk-title-text@text##小说(?s).*\n<js>result</js>##第.*章.*_(.*)篱笆好文学##$1"
+  },
+  "ruleToc": {
+    "chapterList": ".chapter-list.1@a\n@js:\nvar list = [];\nvar p = String(result[0].attr(\"href\")).replace(/\\/\\d+\\.html/, \"/\");\nfor (var i =0; i<result.length; i++) {\n\t  var ii = i + 1\n\t  var h = p + ii + \".html\"\n\t  var t = String(result[i].text())\n\t  t = t.replace(/第([^章]*)章/, \"第\" + ii + \"章\");\n\t  list.push({text: t, href: h }) \n\t}\nlist",
+    "chapterName": "text",
+    "chapterUrl": "href"
+  },
+  "searchUrl": "https://m.sm.cn/s?q={{java.encodeURI(key)+\"%20\"+java.encodeURI(\"篱笆好\")}}&from=smor&safe=1&snum=10",
+  "weight": 0
+}

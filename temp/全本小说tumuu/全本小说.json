@@ -1,0 +1,61 @@
+{
+  "bookSourceUrl": "https://www.tumuu.com",
+  "bookSourceName": "全本小说",
+  "bookSourceGroup": "小说",
+  "bookSourceType": "Local",
+  "concurrentRate": "",
+  "header": "",
+  "loginUrl": "",
+  "bookInfoPattern": "",
+  "exploreUrl": "玄幻小说::/fenlei1/{{page}}.html\n武侠小说::/fenlei2/{{page}}.html\n都市小说::/fenlei3/{{page}}.html\n历史小说::/fenlei4/{{page}}.html\n网游小说::/fenlei5/{{page}}.html\n科幻小说::/fenlei6/{{page}}.html\n其他小说::/fenlei7/{{page}}.html",
+  "ruleExplore": {
+    "bookList": "tr[bgcolor=\"#FFFFFF\"]",
+    "name": "td.0 a.1@text",
+    "author": "td.2@text",
+    "bookUrl": "td.0 a.1@href",
+    "coverUrl": "",
+    "intro": "td.0 a.0@title",
+    "kind": "td.5@text",
+    "wordCount": "td.3@text",
+    "lastChapter": "td.1 a@text"
+  },
+  "searchUrl": "/api/search,{\n  \"method\": \"POST\",\n  \"charset\": \"utf-8\",\n  \"headers\": {\n    \"Referer\": \"https://www.tumuu.com/\",\n    \"X-Requested-With\": \"XMLHttpRequest\",\n    \"Origin\": \"https://www.tumuu.com\"\n  },\n  \"body\": @js:\nvar result = java.get('https://www.tumuu.com/');\nvar html = result || '';\nvar vars = {};\nvar regex = /var\\s+(\\w+)\\s*=\\s*[\"']([^\"']+)[\"'];/g;\nvar match;\nwhile ((match = regex.exec(html)) !== null) {\n  if (match[1] !== 'phone_link') vars[match[1]] = match[2];\n}\nvar params = 'q=' + encodeURIComponent(key);\nfor (var k in vars) params += '&' + k + '=' + encodeURIComponent(vars[k]);\nparams\n",
+  "ruleSearch": {
+    "bookList": "$.data.search[*]",
+    "name": "$.title",
+    "author": "$.author",
+    "bookUrl": "https://www.tumuu.com{{$.book_detail_url}}",
+    "coverUrl": "https://www.tumuu.com{{$.cover}}",
+    "intro": "$.intro",
+    "kind": "$.cate_name",
+    "wordCount": "",
+    "lastChapter": "$.latest_chapter_name"
+  },
+  "ruleBookInfo": {
+    "author": "meta[property=\"og:novel:author\"]@content",
+    "coverUrl": "meta[property=\"og:image\"]@content",
+    "intro": "meta[property=\"og:description\"]@content",
+    "kind": "meta[property=\"og:novel:category\"]@content",
+    "lastChapter": "meta[property=\"og:novel:latest_chapter_name\"]@content",
+    "name": "meta[property=\"og:title\"]@content",
+    "wordCount": "",
+    "status": "meta[property=\"og:novel:status\"]@content"
+  },
+  "ruleToc": {
+    "chapterList": "#at td.L a",
+    "chapterName": "@text",
+    "chapterUrl": "@href",
+    "isVip": "",
+    "isPay": "",
+    "updateTime": ""
+  },
+  "ruleContent": {
+    "content": "#htmlContent@html",
+    "nextContentUrl": "text.下一章@href",
+    "webJs": "",
+    "sourceRegex": "",
+    "replaceRegex": "",
+    "imageStyle": "",
+    "payAction": ""
+  }
+}
