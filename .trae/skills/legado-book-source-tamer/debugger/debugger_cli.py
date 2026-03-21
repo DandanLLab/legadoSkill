@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-Legado Book Source Debugger CLI
-Command-line tool for debugging and testing book sources
+Legado Book Source ger CLI
+Command-line tool for ging and testing book sources
 
 Usage:
-    python debugger_cli.py test <book_source.json> --keyword "斗破苍穹"
-    python debugger_cli.py search <book_source.json> --keyword "斗破苍穹"
-    python debugger_cli.py info <book_source.json> --url <book_url>
-    python debugger_cli.py toc <book_source.json> --url <toc_url>
-    python debugger_cli.py content <book_source.json> --url <chapter_url>
+    python ger_cli.py test <book_source.json> --keyword "斗破苍穹"
+    python ger_cli.py search <book_source.json> --keyword "斗破苍穹"
+    python ger_cli.py info <book_source.json> --url <book_url>
+    python ger_cli.py toc <book_source.json> --url <toc_url>
+    python ger_cli.py content <book_source.json> --url <chapter_url>
 """
 
 import sys
@@ -19,7 +19,7 @@ from typing import Dict, Any, List
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from debugger.engine import BookSource, DebugEngine
+from ger.engine import BookSource, Engine
 
 
 def load_book_source(file_path: str) -> BookSource:
@@ -69,7 +69,7 @@ def print_result(result: Dict[str, Any], output_format: str = 'text'):
 
 def cmd_test(args):
     book_source = load_book_source(args.source)
-    engine = DebugEngine(book_source)
+    engine = Engine(book_source)
     
     print(f"\n书源: {book_source.bookSourceName}")
     print(f"地址: {book_source.bookSourceUrl}")
@@ -98,7 +98,7 @@ def cmd_test(args):
 
 def cmd_search(args):
     book_source = load_book_source(args.source)
-    engine = DebugEngine(book_source)
+    engine = Engine(book_source)
     
     print(f"\n书源: {book_source.bookSourceName}")
     print(f"搜索关键词: {args.keyword}")
@@ -126,7 +126,7 @@ def cmd_search(args):
 
 def cmd_info(args):
     book_source = load_book_source(args.source)
-    engine = DebugEngine(book_source)
+    engine = Engine(book_source)
     
     print(f"\n书源: {book_source.bookSourceName}")
     print(f"书籍URL: {args.url}")
@@ -154,7 +154,7 @@ def cmd_info(args):
 
 def cmd_toc(args):
     book_source = load_book_source(args.source)
-    engine = DebugEngine(book_source)
+    engine = Engine(book_source)
     
     print(f"\n书源: {book_source.bookSourceName}")
     print(f"目录URL: {args.url}")
@@ -182,7 +182,7 @@ def cmd_toc(args):
 
 def cmd_content(args):
     book_source = load_book_source(args.source)
-    engine = DebugEngine(book_source)
+    engine = Engine(book_source)
     
     print(f"\n书源: {book_source.bookSourceName}")
     print(f"章节URL: {args.url}")
@@ -210,15 +210,15 @@ def cmd_content(args):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Legado Book Source Debugger',
+        description='Legado Book Source ger',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-    python debugger_cli.py test book_source.json --keyword "斗破苍穹"
-    python debugger_cli.py search book_source.json --keyword "斗破苍穹" --output json
-    python debugger_cli.py info book_source.json --url "https://example.com/book/1"
-    python debugger_cli.py toc book_source.json --url "https://example.com/book/1/toc"
-    python debugger_cli.py content book_source.json --url "https://example.com/chapter/1"
+    python ger_cli.py test book_source.json --keyword "斗破苍穹"
+    python ger_cli.py search book_source.json --keyword "斗破苍穹" --output json
+    python ger_cli.py info book_source.json --url "https://example.com/book/1"
+    python ger_cli.py toc book_source.json --url "https://example.com/book/1/toc"
+    python ger_cli.py content book_source.json --url "https://example.com/chapter/1"
         """
     )
     

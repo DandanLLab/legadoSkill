@@ -45,6 +45,120 @@
      ```
      - 结果：["Hello", "World"]
 
+4. **Meta标签属性选择器**
+
+   从HTML的meta标签中提取信息（常用OG标签）：
+   
+   ```markdown
+   # 获取og:novel:book_name的内容
+   [property="og:novel:book_name"]@content
+   
+   # 简写形式（推荐）
+   [property$=book_name]@content
+   ```
+   
+   **属性选择器符号说明**：
+   
+   | 符号 | 说明 | 示例 |
+   |------|------|------|
+   | `=` | 精确匹配 | `[property="og:author"]` |
+   | `$=` | 以某值结尾 | `[property$=author]` 匹配 `og:novel:author` |
+   | `^=` | 以某值开头 | `[class^="book-"]` |
+   | `*=` | 包含某值 | `[class*="book"]` |
+   | `~=` | 包含单词 | `[class~="book"]` |
+
+   **常用Meta标签提取**：
+   
+   | 字段 | 选择器 |
+   |------|--------|
+   | 书名 | `[property$=book_name]@content` |
+   | 作者 | `[property$=author]@content` |
+   | 封面 | `[property$=image]@content` |
+   | 简介 | `[property$=description]@content` |
+   | 分类 | `[property~=category]@content` |
+   | 最新章节 | `[property~=latest_chapter]@content` |
+
+5. **data-* 属性获取**
+
+   获取HTML5的data属性：
+   
+   ```markdown
+   # 获取data-src属性
+   img@data-src
+   
+   # 获取data-original属性
+   img@data-original
+   
+   # 获取所有data属性
+   img@data
+   ```
+
+6. **&& 连接多个选择器**
+
+   合并多个字段的提取结果：
+   
+   ```markdown
+   # 提取多个字段并拼接
+   kind: .count@text&&.author@text&&.type@text
+   ```
+   
+   - 结果：`作者信息 分类信息 标签信息`
+
+7. **|| 备选选择器**
+
+   当前一个选择器无结果时，使用备选：
+   
+   ```markdown
+   # 优先使用第一个，失败则用第二个
+   author: .author@text||.writer@text||span.1@text
+   ```
+
+8. **|| 备选JSONPath**
+
+   JS选择器和JSONPath混合使用：
+   
+   ```markdown
+   intro: .intro@html||$.info.sound.intro
+   ```
+
+9. **JavaScript中使用JSoup**
+
+   在JS中解析HTML：
+   
+   ```javascript
+   var fl = java.ajax(source.key);
+   var a = org.jsoup.Jsoup.parse(fl).select(".category-list a");
+   
+   for(var i = 0; i < a.length; i++) {
+       var title = a[i].text();
+       var url = a[i].attr("href");
+   }
+   ```
+   
+   **常用JSoup方法**：
+   
+   | 方法 | 说明 |
+   |------|------|
+   | `org.jsoup.Jsoup.parse(html)` | 解析HTML字符串 |
+   | `.select("css选择器")` | 使用CSS选择器查询 |
+   | `.text()` | 获取元素文本 |
+   | `.attr("属性名")` | 获取属性值 |
+   | `.html()` | 获取HTML内容 |
+   | `.ownText()` | 获取纯文本（不含子元素） |
+
+10. **常见提取类型汇总**
+
+    | 类型 | 说明 | 示例 |
+    |------|------|------|
+    | `@text` | 所有文本（含子元素） | `div@text` |
+    | `@ownText` | 纯文本（不含子元素） | `div@ownText` |
+    | `@textNode` | 文本节点数组 | `div@textNode` |
+    | `@html` | HTML结构 | `div@html` |
+    | `@href` | 链接地址 | `a@href` |
+    | `@src` | 图片地址 | `img@src` |
+    | `@content` | Meta标签内容 | `[property$=image]@content` |
+    | `@data-*` | data属性 | `img@data-src` |
+
 3. **实战案例解析**
 
    - **书籍列表页**

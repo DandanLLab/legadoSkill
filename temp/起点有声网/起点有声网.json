@@ -18,12 +18,13 @@
     "intro": "dd.list-book-des@text"
   },
   "ruleExplore": {
-    "bookList": "ul.list-works > li",
+    "bookList": ".column ul.list-works > li",
     "name": "dt.list-book-dt > a@text",
     "author": "dd.list-book-cs > span.book-author > a@text",
     "bookUrl": "dt.list-book-dt > a@href",
     "coverUrl": "div.list-imgbox img@data-original",
-    "intro": "dd.list-book-des@text"
+    "intro": "dd.list-book-des@text",
+    "kind": "dt.list-book-dt > a@title"
   },
   "ruleBookInfo": {
     "name": "h1.book-title@text",
@@ -31,15 +32,16 @@
     "coverUrl": "class.book-img@tag.img@src",
     "intro": "class.book-intro@text",
     "kind": "class.book-info@tag.dd.0@tag.a@text",
-    "lastChapter": "class.playlist@tag.li.0@tag.a@text"
+    "lastChapter": "class.playlist@tag.li.0@tag.a@text",
+    "tocUrl": "@js:\nvar m = result.match(/href=\"([^\"]*dirurl[^\"]*)\"/i);\nif(!m) return '';\nvar dirUrl = 'https://www.qdysw.com' + m[1];\nvar html = java.ajax(dirUrl);\nvar bookdir = html.match(/href=\"([^\"]*bookdir[^\"]*)\"/i);\nif(bookdir) return bookdir[1];\nreturn '';"
   },
   "ruleToc": {
-    "chapterList": "@css:#playlist li",
+    "chapterList": "@css:.playlist li",
     "chapterName": "a@text",
     "chapterUrl": "a@href"
   },
   "ruleContent": {
-    "content": "@js:\nlet url = baseUrl;\nlet m = url.match(/tingshu\\/(\\d+)\\/(\\d+)\\.html/);\nif(!m) return '';\nlet html = java.ajax('https://www.qdysw.com/player.html?nid=' + m[1] + '&cid=' + m[2] + '&site=16');\nlet u = html.match(/url\\d+\\s*=\\s*'(https?:\\/\\/[^']+)'/);\nlet ext = html.match(/murl\\d+\\s*=\\s*'([^']+)'/);\nif(u && ext) return u[1] + ext[1];\nreturn '';",
+    "content": "@js:\nvar url = baseUrl;\nvar m = url.match(/\\/tingshu\\/(\\d+)\\/(\\d+)\\.html/);\nif (!m) return '';\nvar playerHtml = java.ajax('https://www.qdysw.com/player.html?nid=' + m[1] + '&cid=' + m[2] + '&site=16');\nvar mp3 = playerHtml.match(/mp3:\\s*'([^']+)'/);\nif (mp3) return mp3[1];\nreturn '';",
     "sourceRegex": ".*\\.mp3.*"
   }
 }

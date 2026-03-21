@@ -1,0 +1,74 @@
+{
+    "bookSourceComment": "起点有声网 - 听书网站",
+    "bookSourceName": "起点有声网",
+    "bookSourceUrl": "https://www.qdysw.com",
+    "bookSourceType": 1,
+    "bookSourceGroup": 4,
+    "bookSourceGrade": 2,
+    "customOrder": 0,
+    "enabled": true,
+    "enabledExplore": true,
+    "header": "",
+    "loginUrl": "",
+    "bookUrlPattern": "https://www\\.qdysw\\.com/book/\\d+\\.html",
+    "exploreUrl": "",
+    "ruleExplore": {
+        "bookInfo": {
+            "author": "",
+            "coverUrl": "",
+            "intro": "",
+            "kind": "",
+            "lastChapter": "",
+            "name": "",
+            "wordCount": ""
+        },
+        "catalogNextUrl": "",
+        "chapterList": "",
+        "chapterName": "",
+        "chapterUrl": "",
+        "chapterUrlNext": "",
+        "content": "",
+        "description": "",
+        "kind": "",
+        "name": "",
+        "wordCount": ""
+    },
+    "ruleSearch": {
+        "author": "span.book-author a@text",
+        "bookList": "ul.list-works li",
+        "bookUrl": "dt.list-book-dt a@href",
+        "coverUrl": "div.list-imgbox img@data-original",
+        "intro": "dd.list-book-des@text",
+        "kind": "",
+        "name": "dt.list-book-dt a@text",
+        "wordCount": ""
+    },
+    "ruleBookInfo": {
+        "author": "<js>\nlet result = '';\nlet match = baseUrl.match(/book\\/(\\d+)\\.html/);\nif(match) {\n    let html = java.ajax(baseUrl);\n    let dd = html.match(/<dd[^>]*>\\s*<span>演播[\\s\\S]*?<\\/dd>/);\n    if(dd) {\n        let authors = dd[0].match(/<a[^>]*>([^<]*)<\\/a>/g);\n        if(authors) {\n            result = authors.map(a => a.replace(/<[^>]*>/g, '')).join('、');\n        }\n    }\n}\nresult;\n</js>",
+        "coverUrl": "div.book-img img@src",
+        "intro": "div.book-des@text",
+        "kind": "div.book-info dl dd a@text@get:{0}",
+        "lastChapter": "div.playlist li a@text@get:{0}",
+        "name": "h1.book-title@text",
+        "wordCount": "",
+        "tocUrl": ""
+    },
+    "ruleToc": {
+        "chapterList": "div.playlist li",
+        "chapterName": "a@text",
+        "chapterUrl": "a@href",
+        "chapterUrlNext": "",
+        "pre序卷": ""
+    },
+    "ruleContent": {
+        "content": "<js>\nlet audioUrl = '';\nlet iframeSrc = result.match(/src=\"(\\/player\\.html\\?nid=\\d+&cid=\\d+[^\"]*)\"/);\nif(iframeSrc) {\n    let playerUrl = 'https://www.qdysw.com' + iframeSrc[1];\n    let playerHtml = java.ajax(playerUrl);\n    let m = playerHtml.match(/url\\d+\\s*=\\s*'([^']+)'/);\n    if(m) audioUrl = m[1] + '.mp3';\n}\naudioUrl;\n</js>",
+        "nextContentUrl": "",
+        "replaceRegex": "",
+        "sourceRegex": "",
+        "webJs": ""
+    },
+    "searchUrl": "https://www.qdysw.com/search.html,{\"method\":\"POST\",\"body\":\"searchword={{key}}\"}",
+    "serviceUrl": "https://www.qdysw.com",
+    "style": {},
+    "weight": 0
+}
