@@ -1,0 +1,55 @@
+{
+  "bookSourceComment": "山丽文学网书源 (https://www.shanli.cc)\n\n搜索时自动弹出验证码图片，输入后自动搜索。\n获取一次验证码后缓存，一段时间内无需再次输入。\n验证码过期会自动重新弹出。\n\n发现包含8大分类和7个排行榜。",
+  "bookSourceGroup": "验证码,AI",
+  "bookSourceName": "山丽文学网",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://www.shanli.cc",
+  "customButton": false,
+  "customOrder": 294,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "玄幻魔法::https://www.shanli.cc/0oxm/xuanhuan/{{page}}/\n武侠修真::https://www.shanli.cc/0oxm/wuxia/{{page}}/\n都市言情::https://www.shanli.cc/0oxm/dushi/{{page}}/\n历史军事::https://www.shanli.cc/0oxm/lishi/{{page}}/\n网游竞技::https://www.shanli.cc/0oxm/wangyou/{{page}}/\n科幻小说::https://www.shanli.cc/0oxm/kehuan/{{page}}/\n恐怖灵异::https://www.shanli.cc/0oxm/kongbu/{{page}}/\n其他小说::https://www.shanli.cc/0oxm/qita/{{page}}/\n总点击榜::https://www.shanli.cc/5wb04g/allvisit/{{page}}.html\n总推荐榜::https://www.shanli.cc/5wb04g/allvote/{{page}}.html\n最近更新::https://www.shanli.cc/5wb04g/lastupdate/{{page}}.html\n最新入库::https://www.shanli.cc/5wb04g/postdate/{{page}}.html\n日点击榜::https://www.shanli.cc/5wb04g/dayvisit/{{page}}.html\n周点击榜::https://www.shanli.cc/5wb04g/weekvisit/{{page}}.html\n月点击榜::https://www.shanli.cc/5wb04g/monthvisit/{{page}}.html",
+  "lastUpdateTime": 1784084548412,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": ".book .right h2 span.0@text##作者：",
+    "coverUrl": ".book .cover img@src",
+    "intro": ".intro@text##小说简介：|关键词[\\s\\S]*",
+    "kind": ".book .cover span@text## / [\\s\\S]*",
+    "lastChapter": ".status a@text",
+    "name": ".right h1 a@text",
+    "tocUrl": "@js:baseUrl"
+  },
+  "ruleContent": {
+    "content": "#chapter@html",
+    "nextContentUrl": "#next_url@href"
+  },
+  "ruleExplore": {
+    "author": "dd.author@text",
+    "bookList": ".list-index-2 .item",
+    "bookUrl": "dl dt a@href",
+    "coverUrl": ".cover img@data-src",
+    "intro": "dd.intro@text",
+    "kind": "dd.more@span.1@text",
+    "name": "dl dt a@text",
+    "wordCount": "dd.more@span.0@text"
+  },
+  "ruleSearch": {
+    "author": ".info .author@text##.* / | / .*",
+    "bookList": "<js>\nif(result.indexOf('searchcode')>-1){\n    var sUrl=String(source.bookSourceUrl);\n    var sk=java.get('search_key')||'';\n    var captchaUrl=sUrl+'/searchcode.php?t='+Date.now();\n    function doPost(code){\n        var u=sUrl+'/search.php,{\"method\":\"POST\",\"body\":\"keyword='+encodeURIComponent(sk)+'&code='+code+'\"}';\n        return java.ajax(u);\n    }\n    var yzco=source.getVariable();\n    if(yzco&&yzco!=''){\n        result=doPost(yzco);\n        if(result.indexOf('searchcode')>-1){\n            java.longToast('验证码过期，请重新输入');\n            var yzm=java.getVerificationCode(captchaUrl);\n            result=doPost(yzm);\n            source.setVariable(yzm);\n        }\n    }else{\n        var yzm=java.getVerificationCode(captchaUrl);\n        result=doPost(yzm);\n        source.setVariable(yzm);\n    }\n}\nresult;\n</js>\n.list .row",
+    "bookUrl": ".info .name@href",
+    "coverUrl": ".cover img@src",
+    "intro": ".info .intro@text",
+    "kind": ".info .author@text## / .* / ",
+    "name": ".info .name@text"
+  },
+  "ruleToc": {
+    "chapterList": "ul.chapterlist1 li a",
+    "chapterName": "@text",
+    "chapterUrl": "@href"
+  },
+  "searchUrl": "@js:\njava.put('search_key',key);\nvar sUrl=String(source.bookSourceUrl);\nresult=sUrl+'/search.php,{\"method\":\"POST\",\"body\":\"keyword='+encodeURIComponent(key)+'&code=\"}';",
+  "weight": 0
+}

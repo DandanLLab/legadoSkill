@@ -1,0 +1,48 @@
+{
+  "bookSourceComment": "幽香书房书源 (https://www.yxshufang.com)\n\n本站无搜索功能，请通过发现规则浏览书籍。\n\n发现包含13个分类和1个排行榜：\n仙侠、军事、历史、游戏、科幻、短篇言情、原生幻想、搞笑吐槽\n现代言情、科幻空间、仙侠奇缘、古代言情、浪漫青春\n排行榜：热门榜单（共30页）\n\n目录规则：\n- 章节页HTML解析前100章\n- 书籍详情页HTML解析最新20章\n- 根据URL规律生成缺失章节\n- AJAX API(403)作为回退尝试\n- 按章节号排序去重",
+  "bookSourceGroup": "AI,无搜索",
+  "bookSourceName": "幽香书房（无搜索）",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://www.yxshufang.com",
+  "bookUrlPattern": "https://www\\.yxshufang\\.com/book/[A-Za-z0-9]+\\.html",
+  "customButton": false,
+  "customOrder": 187,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "仙侠小说::https://www.yxshufang.com/list-7-{{page}}/\n军事小说::https://www.yxshufang.com/list-9-{{page}}/\n历史小说::https://www.yxshufang.com/list-10-{{page}}/\n游戏小说::https://www.yxshufang.com/list-11-{{page}}/\n科幻小说::https://www.yxshufang.com/list-13-{{page}}/\n短篇言情::https://www.yxshufang.com/list-24-{{page}}/\n原生幻想::https://www.yxshufang.com/list-25-{{page}}/\n搞笑吐槽::https://www.yxshufang.com/list-28-{{page}}/\n现代言情::https://www.yxshufang.com/list-18-{{page}}/\n科幻空间::https://www.yxshufang.com/list-22-{{page}}/\n仙侠奇缘::https://www.yxshufang.com/list-17-{{page}}/\n古代言情::https://www.yxshufang.com/list-16-{{page}}/\n浪漫青春::https://www.yxshufang.com/list-19-{{page}}/\n热门排行::https://www.yxshufang.com/rank-{{page}}.html",
+  "lastUpdateTime": 1784232786719,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "meta[property~=og:novel:author]@content",
+    "coverUrl": "meta[property~=og:image]@content",
+    "intro": "@js:var intro=String(java.getString('meta[property~=og:description]@content')||'').trim();var category=String(java.getString('meta[property~=og:novel:category]@content')||'');var alias=String(java.getString('@css:.novel_info_title a[href*=-a1]@text')||'').trim();var protagonist=String(java.getString('@css:.novel_info_title a[href*=protagonist]@text')||'').trim();var status=String(java.getString('@css:.novel_info_title p span:eq(2)@text')||'').trim();var lines=[];if(alias)lines.push('别名：'+alias);if(category)lines.push('类型：'+category);if(protagonist)lines.push('主角：'+protagonist);if(status)lines.push('状态：'+status);if(intro)lines.push('简介：\\n'+intro);result=lines.join('\\n');",
+    "kind": "meta[property~=og:novel:category]@content",
+    "lastChapter": "meta[property~=og:novel:latest_chapter_name]@content",
+    "name": "meta[property~=og:novel:book_name]@content",
+    "wordCount": "@css:.novel_info_title p span:eq(1)@text"
+  },
+  "ruleContent": {
+    "content": ".content@html",
+    "nextContentUrl": "#next_url@href"
+  },
+  "ruleExplore": {
+    "author": "@js:var a=java.getString('.li_bottom a@text');if(a&&String(a).trim().length>0){result=String(a).replace(/\\s+/g,'').trim();}else{var p=java.getString('@css:p:has(i.fa-user-circle-o)@ownText');if(p){result=String(p).replace(/\\s+/g,' ').trim();}else{result='';}}",
+    "bookList": "@css:li:has(.img_span)",
+    "bookUrl": ".img_span a@href",
+    "coverUrl": ".img_span img@data-original",
+    "intro": ".indent@text||.searchresult_p@text",
+    "kind": "@css:.img_span span@text##(.+?)\\s*/\\s*(.+)##$1",
+    "lastChapter": ".searchresult_p+p a@text||.w100 p a@text",
+    "name": "h2@text||h3@text",
+    "wordCount": "@js:var w=java.getString('.li_bottom em.orange@text');if(w&&String(w).trim().length>0){result=String(w).trim();}else{var s=java.getString('span.s_gray@text');if(s){var m=String(s).match(/([\\d.]+万字)/);result=m?m[1]:'';}else{result='';}}"
+  },
+  "ruleSearch": {},
+  "ruleToc": {
+    "chapterList": "<js>\nvar sUrl=String(source.bookSourceUrl);\nvar aid=baseUrl.match(/\\/book\\/([A-Za-z0-9]+)\\.html/);\nif(!aid){\n    result='';\n}else{\n    aid=aid[1];\n    var pageHtml=java.ajax(baseUrl);\n    var chapters=[];\n    var chapterMap={};\n    var maxNum=0;\n    var ulMatch=pageHtml.match(/<ul id=\"ul_all_chapters\">([\\s\\S]*?)<\\/ul>/);\n    if(ulMatch){\n        var liRe=/<a\\s+href=\"([^\"]+)\"[^>]*>([^<]+)<\\/a>/g;\n        var m;\n        while((m=liRe.exec(ulMatch[1]))!==null){\n            var href=m[1];\n            if(href.indexOf('http')!==0) href=sUrl+href;\n            if(!chapterMap[href]){\n                chapterMap[href]=true;\n                chapters.push({name:m[2],url:href});\n            }\n            var numM=href.match(/-(\\d+)\\.html/);\n            if(numM){var n=parseInt(numM[1]);if(n>maxNum)maxNum=n;}\n        }\n    }\n    var latestUl=pageHtml.match(/<div class=\"section chapter_list\">[\\s\\S]*?<ul>([\\s\\S]*?)<\\/ul>/);\n    if(latestUl){\n        var liRe2=/<a\\s+href=\"([^\"]+)\"[^>]*>([^<]+)<\\/a>/g;\n        var m2;\n        while((m2=liRe2.exec(latestUl[1]))!==null){\n            var href2=m2[1];\n            if(href2.indexOf('http')!==0) href2=sUrl+href2;\n            if(!chapterMap[href2]){\n                chapterMap[href2]=true;\n                chapters.push({name:m2[2],url:href2});\n            }\n            var numM2=href2.match(/-(\\d+)\\.html/);\n            if(numM2){var n2=parseInt(numM2[1]);if(n2>maxNum)maxNum=n2;}\n        }\n    }\n    for(var num=1;num<=maxNum;num++){\n        var genUrl=sUrl+'/book/'+aid+'-'+num+'.html';\n        if(!chapterMap[genUrl]){\n            chapterMap[genUrl]=true;\n            chapters.push({name:'第'+num+'章',url:genUrl});\n        }\n    }\n    var key='gdOQVdaUJlNHfEVdHp4bJVbr5LwYPDEw';\n    var iv='8067359791133103';\n    var cipher=java.createSymmetricCrypto('AES/CBC/PKCS5Padding',key,iv);\n    var jsSrcs=pageHtml.match(/src=\"([^\"]*templates\\/js\\/[^\"]*\\.js)\"/g);\n    if(jsSrcs){\n        for(var si=0;si<jsSrcs.length;si++){\n            var jsUrl=jsSrcs[si].match(/src=\"([^\"]+)\"/)[1];\n            if(jsUrl.indexOf('http')!==0) jsUrl=sUrl+jsUrl;\n            if(jsUrl.indexOf('common.js')>0||jsUrl.indexOf('jquery')>0) continue;\n            var jsCode=java.ajax(jsUrl);\n            var k=jsCode.match(/new AESCrypt\\('([^']+)'\\)/);\n            var v=jsCode.match(/CryptoJS\\.enc\\.Utf8\\.parse\\('([^']+)'\\)/);\n            if(k&&v){\n                key=k[1];\n                iv=v[1];\n                cipher=java.createSymmetricCrypto('AES/CBC/PKCS5Padding',key,iv);\n                break;\n            }\n        }\n    }\n    function fetchPage(page){\n        var d=cipher.encryptBase64('{\"id\":\"'+aid+'\",\"page\":'+page+'}');\n        var u=sUrl+'/index.php?action=loadChapterPage,{\"method\":\"POST\",\"body\":\"data='+encodeURIComponent(d)+'\"}';\n        var r=java.ajax(u);\n        var j=JSON.parse(r);\n        return j;\n    }\n    var page=2;\n    while(true){\n        var resp;\n        try{resp=fetchPage(page);}catch(e){break;}\n        if(!resp||resp.code!==0||!resp.data||resp.data.length===0) break;\n        for(var i=0;i<resp.data.length;i++){\n            var chUrl=sUrl+resp.data[i].chapterurl;\n            if(!chapterMap[chUrl]){\n                chapterMap[chUrl]=true;\n                chapters.push({name:resp.data[i].chaptername,url:chUrl});\n            }\n        }\n        if(resp.data.length<100) break;\n        page++;\n        if(page>20) break;\n    }\n    function getChapterNum(ch){\n        var m=ch.url.match(/-(\\d+)\\.html/);\n        return m?parseInt(m[1]):0;\n    }\n    chapters.sort(function(a,b){return getChapterNum(a)-getChapterNum(b);});\n    var html='<ul>';\n    for(var i=0;i<chapters.length;i++){\n        html+='<li><a href=\"'+chapters[i].url+'\">'+chapters[i].name+'</a></li>';\n    }\n    html+='</ul>';\n    result=html;\n}\nresult;\n</js>\nli a",
+    "chapterName": "@text",
+    "chapterUrl": "@href"
+  },
+  "weight": 0
+}

@@ -1,0 +1,52 @@
+{
+  "bookSourceComment": "正文文字图大，右上角图片样式选TEXT\n网址发布邮箱：Ltxsba@gmail.com\n【技术实现】\n搜索：POST 搜索（/search/，body: searchkey={{key}}）\n发现：CSS 选择器（分类页 .item 卡片）\n详情：CSS 选择器 + og:novel 元数据\n目录：XPath 章节列表（第二个 section-box 为完整列表）+ text.下一页 逐页分页\n正文：webview 加载章节页（JS 自动执行 AJAX 加载内容+文字图片）+ #content@html 提取\n\n【局限性】\n- 章节链接使用 webView 加载，依赖 JS 执行加载正文内容\n- 详情页 URL 从 /bookcv/ 重定向到 /html/\n- 每页有两个 section-box，第一个是最新章节（倒序），第二个是完整列表（正序），用 XPath [2] 选取第二个",
+  "bookSourceGroup": "AI,18加",
+  "bookSourceName": "一品阁小说",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://m.epgxs.org",
+  "customButton": false,
+  "customOrder": 1041,
+  "enabled": true,
+  "enabledCookieJar": false,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "玄幻小说::/sort/1/{{page}}/\n武侠小说::/sort/2/{{page}}/\n都市小说::/sort/3/{{page}}/\n历史小说::/sort/4/{{page}}/\n侦探小说::/sort/5/{{page}}/\n网游小说::/sort/6/{{page}}/\n科幻小说::/sort/7/{{page}}/\n恐怖小说::/sort/8/{{page}}/\n辣文小说::/sort/10/{{page}}/",
+  "lastUpdateTime": 1783337611990,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "meta[property=\"og:novel:author\"]@content",
+    "coverUrl": ".imgbox img@src",
+    "intro": ".desc@text",
+    "kind": "meta[property=\"og:novel:category\"]@content",
+    "lastChapter": "meta[property=\"og:novel:lastest_chapter_name\"]@content",
+    "name": "meta[property=\"og:novel:book_name\"]@content"
+  },
+  "ruleContent": {
+    "content": "#content@html",
+    "nextContentUrl": "text.下一页@href"
+  },
+  "ruleExplore": {
+    "author": "dt span@text",
+    "bookList": ".item",
+    "bookUrl": "dt a@href",
+    "coverUrl": "img@src",
+    "intro": "dd@text",
+    "name": "dt a@text"
+  },
+  "ruleSearch": {
+    "author": ".s4@text",
+    "bookList": ".txt-list li",
+    "bookUrl": ".s2 a@href",
+    "kind": ".s1@text",
+    "lastChapter": ".s3 a@text",
+    "name": ".s2 a@text"
+  },
+  "ruleToc": {
+    "chapterList": "//div[@class=\"section-box\"][2]//li/a",
+    "chapterName": "@text",
+    "chapterUrl": "@href##$##,{\"webView\":true}",
+    "nextTocUrl": "text.下一页@href"
+  },
+  "searchUrl": "{{cookie.removeCookie(source.getKey())}}/search/,{\"method\":\"POST\",\"body\":\"searchkey={{key}}\"}",
+  "weight": 0
+}

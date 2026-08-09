@@ -1,0 +1,52 @@
+{
+  "bookSourceComment": "搜索间隔60秒",
+  "bookSourceGroup": "AI",
+  "bookSourceName": "35书屋(m.35sw.org)",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://m.35sw.org",
+  "customButton": false,
+  "customOrder": 162,
+  "enabled": true,
+  "enabledCookieJar": false,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "书库::/type/0_0_0_lastupdate_{{page}}.html\n玄幻::/type/1_0_0_lastupdate_{{page}}.html\n仙侠::/type/2_0_0_lastupdate_{{page}}.html\n都市::/type/3_0_0_lastupdate_{{page}}.html\n职场::/type/4_0_0_lastupdate_{{page}}.html\n历史::/type/5_0_0_lastupdate_{{page}}.html\n军事::/type/6_0_0_lastupdate_{{page}}.html\n科幻::/type/7_0_0_lastupdate_{{page}}.html\n游戏::/type/8_0_0_lastupdate_{{page}}.html\n灵异::/type/9_0_0_lastupdate_{{page}}.html\n短篇::/type/10_0_0_lastupdate_{{page}}.html\n现言::/type/11_0_0_lastupdate_{{page}}.html\n古言::/type/12_0_0_lastupdate_{{page}}.html\n幻侠::/type/13_0_0_lastupdate_{{page}}.html\n穿越::/type/14_0_0_lastupdate_{{page}}.html\n总裁::/type/15_0_0_lastupdate_{{page}}.html\n浪漫::/type/16_0_0_lastupdate_{{page}}.html\n耽美::/type/17_0_0_lastupdate_{{page}}.html\n完结::/type/0_0_2_lastupdate_{{page}}.html\n热门::/top_dayvisit_0.html",
+  "header": "{\"User-Agent\":\"Mozilla/5.0 (Linux; Android 10; Pixel 3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36\"}",
+  "lastUpdateTime": 1785156960302,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "//meta[@property='og:novel:author']/@content",
+    "coverUrl": "//meta[@property='og:image']/@content",
+    "intro": "//meta[@property='og:description']/@content",
+    "kind": "//meta[@property='og:novel:status']/@content",
+    "lastChapter": "//meta[@property='og:novel:latest_chapter_name']/@content",
+    "name": "//meta[@property='og:novel:book_name']/@content",
+    "tocUrl": "text.查看全部章节@href"
+  },
+  "ruleContent": {
+    "content": "#novelcontent@html",
+    "nextContentUrl": "text.下一章@href"
+  },
+  "ruleExplore": {
+    "author": "li.listtext em@text",
+    "bookList": "ul.xbk",
+    "bookUrl": "li.listtext h2 a@href",
+    "coverUrl": "li.listimg img@data-original",
+    "intro": "span.intro p@text",
+    "kind": "span.2@text",
+    "name": "li.listtext h2 a@text"
+  },
+  "ruleSearch": {
+    "author": "text##.* - ##",
+    "bookList": "p.search_list",
+    "name": "a@text"
+  },
+  "ruleToc": {
+    "chapterList": "ul.p2 li",
+    "chapterName": "a@text",
+    "chapterUrl": "a@href",
+    "nextTocUrl": "text.下一页@href"
+  },
+  "searchUrl": "https://m.35sw.org/novelsearch/search/result.html,{\"method\":\"POST\",\"body\":\"searchkey={{key}}&searchtype=all\"}",
+  "weight": 0
+}

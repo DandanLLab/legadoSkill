@@ -1,0 +1,57 @@
+{
+  "bookSourceGroup": "AI,18加",
+  "bookSourceName": "搬山人小说网",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://www.banshanren.com",
+  "bookUrlPattern": "https://www.banshanren.com/novel/.*",
+  "customButton": false,
+  "customOrder": 31,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "全部小说::/all/0-0-0-0-0-0-1-{{page}}\n奇幻玄幻::/all/0-4-0-0-0-0-1-{{page}}\nBG言情::/all/0-5-0-0-0-0-1-{{page}}\nBL耽美::/all/0-1-0-0-0-0-1-{{page}}\nGL百合::/all/0-2-0-0-0-0-1-{{page}}\n现代都市::/all/0-3-0-0-0-0-1-{{page}}\n穿越重生::/all/0-7-0-0-0-0-1-{{page}}\n武侠仙侠::/all/0-8-0-0-0-0-1-{{page}}\n悬疑惊悚::/all/0-10-0-0-0-0-1-{{page}}\n历史军事::/all/0-14-0-0-0-0-1-{{page}}\n科幻::/all/0-6-0-0-0-0-1-{{page}}\n校园::/all/0-13-0-0-0-0-1-{{page}}\n同人::/all/0-15-0-0-0-0-1-{{page}}\n轻小说::/all/0-16-0-0-0-0-1-{{page}}\n最近更新::/all/0-0-0-0-0-1-1-{{page}}\n最新上架::/all/0-0-0-0-0-2-1-{{page}}",
+  "header": "@js:var h={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36','Content-Type':'application/x-www-form-urlencoded'};var t=source.getLoginHeader();if(t)h.token=t;JSON.stringify(h)",
+  "lastUpdateTime": 1785940827837,
+  "loginUi": "[{\"name\":\"用户名\",\"type\":\"text\"},{\"name\":\"密码\",\"type\":\"password\"},{\"name\":\"登录\",\"type\":\"button\",\"action\":\"login(true)\"},{\"name\":\"登出\",\"type\":\"button\",\"action\":\"logout()\"}]",
+  "loginUrl": "function login(b){\n  if(b===undefined||b===false){\n    var h=source.getLoginHeader();\n    return h!=null&&h!='';\n  }\n  var url='https://www.banshanren.com/login';\n  var body='loginName='+encodeURIComponent(result['用户名'])+'&password='+encodeURIComponent(result['密码']);\n  var post=JSON.stringify({'method':'POST','body':body,'headers':{'Content-Type':'application/x-www-form-urlencoded'}});\n  var res=java.ajax(url+','+post);\n  java.log('登录响应:'+res);\n  if(res&&res.indexOf('\"result\":\"success\"')>-1){\n    var json=JSON.parse(res);\n    source.putLoginHeader(json.model.token);\n    java.toast('登录成功: '+json.model.nickName);\n    return true;\n  }else{\n    var msg=res.match(/\"msg\":\"([^\"]+)\"/);\n    java.toast('登录失败: '+(msg?msg[1]:'未知错误'));\n    return false;\n  }\n}\nfunction logout(){\n  source.removeLoginHeader();\n  java.toast('已登出');\n}",
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "[name=\"description\"]@content<js>\nvar m = String(result).match(/。.*《.*》是(.*?)创作/);\nif(!m)m=String(result).match(/。.*《.*》是(.*?)的作品/);\nresult=m?m[1]:'';\n</js>",
+    "coverUrl": "[property=\"og:image\"]@content",
+    "intro": "[property=\"og:description\"]@content",
+    "kind": ".novel_tag_list a@title&&.category_list a@text##\\\\#",
+    "lastChapter": ".catalog_top_box .hl@text",
+    "name": "h1@text"
+  },
+  "ruleContent": {
+    "content": ".chapter_content_box p@html##\\<span.*\\>\\d+\\</span\\>",
+    "nextContentUrl": "text.下一章@href"
+  },
+  "ruleExplore": {
+    "author": ".info_box.1@text## ·.*",
+    "bookList": "ul[class=\"novel_list\"] .novel_li",
+    "bookUrl": ".title@href",
+    "coverUrl": "img@data-src",
+    "kind": ".category_list a@text",
+    "name": ".title@text",
+    "wordCount": ".info_box.1@text##.*· "
+  },
+  "ruleSearch": {
+    "author": ".info_box.1@text## ·.*",
+    "bookList": "ul[class=\"novel_list\"] .novel_li",
+    "bookUrl": ".title@href",
+    "coverUrl": "img@data-src",
+    "intro": ".novel_intro_box p@text",
+    "kind": ".category_list a@text",
+    "name": ".title@text##🔞",
+    "wordCount": ".info_box.1@text##.*· "
+  },
+  "ruleToc": {
+    "chapterList": "li[class~=volume_chapter] a&&ul[class~=chapter_list] a",
+    "chapterName": "text",
+    "chapterUrl": "href"
+  },
+  "searchUrl": "https://www.banshanren.com/search/index?keyword={{key}}&page={{page}},{\"charset\":\"UTF-8\"}",
+  "weight": 0
+}

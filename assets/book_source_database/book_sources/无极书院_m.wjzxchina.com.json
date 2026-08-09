@@ -1,0 +1,56 @@
+{
+  "bookSourceComment": "无极书院：http://m.wjzxchina.com\n支持搜索/发现/详情/目录/正文，POST搜索，正文分页清洗",
+  "bookSourceGroup": "AI",
+  "bookSourceName": "无极书院",
+  "bookSourceType": 0,
+  "bookSourceUrl": "http://m.wjzxchina.com",
+  "bookUrlPattern": "https?://m\\.wjzxchina\\.com/wuji/\\d+/?",
+  "customButton": false,
+  "customOrder": 206,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "[{\"title\": \"分类\", \"url\": \"\", \"style\": {\"layout_flexGrow\": 0, \"layout_flexBasisPercent\": 1}}, {\"title\": \"玄幻奇幻\", \"url\": \"/wuji345/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"仙侠武侠\", \"url\": \"/wuji342/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"都市重生\", \"url\": \"/wuji341/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"科幻未来\", \"url\": \"/wuji343/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"女生言情\", \"url\": \"/wuji344/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"游戏竞技\", \"url\": \"/wuji347/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"二次元\", \"url\": \"/wuji346/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"灵异悬疑\", \"url\": \"/wuji349/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"历史军事\", \"url\": \"/wuji348/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"书库\", \"url\": \"/all/index/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"完本\", \"url\": \"/quanben/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"排行榜\", \"url\": \"/top/\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}]",
+  "header": "{\"User-Agent\": \"Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 Mobile Safari/537.36\", \"Accept-Language\": \"zh-CN,zh;q=0.9\"}",
+  "lastUpdateTime": 1783609165631,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "class.B@tag.dd.1@text##.*作者[：:]\\s*##",
+    "coverUrl": "dl.B dd.imgB img@src",
+    "intro": ".nrjj .e@text",
+    "kind": "class.B@tag.dd.2@tag.span.0@text##.*类别[：:]\\s*##",
+    "lastChapter": "class.B@tag.dd.4@tag.a@text",
+    "name": "dl.B dt@text",
+    "tocUrl": ".nrbt .F a@href"
+  },
+  "ruleContent": {
+    "content": "<js>\nvar html = String(result);\nvar doc = Packages.org.jsoup.Jsoup.parse(html);\nvar content = doc.selectFirst('div.TxtContent');\nvar lines = [];\nif (content) {\n    var ps = content.select('p');\n    for (var i = 0; i < ps.size(); i++) {\n        var t = String(ps.get(i).text()).replace(/\\u00a0/g, ' ').trim();\n        if (t && !/温馨提示|本章.*完.*继续阅读|wjzxchina/.test(t)) {\n            lines.push(t);\n        }\n    }\n    if (lines.length === 0) {\n        var text = String(content.text()).replace(/\\u00a0/g, ' ').trim();\n        if (text) lines.push(text);\n    }\n}\nlines.join('\\n');\n</js>",
+    "nextContentUrl": "text.下一页@href"
+  },
+  "ruleExplore": {
+    "author": ".bk-author@text",
+    "bookList": "<js>\nvar html = String(result);\nvar doc = Packages.org.jsoup.Jsoup.parse(html);\nvar dls = doc.select('dl.B');\nvar sb = '<html><body><ul>';\nfor (var i = 0; i < dls.size(); i++) {\n    var dl = dls.get(i);\n    var dt = dl.selectFirst('dt a');\n    if (!dt) continue;\n    var name = String(dt.text());\n    var url = String(dt.attr('href'));\n    var img = dl.selectFirst('dd.imgB img');\n    var cover = '';\n    if (img) {\n        cover = String(img.attr('src'));\n        if (!cover) cover = String(img.attr('data-src'));\n    }\n    var author = '';\n    var intro = '';\n    var lastChapter = '';\n    var spans = dl.select('dd span');\n    for (var j = 0; j < spans.size(); j++) {\n        var sp = spans.get(j);\n        var sptext = String(sp.text());\n        if (sptext.indexOf('作者') >= 0) {\n            author = sptext.replace(/.*作者[：:]\\s*/, '');\n        }\n    }\n    var d2 = dl.selectFirst('dd.d2');\n    if (d2) intro = String(d2.text()).replace(/.*简介[：:]\\s*/, '');\n    var dds = dl.select('dd');\n    for (var k = 0; k < dds.size(); k++) {\n        var ddtext = String(dds.get(k).ownText());\n        if (ddtext.indexOf('最新章节') >= 0) {\n            var lcA = dds.get(k).selectFirst('a');\n            if (lcA) lastChapter = String(lcA.text());\n        }\n    }\n    sb += '<li>';\n    sb += '<div class=\"bk-name\"><a href=\"' + url + '\">' + name + '</a></div>';\n    sb += '<div class=\"bk-author\">' + author + '</div>';\n    sb += '<div class=\"bk-intro\">' + intro + '</div>';\n    sb += '<div class=\"bk-cover\"><img src=\"' + cover + '\"></div>';\n    sb += '<div class=\"bk-last\">' + lastChapter + '</div>';\n    sb += '</li>';\n}\nsb += '</ul></body></html>';\nsb;\n</js>\nul li",
+    "bookUrl": ".bk-name a@href",
+    "coverUrl": ".bk-cover img@src",
+    "intro": ".bk-intro@text",
+    "lastChapter": ".bk-last@text",
+    "name": ".bk-name a@text"
+  },
+  "ruleSearch": {
+    "author": ".bk-author@text",
+    "bookList": "<js>\nvar html = String(result);\nvar doc = Packages.org.jsoup.Jsoup.parse(html);\nvar dls = doc.select('dl.B');\nvar sb = '<html><body><ul>';\nfor (var i = 0; i < dls.size(); i++) {\n    var dl = dls.get(i);\n    var dt = dl.selectFirst('dt a');\n    if (!dt) continue;\n    var name = String(dt.text());\n    var url = String(dt.attr('href'));\n    var img = dl.selectFirst('dd.imgB img');\n    var cover = '';\n    if (img) {\n        cover = String(img.attr('src'));\n        if (!cover) cover = String(img.attr('data-src'));\n    }\n    var author = '';\n    var intro = '';\n    var lastChapter = '';\n    var spans = dl.select('dd span');\n    for (var j = 0; j < spans.size(); j++) {\n        var sp = spans.get(j);\n        var sptext = String(sp.text());\n        if (sptext.indexOf('作者') >= 0) {\n            author = sptext.replace(/.*作者[：:]\\s*/, '');\n        }\n    }\n    var d2 = dl.selectFirst('dd.d2');\n    if (d2) intro = String(d2.text()).replace(/.*简介[：:]\\s*/, '');\n    var dds = dl.select('dd');\n    for (var k = 0; k < dds.size(); k++) {\n        var ddtext = String(dds.get(k).ownText());\n        if (ddtext.indexOf('最新章节') >= 0) {\n            var lcA = dds.get(k).selectFirst('a');\n            if (lcA) lastChapter = String(lcA.text());\n        }\n    }\n    sb += '<li>';\n    sb += '<div class=\"bk-name\"><a href=\"' + url + '\">' + name + '</a></div>';\n    sb += '<div class=\"bk-author\">' + author + '</div>';\n    sb += '<div class=\"bk-intro\">' + intro + '</div>';\n    sb += '<div class=\"bk-cover\"><img src=\"' + cover + '\"></div>';\n    sb += '<div class=\"bk-last\">' + lastChapter + '</div>';\n    sb += '</li>';\n}\nsb += '</ul></body></html>';\nsb;\n</js>\nul li",
+    "bookUrl": ".bk-name a@href",
+    "coverUrl": ".bk-cover img@src",
+    "intro": ".bk-intro@text",
+    "lastChapter": ".bk-last@text",
+    "name": ".bk-name a@text"
+  },
+  "ruleToc": {
+    "chapterList": "ul.MLlist li a",
+    "chapterName": "@text",
+    "chapterUrl": "@href"
+  },
+  "searchUrl": "/search/,{\"method\":\"POST\",\"body\":\"q={{key}}\"}",
+  "weight": 0
+}

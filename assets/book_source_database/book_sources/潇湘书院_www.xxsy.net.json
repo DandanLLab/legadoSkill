@@ -1,0 +1,58 @@
+{
+  "bookSourceGroup": "AI",
+  "bookSourceName": "潇湘书院",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://www.xxsy.net",
+  "bookUrlPattern": "xxsy\\.net/book/\\d+",
+  "customButton": false,
+  "customOrder": 167,
+  "enabled": true,
+  "enabledCookieJar": false,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "古代言情::/search?tag=古代言情&page={{page}}\n现代言情::/search?tag=现代言情&page={{page}}\n玄幻仙侠::/search?tag=玄幻仙侠&page={{page}}\n浪漫青春::/search?tag=浪漫青春&page={{page}}\n悬疑::/search?tag=悬疑&page={{page}}\n排行::/rank\n完本::/rank/finish",
+  "lastUpdateTime": 1785090157932,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": ".bookprofile dd .title span@text##文 / |文/",
+    "coverUrl": ".bookprofile .book-cover img@src",
+    "intro": "#book_intro@text",
+    "kind": ".sub-cols span:eq(2)@text##类别：",
+    "lastChapter": ".sub-newest p:eq(0) a@text",
+    "name": ".bookdetail h1@text",
+    "tocUrl": ".click-hd h3 a@href",
+    "wordCount": ".sub-data span@text##字数："
+  },
+  "ruleContent": {
+    "content": "#content@text",
+    "nextContentUrl": ".nav-btn-group a:last-of-type@href",
+    "title": "h1@text"
+  },
+  "ruleExplore": {
+    "author": "@css:.info .subtitle > a@text##\\n.*|^[^\\u4e00-\\u9fff]+",
+    "bookList": "@css:.result-list li",
+    "bookUrl": "@css:a.book.commonbook@href",
+    "coverUrl": "@css:.book-cover img@src",
+    "intro": "@css:.detail@text",
+    "kind": "@css:.info .subtitle > span@text##,.+",
+    "name": "@css:.info h4 > a@text",
+    "wordCount": "@css:.number span@text"
+  },
+  "ruleSearch": {
+    "author": "@css:.info .subtitle > a@text##\\n.*|^[^\\u4e00-\\u9fff]+",
+    "bookList": "@css:.result-list li",
+    "bookUrl": "@css:a.book.commonbook@href",
+    "coverUrl": "@css:.book-cover img@src",
+    "intro": "@css:.detail@text",
+    "kind": "@css:.info .subtitle > span@text##,.+",
+    "name": "@css:.info h4 > a@text",
+    "wordCount": "@css:.number span@text"
+  },
+  "ruleToc": {
+    "chapterList": "@css:.profile-main ul li a[href*='/chapter/']",
+    "chapterName": "@title",
+    "chapterUrl": "@href"
+  },
+  "searchUrl": "/search?s_wd={{key}}",
+  "weight": 0
+}

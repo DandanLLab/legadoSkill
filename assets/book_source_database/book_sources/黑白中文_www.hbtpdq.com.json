@@ -1,0 +1,54 @@
+{
+  "bookSourceComment": "【网站】黑白中文 (hbtpdq.com)\n【技术实现】\n搜索：HTML 搜索（GET /so.html?keyWord=关键词）\n发现：HTML 发现（GET /fenlei/{分类}/{{page}}.html）\n详情：Default 规则（class.top@tag.h1 精确定位书名）\n目录：Default 规则（第二个 section-box）\n正文：HTML 提取 + JS 清理\n\n【局限性】\n- 网站有 Cloudflare 保护，首次访问可能需要验证\n- 正文有分页，已配置 nextContentUrl 自动翻页\n- 搜索结果无封面图\n\n【v2 修复记录】\n- 搜索/发现列表：改用 Default 格式（tag.a.0@text）替代 CSS 格式，解决字段提取失败问题\n- 搜索表头行：tag.a.0 对表头行返回空值，自动过滤\n- 详情页书名：改用 class.top@tag.h1 精确定位，避免匹配到 logo 的 h1\n\n【v3 修复记录】\n- 正文分页标题：用全局正则删除所有 章节名(第X/Y页)<br><br> 标记，避免多页拼接后残留",
+  "bookSourceGroup": "AI",
+  "bookSourceName": "黑白中文",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://www.hbtpdq.com",
+  "customButton": false,
+  "customOrder": 225,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "玄幻奇幻::/fenlei/xh/{{page}}.html\n武侠仙侠::/fenlei/wx/{{page}}.html\n都市言情::/fenlei/ds/{{page}}.html\n历史军事::/fenlei/ls/{{page}}.html\n网游竞技::/fenlei/wy/{{page}}.html\n科幻灵异::/fenlei/kh/{{page}}.html\n女生频道::/fenlei/ns/{{page}}.html",
+  "header": "{\"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\"}",
+  "lastUpdateTime": 1786078638384,
+  "loginCheckJs": "var src = result.body();\nif (src.match(/Just a moment|Checking your browser/)) {\n    cookie.removeCookie(source.bookSourceUrl);\n    var url = result.url();\n    java.startBrowserAwait(url, \"Cloudflare验证\");\n    result = java.connect(url);\n}\nresult;",
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "class.fix@tag.p.0@text##.*者：##",
+    "coverUrl": ".imgbox img@src",
+    "intro": ".desc@text##^\\s*##",
+    "kind": "class.fix@tag.p.1@text##.*别：##",
+    "lastChapter": "class.fix@tag.p.-1@tag.a@text",
+    "name": "class.top@tag.h1@text"
+  },
+  "ruleContent": {
+    "content": "#content@html@js:result.replace(/<script[\\s\\S]*?<\\/script>/g,'').replace(/[^<]*\\(第\\d+\\/\\d+页\\)<br><br>/g,'').replace(/（本章未完[\\s\\S]*?）/g,'')",
+    "nextContentUrl": "text.下一页@href",
+    "replaceRegex": "##.*\\(第\\d+\\/\\d+页\\)##"
+  },
+  "ruleExplore": {
+    "author": "class.s4@text",
+    "bookList": ".txt-list li",
+    "bookUrl": "tag.a.0@href",
+    "kind": "class.s1@text",
+    "lastChapter": "tag.a.1@text",
+    "name": "tag.a.0@text"
+  },
+  "ruleSearch": {
+    "author": "class.s4@text",
+    "bookList": ".txt-list-row5 li:not(:first-child)",
+    "bookUrl": "tag.a.0@href",
+    "kind": "class.s1@text",
+    "lastChapter": "tag.a.1@text",
+    "name": "tag.a.0@text"
+  },
+  "ruleToc": {
+    "chapterList": "class.section-box.-1@class.section-list@tag.li",
+    "chapterName": "a@text",
+    "chapterUrl": "a@href"
+  },
+  "searchUrl": "/so.html?keyWord={{key}}",
+  "weight": 0
+}

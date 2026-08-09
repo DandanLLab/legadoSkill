@@ -1,0 +1,59 @@
+{
+  "bookSourceComment": "31书斋（www.31sz.com）\n免费小说阅读网站，支持登录。\n\n【技术实现】\n搜索：GET /novelsearch/search/result.html?searchkey={{key}}\n  - 搜索有60秒间隔限制\n发现：分类目录（/type/{catId}_{subId}_{status}_{sort}_{page}.html）+ 全本分类 + 排行\n  - 分类/全本支持 {{page}} 分页\n  - 排行页为单页（总榜/月榜/周榜）\n详情：/novel/{bookId}/ CSS 选择器\n目录：/dir/{bookId}/（?page=N&sort=asc 分页）\n正文：/read/{bookId}/{sourceId}/{chapterId}.html\n  - 章节内分页：{chapterId}/{pageNum}.html\n  - 已配置 nextContentUrl\n\n【URL 规律】\n书籍详情：/novel/{bookId}/\n章节目录：/dir/{bookId}/\n正文页面：/read/{bookId}/{sourceId}/{chapterId}.html\n正文分页：/read/{bookId}/{sourceId}/{chapterId}/{pageNum}.html\n\n【登录说明】\n- 简单登录，无需验证码\n- 登录表单：用户名、密码\n- 登录后自动保存Cookie\n\n【编码】UTF-8",
+  "bookSourceGroup": "AI,优质",
+  "bookSourceName": "31书斋",
+  "bookSourceType": 0,
+  "bookSourceUrl": "http://www.31sz.com",
+  "bookUrlPattern": "http://www\\.31sz\\.com/novel/\\d+/",
+  "concurrentRate": "",
+  "customButton": false,
+  "customOrder": 157,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "————————分类——————————\n玄幻::/type/1_0_0_lastupdate_{{page}}.html\n仙侠::/type/2_0_0_lastupdate_{{page}}.html\n都市::/type/3_0_0_lastupdate_{{page}}.html\n职场::/type/4_0_0_lastupdate_{{page}}.html\n历史::/type/5_0_0_lastupdate_{{page}}.html\n军事::/type/6_0_0_lastupdate_{{page}}.html\n科幻::/type/7_0_0_lastupdate_{{page}}.html\n游戏::/type/8_0_0_lastupdate_{{page}}.html\n灵异::/type/9_0_0_lastupdate_{{page}}.html\n现言::/type/11_0_0_lastupdate_{{page}}.html\n————————全本——————————\n完本全部::/type/0_0_2_lastupdate_{{page}}.html\n完本玄幻::/type/1_0_2_lastupdate_{{page}}.html\n完本仙侠::/type/2_0_2_lastupdate_{{page}}.html\n完本都市::/type/3_0_2_lastupdate_{{page}}.html\n完本职场::/type/4_0_2_lastupdate_{{page}}.html\n完本历史::/type/5_0_2_lastupdate_{{page}}.html\n完本军事::/type/6_0_2_lastupdate_{{page}}.html\n完本科幻::/type/7_0_2_lastupdate_{{page}}.html\n完本游戏::/type/8_0_2_lastupdate_{{page}}.html\n完本灵异::/type/9_0_2_lastupdate_{{page}}.html\n完本现言::/type/11_0_2_lastupdate_{{page}}.html\n————————排行——————————\n总榜::/top_allvisit_1.html\n月榜::/top_monthvisit_1.html\n周榜::/top_weekvisit_1.html",
+  "header": "{\"User-Agent\":\"Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36\"}",
+  "lastUpdateTime": 1785869700000,
+  "loginUi": "[{\"name\":\"用户名\",\"type\":\"text\"},{\"name\":\"密码\",\"type\":\"password\"},{\"name\":\"登 录\",\"type\":\"button\",\"action\":\"login(true)\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.5}},{\"name\":\"登 出\",\"type\":\"button\",\"action\":\"logout()\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.5}}]",
+  "loginUrl": "function getBaseUrl() { return 'http://www.31sz.com'; }\n\nfunction login(b) {\n    if (b == undefined) return true;\n    var info = result;\n    var username = info['用户名'];\n    var password = info['密码'];\n    if (!username || !password) {\n        java.toast('请完整填写用户名和密码');\n        return;\n    }\n    var url = getBaseUrl() + '/user/public/login.html';\n    var body = 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password) + '&action=login';\n    var post = JSON.stringify({\n        method: 'POST',\n        body: body,\n        headers: {\n            'Content-Type': 'application/x-www-form-urlencoded'\n        }\n    });\n    var resp = java.ajax(url + ',' + post);\n    try {\n        if (resp.indexOf('登录成功') > -1 || resp.indexOf('success') > -1) {\n            var cookieString = java.getCookie(getBaseUrl());\n            if (cookieString) {\n                source.putLoginHeader(cookieString);\n            }\n            java.toast('登录成功');\n        } else {\n            java.toast('登录失败，请检查用户名和密码');\n        }\n    } catch(e) {\n        java.toast('登录异常：' + e.message);\n    }\n}\n\nfunction logout() {\n    source.removeLoginHeader();\n    cookie.removeCookie(getBaseUrl());\n    result['用户名'] = '';\n    result['密码'] = '';\n    source.putLoginInfo(JSON.stringify(result));\n    java.toast('已登出');\n}",
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": ".BGsectionOne-top-right .author span a@text",
+    "coverUrl": ".BGsectionOne-top-left img@data-original||.BGsectionOne-top-left img@src",
+    "intro": ".BGsectionTwo-bottom p@text",
+    "kind": ".BGsectionOne-top-right .category > span@text",
+    "lastChapter": ".BGsectionOne-top-right .newestChapter span a@text",
+    "name": ".BGsectionOne-top-right .title@text",
+    "tocUrl": "a.sectionTwo-bottom@href",
+    "updateTime": ".BGsectionOne-top-right .time span@text"
+  },
+  "ruleContent": {
+    "content": ".RBGsectionThree-content@html##<script.*?</script>|-->.*|本章未完[\\s\\S]*",
+    "nextContentUrl": "text.下一页@href"
+  },
+  "ruleExplore": {
+    "author": "tag.p.1@tag.span@tag.a@text",
+    "bookList": "div.CGsectionTwo-right-content-unit",
+    "bookUrl": "tag.a.0@href",
+    "intro": "tag.p.2@text",
+    "lastChapter": "tag.p.3@tag.a@text",
+    "name": "tag.a.0@text",
+    "updateTime": "tag.p.3@text##.*(\\d{4}-\\d{2}-\\d{2})##$1"
+  },
+  "ruleSearch": {
+    "author": "tag.span.2@tag.a@text",
+    "bookList": "<js>\nvar doc = org.jsoup.Jsoup.parse(result);\nvar errorEl = doc.select(\"p.error\");\nvar list;\nif (errorEl.size() > 0) {\n    java.longToast(\"⚠️ \" + errorEl.first().text());\n    list = doc.select(\"p\");\n} else {\n    list = doc.select(\"div.SHsectionThree-middle p\");\n}\nlist;\n</js>",
+    "bookUrl": "tag.span.1@tag.a@href",
+    "kind": "tag.span.0@tag.a@text",
+    "name": "tag.span.1@tag.a@text"
+  },
+  "ruleToc": {
+    "chapterList": "ol.BCsectionTwo-top li a",
+    "chapterName": "text",
+    "chapterUrl": "href",
+    "nextTocUrl": "text.下一页@href"
+  },
+  "searchUrl": "http://www.31sz.com/novelsearch/search/result.html?searchkey={{key}}",
+  "weight": 0
+}

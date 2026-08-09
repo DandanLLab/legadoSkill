@@ -1,0 +1,56 @@
+{
+  "bookSourceComment": "调出真实浏览器过人机验证",
+  "bookSourceGroup": "AI",
+  "bookSourceName": "kk笔趣阁新站",
+  "bookSourceType": 0,
+  "bookSourceUrl": "http://www.kkbiquge.net",
+  "bookUrlPattern": "http://www.kkbiquge.net/\\d+_\\d+/",
+  "customButton": false,
+  "customOrder": 160,
+  "enabled": true,
+  "enabledCookieJar": false,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "玄幻::/class/xuanhuanmofa/{{page}}/\n仙侠::/class/xianxiaxiuzhen/{{page}}/\n都市::/class/dushuyanqing/{{page}}/\n历史::/class/lishijunshi/{{page}}/\n网游::/class/wangyoudongman/{{page}}/\n科幻::/class/kehuanxiaoshuo/{{page}}/\n女生::/class/nvshengxiaoshuo/{{page}}/\n其他::/class/qitaxiaoshuo/{{page}}/",
+  "header": "{\n  \"User-Agent\": \"Mozilla/5.0 (Linux; Android 14; Pixel 8 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/126.0.0.0 Mobile Safari/537.36\",\n  \"Accept\": \"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\",\n  \"Accept-Language\": \"zh-CN,zh;q=0.9\"\n}",
+  "lastUpdateTime": 1785949328842,
+  "loginCheckJs": "var src = result.body();\nif (/<script>\\s*window/i.test(src)) {\n    cookie.removeCookie(source.bookSourceUrl);\n    java.toast('需要先访问首页获取验证');\n    java.startBrowserAwait(source.bookSourceUrl, '请等待加载完成后返回');\n    result = java.connect(result.url());\n}\nresult;",
+  "loginUrl": "http://www.kkbiquge.net/",
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "#info p a@text",
+    "coverUrl": "img[data-original]@data-original||#fmimg img@src",
+    "intro": "#intro@text",
+    "kind": "p.sort@text##类别：|\\s*",
+    "lastChapter": "#info a[rel=\"chapter\"]@text",
+    "name": "#info h1@text"
+  },
+  "ruleContent": {
+    "content": "#chaptercontent #booktxt@html##<p[^>]*>\\s*</p>",
+    "nextContentUrl": "a#next_url@href"
+  },
+  "ruleExplore": {
+    "author": "div.btm a@text",
+    "bookList": "div.item",
+    "bookUrl": "dt a@href",
+    "coverUrl": "img@data-original||img@src",
+    "intro": "dd@text",
+    "name": "dt a@text"
+  },
+  "ruleSearch": {
+    "author": "div.btm a@text",
+    "bookList": "div.item",
+    "bookUrl": "dt a@href",
+    "coverUrl": "img@data-original||img@src",
+    "intro": "dd@text",
+    "name": "dt a@text",
+    "wordCount": "div.btm em.orange@text"
+  },
+  "ruleToc": {
+    "chapterList": "#list dl a[href]",
+    "chapterName": "dd@text",
+    "chapterUrl": "@href"
+  },
+  "searchUrl": "{{url=source.getKey();\ncookie.removeCookie(url);}}{{(function(){\n    var baseUrl = 'http://www.kkbiquge.net';\n    var html = java.ajax(baseUrl + '/');\n    var match = html.match(/<form[^>]*id=\"search\"[^>]*action=\"([^\"]+)\"/);\n    var action = match ? match[1] : '/search21.html';\n    return baseUrl + action + '?searchkey=' + java.encodeURI(key);\n})()}}",
+  "weight": 0
+}
