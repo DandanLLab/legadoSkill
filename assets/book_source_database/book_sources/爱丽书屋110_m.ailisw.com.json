@@ -1,0 +1,54 @@
+{
+  "bookSourceComment": "如果用不了，可以点一下登录，在下搜索框返回刷新。\n爱丽书屋：https://m.ailisw.com\n技术特点：\n1. 正文通过JS加载.dat文件，内容为控制字符压缩的HTML实体+自定义字体反爬\n2. 目录页WAF拦截，通过详情页信息生成章节列表\n3. 正文解码：反向替换控制字符→还原HTML实体→解码Unicode→字体替换\n4. 搜索WAF拦截，loginUrl+loginCheckJs手动验证WAF，cookie保存后POST搜索\n",
+  "bookSourceGroup": "AI,通常书源",
+  "bookSourceName": "爱丽书屋110",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://m.ailisw.com",
+  "bookUrlPattern": "https?://m\\.ailisw\\.com/[a-zA-Z0-9]+\\.html",
+  "concurrentRate": "1000",
+  "customButton": false,
+  "customOrder": 38,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "[{\"title\": \"书库\", \"url\": \"\", \"style\": {\"layout_flexGrow\": 0, \"layout_flexBasisPercent\": 1}}, {\"title\": \"全部\", \"url\": \"/shuku/0_0_0_{{page}}_0_0_0.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"都市\", \"url\": \"/shuku/0_0_0_{{page}}_0_1_0.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"现言\", \"url\": \"/shuku/0_0_0_{{page}}_0_2_0.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"同人\", \"url\": \"/shuku/0_0_0_{{page}}_0_3_0.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"幻言\", \"url\": \"/shuku/0_0_0_{{page}}_0_4_0.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"玄幻\", \"url\": \"/shuku/0_0_0_{{page}}_0_5_0.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"古言\", \"url\": \"/shuku/0_0_0_{{page}}_0_6_0.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"网游\", \"url\": \"/shuku/0_0_0_{{page}}_0_7_0.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"男频\", \"url\": \"/shuku/0_0_0_{{page}}_0_0_1.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"女频\", \"url\": \"/shuku/0_0_0_{{page}}_0_0_2.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"排行\", \"url\": \"/shuku/rank_{{page}}.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}, {\"title\": \"完本\", \"url\": \"/shuku/finish_{{page}}.html\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.29}}]",
+  "header": "{\"User-Agent\": \"Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 Mobile Safari/537.36\", \"Accept-Language\": \"zh-CN,zh;q=0.9\"}",
+  "lastUpdateTime": 1786310064935,
+  "loginCheckJs": "var r = source.getKey() + '/';\nvar js = 'setTimeout(function(){window.legado.getHTML(document.documentElement.outerHTML);},5000);';\nvar html = String(java.webView('', r, js));\nif (html.indexOf('wafjs') !== -1 || html.indexOf('loading ailisw') !== -1) {\n    java.startBrowserAwait(r, '请等待页面加载完成后点击返回');\n}\nresult;",
+  "loginUrl": "https://m.ailisw.com/",
+  "respondTime": 38806,
+  "ruleBookInfo": {
+    "author": ".author a@text",
+    "coverUrl": ".BGsectionOne-top-left img@data-lazy",
+    "intro": ".sectionTwo-content p@text",
+    "kind": ".category a@text",
+    "lastChapter": ".chapter-table a.0@text",
+    "name": ".title@text"
+  },
+  "ruleContent": {
+    "content": "<js>\nvar html = String(result);\nvar d = html.match(/initTxt\\(\"([^\"]+)\"/);\nif (!d) '内容加载失败';\nelse {\n    var u = d[1];\n    if (u.indexOf('//') === 0) u = 'https:' + u;\n    var s = String(java.ajax(u));\n    var j = s.match(/_txt_call\\((\\{[\\s\\S]*\\})\\)/);\n    if (!j) '解析失败';\n    else {\n        var c = j[1].match(/\"content\"\\s*:\\s*\"([\\s\\S]*?)\"\\s*,\\s*\"replace\"/);\n        if (!c) c = j[1].match(/\"content\"\\s*:\\s*\"([\\s\\S]*?)\"/);\n        if (!c) '无content';\n        else {\n            var ct = c[1].replace(/\\\\n/g,'\\n').replace(/\\\\r/g,'\\r').replace(/\\\\t/g,'\\t').replace(/\\\\\"/g,'\"').replace(/\\\\\\\\/g,'\\\\');\n            var r = /\"([^\"]+)\"\\s*:\\s*\"((?:\\\\b|\\\\n|[\\s\\S]))\"/g;\n            var m;\n            while ((m = r.exec(j[1])) !== null) {\n                ct = ct.split(m[2]).join(m[1]);\n            }\n            ct = ct.replace(/&#x([0-9a-fA-F]+);/g, function(_, h) { return String.fromCharCode(parseInt(h, 16)) });\n            ct = ct.replace(/&#(\\d+);/g, function(_, d) { return String.fromCharCode(parseInt(d, 10)) });\n            var b = html.match(/ttf;base64,([^\\)]+)/);\n            if (b) try { ct = String(java.replaceFont(ct, java.queryBase64TTF(b[1]), java.queryTTF(\"https://alanskycn.gitee.io/teachme/assets/font/Source Han Sans CN Regular.ttf\"), true)) } catch(e) {}\n            ct = ct.replace(/\\\\n/g, '\\n');\n            ct.split('\\n').filter(function(l) { return l.trim() && !/AILISW|ailisw|温馨提示|加载中/.test(l) }).join('\\n');\n        }\n    }\n}\n</js>",
+    "nextContentUrl": "a.next@href"
+  },
+  "ruleExplore": {
+    "author": "p.gray a@text",
+    "bookList": "li.list-item",
+    "bookUrl": "h3 a@href",
+    "lastChapter": "p.gray@text##.*·\\s*##",
+    "name": "h3 a@text"
+  },
+  "ruleSearch": {
+    "author": ".sc-title a.green@text",
+    "bookList": "<js>\nvar cf = /wafjs|loading ailisw/.test(src) || src.indexOf('search-card') === -1;\nif (cf) {\n    cookie.removeCookie(source.getKey());\n    var x = java.get('url');\n    b = java.startBrowserAwait(x, '请等待页面加载完成后点击返回');\n    result = b;\n}\nresult;\n</js>\n.search-card",
+    "bookUrl": ".sc-title a.0@href",
+    "lastChapter": ".sc-time span.0@text",
+    "name": ".sc-title a.0@text"
+  },
+  "ruleToc": {
+    "chapterList": "<js>\nvar html = String(result);\nvar doc = Packages.org.jsoup.Jsoup.parse(html);\n\n// Extract book URL prefix from baseUrl\n// baseUrl is like https://m.ailisw.com/hqMm.html\n// prefix should be /hqMm/\nvar prefix = '';\nvar baseMatch = String(baseUrl).match(/\\/([a-zA-Z0-9]+)\\.html/);\nif (baseMatch) {\n    prefix = '/' + baseMatch[1] + '/';\n}\n\n// Extract chapter count from .chaptercount text\nvar count = 0;\nvar ccElem = doc.selectFirst('.chaptercount');\nif (ccElem) {\n    var ccText = String(ccElem.text());\n    var cm = ccText.match(/共(\\d+)章/);\n    if (cm) count = parseInt(cm[1]);\n}\n\n// Fallback: try from og metadata\nif (count === 0) {\n    var allMetas = doc.select('meta');\n    for (var mi = 0; mi < allMetas.size(); mi++) {\n        var meta = allMetas.get(mi);\n        if (String(meta.attr('property')) === 'og:novel:latest_chapter_url') {\n            var lcUrl = String(meta.attr('content'));\n            var lcm = lcUrl.match(/\\/(\\d+)\\.html/);\n            if (lcm) count = parseInt(lcm[1]);\n            break;\n        }\n    }\n}\n\n// Generate chapter list\nvar sb = '<html><body><ul>';\nfor (var i = 1; i <= count; i++) {\n    sb += '<li><a href=\"' + prefix + i + '.html\">分节 ' + i + '</a></li>';\n}\nsb += '</ul></body></html>';\nsb;\n</js>\nul li",
+    "chapterName": "a@text",
+    "chapterUrl": "a@href"
+  },
+  "searchUrl": "@js:\nvar su = source.getKey();\nvar body = 'keyword=' + String(key) + '&submit=搜作品';\nvar postUrl = su + '/search/,' + JSON.stringify({'method': 'POST', 'body': String(body)});\njava.put('url', postUrl);\npostUrl;",
+  "weight": 0
+}

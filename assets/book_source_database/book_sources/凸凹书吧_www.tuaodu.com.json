@@ -1,0 +1,50 @@
+{
+  "bookSourceComment": "凸凹书吧(tuaodu.com) - 全本小说在线阅读\n单章全文",
+  "bookSourceGroup": "AI",
+  "bookSourceName": "凸凹书吧",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://www.tuaodu.com",
+  "customButton": false,
+  "customOrder": 166,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "最新::/Articles?Page={{page}}\n玄幻::/Articles/Categories/3?Page={{page}}\n灵异::/Articles/Categories/6?Page={{page}}\n穿越::/Articles/Categories/7?Page={{page}}\n都市::/Articles/Categories/8?Page={{page}}\n言情::/Articles/Categories/9?Page={{page}}\n武侠::/Articles/Categories/10?Page={{page}}\n其他::/Articles/Categories/11?Page={{page}}",
+  "header": "{\"User-Agent\":\"Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36\"}",
+  "lastUpdateTime": 1785132971833,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": ".content-title@text##.*作者[：:]\\s*",
+    "coverUrl": "js:''",
+    "intro": "meta[name='description']@content",
+    "kind": ".breadcrumb li:nth-child(2) a@text",
+    "name": ".content-title@text## 作者[：:].*"
+  },
+  "ruleContent": {
+    "content": "@js:\nvar m = result.match(/articleId.*? value=\"(\\d+)\"/);\nvar id=m?m[1]:'10909';var token=java.base64Encode(id);\njava.get('https://www.tuaodu.com/GetTxt.ashx?token='+token,{'Referer':'https://www.tuaodu.com/Articles/Content/'+id+'.html'}).body();"
+  },
+  "ruleExplore": {
+    "author": ".index-imgcontent-title@text##.*作者[：:]\\s*",
+    "bookList": ".index-imgs",
+    "bookUrl": ".index-imgcontent-title@href",
+    "coverUrl": "img.lazyimg@data-original||img@src",
+    "intro": ".index-imgcontent-img@title",
+    "name": ".index-imgcontent-title@text## 作者[：:].*"
+  },
+  "ruleSearch": {
+    "author": ".index-imgcontent-title@text##.*作者[：:]\\s*",
+    "bookList": ".index-imgs",
+    "bookUrl": ".index-imgcontent-title@href",
+    "coverUrl": "img@data-original||img@src",
+    "intro": "a.index-imgcontent-img@title",
+    "name": ".index-imgcontent-title@text## 作者[：:].*"
+  },
+  "ruleToc": {
+    "chapterList": "@js:[{n:'全文',u:baseUrl}]",
+    "chapterName": "n",
+    "chapterUrl": "u"
+  },
+  "searchUrl": "/Articles/Search?wd={{key}}",
+  "weight": 0
+}

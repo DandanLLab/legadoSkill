@@ -1,0 +1,45 @@
+{
+  "bookSourceGroup": "AI",
+  "bookSourceName": "笔下文学",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://m.haishuxs.com",
+  "bookUrlPattern": "https://m.haishuxs.com/d/.*/*_.*/",
+  "customButton": false,
+  "customOrder": 198,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "玄幻魔法::/fenl/xuanhuan/{{page}}/\n武侠修真::/fenl/wuxia/{{page}}/\n都市言情::/fenl/doushi/{{page}}/\n历史军事::/fenl/lishi/{{page}}/\n网游动漫::/fenl/wangyou/{{page}}/\n科幻小说::/fenl/kehuan/{{page}}/\n其他类型::/fenl/qita/{{page}}/\n全本小说::/full/{{page}}.html",
+  "lastUpdateTime": 1785007635846,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": ".book-meta:eq(1) a@text",
+    "coverUrl": ".book-cover@src",
+    "kind": ".book-meta:eq(2) a@text&&.book-meta:eq(3)@text&&.book-meta:eq(5)@text",
+    "lastChapter": ".book-meta:eq(4) a@text",
+    "name": "h1.book-title@text",
+    "tocUrl": ".bookchaptermore@href"
+  },
+  "ruleContent": {
+    "content": "#chaptercontent@html##本章还未完.*##",
+    "nextContentUrl": ".readpage a[rel=next]@href"
+  },
+  "ruleExplore": {
+    "author": "dd a@text",
+    "bookList": "dl",
+    "bookUrl": "dt a@href",
+    "coverUrl": "img@data-src",
+    "intro": "dd.0@text",
+    "kind": "dd span@text",
+    "name": "dt a@title"
+  },
+  "ruleSearch": {},
+  "ruleToc": {
+    "chapterList": "#clist li",
+    "chapterName": "a@text",
+    "chapterUrl": "a@href",
+    "nextTocUrl": ".listpage .right a@href"
+  },
+  "weight": 0
+}

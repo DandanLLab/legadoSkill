@@ -1,0 +1,49 @@
+{
+  "bookSourceGroup": "AI",
+  "bookSourceName": "天天文学(Jnsane)",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://m.jnsane.com",
+  "customButton": false,
+  "customOrder": 169,
+  "enabled": true,
+  "enabledCookieJar": false,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "仙侠修真::/sort/20_0_0_0/?page={{page}}\n都市言情::/sort/21_0_0_0/?page={{page}}\n历史军事::/sort/22_0_0_0/?page={{page}}\n现代言情::/sort/23_0_0_0/?page={{page}}\n网游竞技::/sort/24_0_0_0/?page={{page}}\n科幻灵异::/sort/25_0_0_0/?page={{page}}\n武侠仙侠::/sort/26_0_0_0/?page={{page}}\n侦探推理::/sort/62_0_0_0/?page={{page}}",
+  "header": "User-Agent: Mozilla/5.0 (Linux; Android 11; SM-A505U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36",
+  "lastUpdateTime": 1785071522526,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": ".synopsisArea_detail p.0@text",
+    "coverUrl": ".synopsisArea_detail img@data-src",
+    "intro": ".review@text",
+    "kind": ".synopsisArea_detail p.1@text",
+    "lastChapter": ".lastchapters a@text",
+    "name": "h1.title@text",
+    "tocUrl": "text.全部章节@href"
+  },
+  "ruleContent": {
+    "content": "#htmlContent@html",
+    "nextContentUrl": "#pb_next@href"
+  },
+  "ruleExplore": {
+    "author": ".s_list@text##.*/(.*)##$1###",
+    "bookList": ".s_list",
+    "bookUrl": "a@href",
+    "name": "a@text"
+  },
+  "ruleSearch": {
+    "author": ".s_list@text##.*/(.*)##$1###",
+    "bookList": ".s_list",
+    "bookUrl": "a@href",
+    "lastChapter": ".title@text",
+    "name": "a@text"
+  },
+  "ruleToc": {
+    "chapterList": ".directoryArea a",
+    "chapterName": "@text",
+    "chapterUrl": "@href"
+  },
+  "searchUrl": "/search.html?4qhjh={{key}}",
+  "weight": 0
+}

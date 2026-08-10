@@ -1,0 +1,46 @@
+{
+  "bookSourceComment": "备用网址：www1.owlook.com.cn\nowllook开源小说搜索引擎聚合书源\n\nv16 根本性优化发现加载速度：\n问题: v15在bookUrl中用java.ajax()搜索，Legado显示发现列表时对每本书\n      都执行ajax(1.5s/本)，80本书=120秒\n修复: bookUrl只编码中文参数(瞬时)，不做ajax搜索\n      改用ruleBookInfo.tocUrl在用户点击后才搜索提取详情页链接\n\n流程对比:\n  v15: 发现页→80本书各ajax搜索(120s)→显示列表\n  v16: 发现页→编码URL(瞬时)→显示列表→点击→访问搜索页→提取详情页→目录\n  v16.1:搜索增加cookie.removeCookie\n\nv14修复（已保留）：\n- content: @js:遍历选择器(#txt→#htmlContent→#content→#booktxt→.show-content)\n- chapterUrl: 纯URL逻辑(不依赖#content_url)\n- chapterList: CSS逗号兼容6种源站结构\n全程零WebView",
+  "bookSourceGroup": "AI",
+  "bookSourceName": "🍉owllook聚合小说搜索引擎",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://www.owlook.com.cn",
+  "customButton": false,
+  "customOrder": 33,
+  "enabled": true,
+  "enabledCookieJar": false,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "起点月票榜::/md/qidian\n起点玄幻::/md/qidian?type=玄幻\n起点奇幻::/md/qidian?type=奇幻\n起点武侠::/md/qidian?type=武侠\n起点仙侠::/md/qidian?type=仙侠\n起点都市::/md/qidian?type=都市\n起点现实::/md/qidian?type=现实\n起点军事::/md/qidian?type=军事\n起点历史::/md/qidian?type=历史\n起点游戏::/md/qidian?type=游戏\n起点体育::/md/qidian?type=体育\n起点科幻::/md/qidian?type=科幻\n起点悬疑::/md/qidian?type=悬疑\n起点轻小说::/md/qidian?type=轻小说\n起点诸天无限::/md/qidian?type=诸天无限\n纵横人气榜::/md/zongheng",
+  "header": "{\"User-Agent\": \"Mozilla/5.0 (Linux; Android 15; V2304A Build/AP3A.240905.015.A2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/132.0.6834.163 Mobile Safari/537.36\", \"x-requested-with\": \"cn.mujiankeji.mbrowser\", \"Referer\": \"https://www.owlook.com.cn\", \"Accept-language\": \"zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7\"}",
+  "lastUpdateTime": 1785378229992,
+  "loginCheckJs": "var src = result.body();\nif (src.indexOf('script> window') !== -1) {\n    cookie.removeCookie(source.bookSourceUrl);\n    java.toast('需要先访问首页获取验证');\n    java.startBrowserAwait(source.bookSourceUrl, '请等待加载完成后返回');\n    result = java.connect(result.url());\n}\nresult;",
+  "loginUrl": "https://www.owlook.com.cn",
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "@js:if(baseUrl.indexOf('/search?')>=0){var t=String(java.getString('.result_item a.0@text')||'');var m=t.match(/.*--(.*)$/);result=m?m[1]:'';}else{result='';}",
+    "name": "@js:if(baseUrl.indexOf('/search?')>=0){var m=baseUrl.match(/wd=([^&]+)/);result=m?decodeURIComponent(m[1]):'';}else{result=java.getString('#novels_name@value');}",
+    "tocUrl": "@js:if(baseUrl.indexOf('/search?')>=0){var u=String(java.getString('.result_item a.0@href')||'');u=u.replace(/&amp;/g,'&');var m=u.match(/^(.*?novels_name=)([^&]*)$/);if(m){u=m[1]+java.encodeURI(m[2]);}if(u.indexOf('http')!==0){u='https://www.owlook.com.cn'+(u.charAt(0)==='/'?u:'/'+u);}result=u;}else{result='';}"
+  },
+  "ruleContent": {
+    "content": "@js:var s=['#txt','#htmlContent','#content','#booktxt','.show-content'];var c='';for(var i=0;i<s.length;i++){c=java.getString(s[i]+'@html');if(c&&c.length>100){break;}}result=c;",
+    "replaceRegex": "##&nbsp;## "
+  },
+  "ruleExplore": {
+    "bookList": "table.mdui-table tbody tr",
+    "bookUrl": "td a@href@js:var s=String(result||'');if(s.indexOf('http')!==0){s='https://www.owlook.com.cn'+(s.charAt(0)==='/'?s:'/'+s);}var m=s.match(/^(.*?wd=)(.*)$/);if(m){s=m[1]+java.encodeURI(m[2]);}result=s;",
+    "name": "td a@text"
+  },
+  "ruleSearch": {
+    "author": "li > a@text##.*--##",
+    "bookList": ".result_item",
+    "bookUrl": "a.0@href@js:var u = String(result || ''); u = u.replace(/&amp;/g, '&'); var m = u.match(/^(.*?novels_name=)([^&]*)$/); if (m) { u = m[1] + java.encodeURI(m[2]); } if (u.indexOf('http') !== 0) { u = 'https://www.owlook.com.cn' + (u.charAt(0) === '/' ? u : '/' + u); } result = u;",
+    "name": "li > a@text##.*?--(.*?)--.*##$1"
+  },
+  "ruleToc": {
+    "chapterList": "ul.info li, .dirlist li, .book_list li, .chapterlist li, dd,ul li,.result_item li,.list dl dd,.list-chapterAll dd",
+    "chapterName": "a@text",
+    "chapterUrl": "a@href@js:var h=String(result||'');var n=java.getString('a@text');var b='https://www.owlook.com.cn';var u=String(baseUrl);var m1=u.match(/[?&]url=([^&]+)/);var m2=u.match(/[?&]novels_name=([^&]+)/);var bu='',bn='';if(m1){bu=m1[1];}if(m2){bn=m2[1];try{bn=decodeURIComponent(bn);}catch(e){}}if(!h){result=baseUrl;}else{h=h.replace(/&amp;/g,'&');var fullUrl='';if(h.indexOf('http')===0){fullUrl=h;}else if(h.charAt(0)==='/'){var md=bu.match(new RegExp('^(https?://[^/]+)'));fullUrl=md?md[1]+h:bu+h;}else{fullUrl=bu.charAt(bu.length-1)==='/'?bu+h:bu+'/'+h;}result=b+'/owllook_content?url='+java.encodeURI(fullUrl)+'&name='+java.encodeURI(n)+'&chapter_url='+java.encodeURI(bu)+'&novels_name='+java.encodeURI(bn);}"
+  },
+  "searchUrl": "{{url=source.getKey();\ncookie.removeCookie(url);}}/search?wd={{key}}",
+  "weight": 0
+}

@@ -1,0 +1,55 @@
+{
+  "bookSourceComment": "间隔20秒",
+  "bookSourceGroup": "AI",
+  "bookSourceName": "大众文学",
+  "bookSourceType": 0,
+  "bookSourceUrl": "http://www.qzhd.cn",
+  "bookUrlPattern": "http://www.qzhd.cn/biquge/\\d+/",
+  "customButton": false,
+  "customOrder": 2248,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "[{\"title\":\"玄幻魔法\",\"url\":\"/sort/1/{{page}}.html\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"武侠修真\",\"url\":\"/sort/2/{{page}}.html\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"都市言情\",\"url\":\"/sort/3/{{page}}.html\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"历史军事\",\"url\":\"/sort/4/{{page}}.html\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"侦探推理\",\"url\":\"/sort/5/{{page}}.html\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"网游动漫\",\"url\":\"/sort/6/{{page}}.html\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"女生耽美\",\"url\":\"/sort/7/{{page}}.html\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}},{\"title\":\"其他小说\",\"url\":\"/sort/8/{{page}}.html\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.25}}]",
+  "header": "{\"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36\"}",
+  "lastUpdateTime": 1783887347821,
+  "loginCheckJs": "var su = source.getKey();\nvar src = String(result.body());\nif (src.indexOf('ge_js_validator_20') !== -1) {\n    java.startBrowserAwait(su + '/', '网站验证中，请等待页面加载后关闭');\n    if (baseUrl && baseUrl.indexOf('search') !== -1) {\n        var key = source.get('searchKey');\n        if (key) {\n            result = String(java.ajax(su + '/search.html,{\"method\":\"POST\",\"body\":\"s=' + encodeURIComponent(key) + '\"}'));\n        }\n    } else if (baseUrl) {\n        result = java.connect(baseUrl);\n    }\n} else if (src.indexOf('novel_login') !== -1) {\n    java.startBrowserAwait(su + '/login.html', '请登录');\n}\nresult;",
+  "loginUrl": "http://www.qzhd.cn/login.html",
+  "respondTime": 188991,
+  "ruleBookInfo": {
+    "author": "[property=\"og:novel:author\"]@content",
+    "coverUrl": "[property=\"og:image\"]@content",
+    "intro": "[property=\"og:description\"]@content",
+    "kind": "[property~=og:novel:category|og:novel:status|og:novel:update_time]@content",
+    "lastChapter": "[property=\"og:novel:latest_chapter_name\"]@content",
+    "name": "[property=\"og:novel:book_name\"]@content"
+  },
+  "ruleContent": {
+    "content": ".word_read p@html",
+    "nextContentUrl": "text.下一章@href"
+  },
+  "ruleExplore": {
+    "author": ".s4@text||.s5 a@text",
+    "bookList": ".txt-list li",
+    "bookUrl": ".s2 a@href",
+    "kind": ".s1@text",
+    "lastChapter": ".s3 a@text",
+    "name": ".s2 a@text"
+  },
+  "ruleSearch": {
+    "author": ".s3 a@text##\\{.*?\\}##",
+    "bookList": ".txt-list li:has(.s3)",
+    "bookUrl": ".s2 a@href",
+    "kind": ".s1@text##\\{.*?\\}##",
+    "lastChapter": ".s4 a@text",
+    "name": ".s2 a@text"
+  },
+  "ruleToc": {
+    "chapterList": ".row-section .layout-col1 li a",
+    "chapterName": "text",
+    "chapterUrl": "href"
+  },
+  "searchUrl": "@js:\nvar su = source.getKey();\nsource.put('searchKey', String(key));\nsu + '/search.html,{\"method\":\"POST\",\"body\":\"s=' + encodeURIComponent(key) + '\"}'",
+  "weight": 0
+}

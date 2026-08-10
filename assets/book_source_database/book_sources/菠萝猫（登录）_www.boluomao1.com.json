@@ -1,0 +1,60 @@
+{
+  "bookSourceComment": "原：www.boluomao.com\n移动网用：www.boluomao1.com\n【技术实现】\n搜索：HTML 搜索（GET /search/?q={{key}}&page={{page}}）\n发现：CSS 选择器（书库/分类/完结/排行/专题）\n详情：CSS 选择器\n目录：CSS 选择器（?cp=N 分页，已配置 nextTocUrl）\n正文：CSS 选择器（章节内 ?p=N 分页，已配置 nextContentUrl 自动合并）\n\n【登录说明】\n- 登录需填写手机号、密码、图形验证码。\n- 点击「刷新验证码」会在浏览器中打开验证码图片，查看后返回输入。\n- 登录成功后自动保存 Cookie，后续请求自动携带。\n- 登出按钮可清除 Cookie 和登录状态。\n- ★ 「签 到」按钮：登录后点击即可完成每日签到，成功后 Toast 提示。\n- ★ 搜索时自动检测登录状态，若已登录则自动签到，无需手动操作。\n\n【局限性】\n- 搜索需要登录：未登录访问 /search/ 会 302 跳转登录页，请先登录。\n- 搜索每账号每天限 10 次。\n- 网站有 WAF 防护，会封禁机房/代理 IP，请在正常网络环境使用。",
+  "bookSourceGroup": "AI,优质",
+  "bookSourceName": "菠萝猫（登录）",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://www.boluomao1.com",
+  "bookUrlPattern": "https://www.boluomao.*?\\.com/book/\\d+.html",
+  "customButton": false,
+  "customOrder": 13,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "————————二次元——————————\n二次元书库::/gender/acg/page/{{page}}/\n原生幻想::/gender/acg/category/22/page/{{page}}/\n恋爱日常::/gender/acg/category/23/page/{{page}}/\n衍生同人::/gender/acg/category/24/page/{{page}}/\n搞笑吐槽::/gender/acg/category/25/page/{{page}}/\n\n\n二次元完结::/full/gender/acg/page/{{page}}/\n排行榜::/rank/\nSF轻小说::/topic/1.html?p={{page}}\n刺猬猫小说::/topic/2.html?p={{page}}\n少年梦小说::/topic/3.html?p={{page}}\n飞卢小说::/topic/4.html?p={{page}}\n息壤小说::/topic/5.html?p={{page}}\n次元姬小说::/topic/6.html?p={{page}}\n————————男频———————————\n男生书库::/gender/boy/page/{{page}}/\n男生完结::/full/gender/boy/page/{{page}}/\n玄幻::/gender/boy/category/1/page/{{page}}/\n奇幻::/gender/boy/category/2/page/{{page}}/\n武侠::/gender/boy/category/3/page/{{page}}/\n仙侠::/gender/boy/category/4/page/{{page}}/\n都市::/gender/boy/category/5/page/{{page}}/\n军事::/gender/boy/category/6/page/{{page}}/\n历史::/gender/boy/category/7/page/{{page}}/\n游戏::/gender/boy/category/8/page/{{page}}/\n体育::/gender/boy/category/9/page/{{page}}/\n科幻::/gender/boy/category/10/page/{{page}}/\n诸天无限::/gender/boy/category/11/page/{{page}}/\n悬疑::/gender/boy/category/12/page/{{page}}/\n————————女频———————————\n女生书库::/gender/girl/page/{{page}}/\n女生完结::/full/gender/girl/page/{{page}}/\n古代言情::/gender/girl/category/13/page/{{page}}/\n仙侠奇缘::/gender/girl/category/14/page/{{page}}/\n现代言情::/gender/girl/category/15/page/{{page}}/\n浪漫青春::/gender/girl/category/16/page/{{page}}/\n玄幻言情::/gender/girl/category/17/page/{{page}}/\n悬疑推理::/gender/girl/category/18/page/{{page}}/\n科幻空间::/gender/girl/category/19/page/{{page}}/\n游戏竞技::/gender/girl/category/20/page/{{page}}/\n短篇言情::/gender/girl/category/21/page/{{page}}/\n耽美::/gender/girl/category/32/page/{{page}}/\n百合::/gender/girl/category/33/page/{{page}}/\n轻小说::/gender/girl/category/34/page/{{page}}/",
+  "lastUpdateTime": 1786245565951,
+  "loginUi": "[{\"name\":\"手机号\",\"type\":\"text\"},{\"name\":\"密码\",\"type\":\"password\"},{\"name\":\"验证码\",\"type\":\"text\"},{\"name\":\"刷新验证码\",\"type\":\"button\",\"action\":\"refreshCaptcha()\"},{\"name\":\"登 录\",\"type\":\"button\",\"action\":\"login(true)\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.5}},{\"name\":\"登 出\",\"type\":\"button\",\"action\":\"logout()\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.5}},{\"name\":\"签 到\",\"type\":\"button\",\"action\":\"checkin()\",\"style\":{\"layout_flexGrow\":1,\"layout_flexBasisPercent\":0.5}}]",
+  "loginUrl": "function getBaseUrl() { return 'https://www.boluomao1.com'; }\n\nfunction refreshCaptcha() {\n    var url = getBaseUrl() + '/api/captcha.php?r=' + Math.random();\n    java.startBrowser(url, '验证码');\n}\n\nfunction login(b) {\n    if (b == undefined) return true;\n    var info = result;\n    var mobile = info['手机号'];\n    var password = info['密码'];\n    var captcha = info['验证码'];\n    if (!mobile || !password || !captcha) {\n        java.toast('请完整填写手机号、密码和验证码');\n        return;\n    }\n    var url = getBaseUrl() + '/api/auth.php';\n    var body = 'action=login&mobile=' + encodeURIComponent(mobile) + '&password=' + encodeURIComponent(password) + '&captcha=' + encodeURIComponent(captcha);\n    var post = JSON.stringify({\n        method: 'POST',\n        body: body,\n        headers: {\n            'Content-Type': 'application/x-www-form-urlencoded'\n        }\n    });\n    var resp = java.ajax(url + ',' + post);\n    try {\n        var json = JSON.parse(resp);\n        if (json.code === 0) {\n            var cookieString = java.getCookie(getBaseUrl());\n            if (cookieString) {\n                source.putLoginHeader(cookieString);\n                java.toast('登录成功');\n            } else {\n                java.toast('登录成功但未获取到Cookie，请重试');\n            }\n        } else {\n            java.toast('登录失败：' + json.msg);\n            refreshCaptcha();\n        }\n    } catch(e) {\n        java.toast('登录异常：' + e.message);\n    }\n}\n\nfunction logout() {\n    source.removeLoginHeader();\n    // 可选清除cookie\n    // java.removeCookie(getBaseUrl());\n    result['手机号'] = '';\n    result['密码'] = '';\n    result['验证码'] = '';\n    source.putLoginInfo(JSON.stringify(result));\n    java.toast('已登出');\n}\n\n// ★ 新增签到函数\nfunction checkin() {\n    var url = getBaseUrl() + '/api/checkin.php';\n    var body = 'action=checkin';\n    var post = JSON.stringify({\n        method: 'POST',\n        body: body,\n        headers: {\n            'Content-Type': 'application/x-www-form-urlencoded'\n        }\n    });\n    var resp = java.ajax(url + ',' + post);\n    try {\n        var json = JSON.parse(resp);\n        if (json.code === 0) {\n            java.toast('✅ 签到成功：' + json.msg);\n        } else {\n            java.toast('❌ 签到失败：' + json.msg);\n        }\n    } catch(e) {\n        java.toast('签到异常：' + e.message);\n    }\n}",
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": ".bookTitleLeft .author@text",
+    "coverUrl": ".picb .pic img.0@src",
+    "intro": ".intro.font16@text",
+    "kind": "class.info@tag.dl.0@tag.dd@text&&class.info@tag.dl.1@tag.dd@text&&class.tags-line@tag.a@text",
+    "lastChapter": ".latest-link@text",
+    "name": ".bookTitleRow h1@text",
+    "wordCount": ".num.font14@text"
+  },
+  "ruleContent": {
+    "content": ".content@html@js:var html = result; var matches = html.match(/data-obf=\\\"([^\\\"]*)\\\"/g); var decoded = ''; if (matches) { for (var i = 0; i < matches.length; i++) { var obf = matches[i].match(/data-obf=\\\"([^\\\"]*)\\\"/)[1]; var bytes = java.base64DecodeToByteArray(obf); for (var j = 0; j < bytes.length; j++) { bytes[j] = bytes[j] ^ ((j % 127) + 1); } decoded += java.bytesToStr(bytes, 'utf-8') + '\\n'; } } decoded;",
+    "nextContentUrl": "text.下一页@href"
+  },
+  "ruleExplore": {
+    "author": ".author@text",
+    "bookList": ".picList li||.fullCardList li",
+    "bookUrl": ".name a@href",
+    "coverUrl": ".pic img@src",
+    "intro": ".intro@text",
+    "kind": ".label@text",
+    "name": ".name a@text",
+    "wordCount": ".num@text||.words@text"
+  },
+  "ruleSearch": {
+    "author": ".author@text",
+    "bookList": "<js>\nvar doc = org.jsoup.Jsoup.parse(result);\nvar strongText = doc.select(\"span.searchRemain strong\").text();\n\n// 判断登录状态和搜索次数\nvar isLoggedIn = false;\nvar searchMsg = \"\";\nif (strongText && strongText.trim() !== \"\") {\n    isLoggedIn = true;\n    searchMsg = \"🔍 剩余搜索: \" + strongText.trim() + \" 次\";\n} else if (result.indexOf(\"次数已用完\") > -1 || result.indexOf(\"限制\") > -1) {\n    isLoggedIn = true;\n    searchMsg = \"⚠️ 今日搜索次数已耗尽\";\n} else if (result.indexOf(\"退出\") > -1) {\n    isLoggedIn = true;\n    searchMsg = \"🔍 剩余搜索: 12 次\";\n} else {\n    searchMsg = \"⚠️ 未检测到登录状态，请先登录！\";\n}\n\n// 已登录时自动签到\nvar signMsg = \"\";\nif (isLoggedIn) {\n    try {\n        var signPost = JSON.stringify({method: \"POST\", body: \"action=checkin\", headers: {\"Content-Type\": \"application/x-www-form-urlencoded\"}});\n        var signResp = java.ajax(\"https://www.boluomao1.com/api/checkin.php,\" + signPost);\n        var signJson = JSON.parse(signResp);\n        if (signJson.code === 0) {\n            signMsg = \" | 已自动签到 ✅\";\n        } else {\n            signMsg = \" | \" + (signJson.msg || \"已签到\");\n        }\n    } catch(e) {\n        // 签到异常不影响搜索\n    }\n}\n\njava.longToast(searchMsg + signMsg);\ndoc.select(\"div.picList ul li\");\n</js>",
+    "bookUrl": ".name a@href",
+    "coverUrl": ".pic img@src",
+    "intro": ".intro@text",
+    "kind": ".label@text",
+    "name": ".name a@text",
+    "wordCount": ".num@text"
+  },
+  "ruleToc": {
+    "chapterList": "#chapters .direList li",
+    "chapterName": ".name a@text",
+    "chapterUrl": ".name a@href",
+    "nextTocUrl": ".page-range-list .cur+a@href"
+  },
+  "searchUrl": "<js>\nvar url = \"https://www.boluomao.com/search/?q=\" + encodeURIComponent(key);\nif (page > 1) {\n    url += \"&page=\" + page;\n}\nurl + ',{\"webView\":true}';\n</js>",
+  "weight": 0
+}

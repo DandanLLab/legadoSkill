@@ -1,0 +1,52 @@
+{
+  "bookSourceComment": "原：www.38ksw.com\n搜索通过搜搜书(sososhu.com)搜索引擎进行，需登录后使用。\n\n【技术实现】\n搜索：sososhu.com 搜索（GET /?s={{key}}&web=38kanshu，WebView 模式）\n发现：CSS 选择器（排行/分类/全本）\n详情：CSS 选择器\n目录：CSS 选择器（分页已配置 nextTocUrl）\n正文：CSS 选择器（章节内 _N 分页，已配置 nextContentUrl）\n\n【登录说明】\n- 登录需填写手机号、密码、图形验证码。\n- 点击「刷新验证码」会在浏览器中打开验证码图片，查看后返回输入。\n- 登录成功后自动保存 Cookie，后续请求自动携带。\n- 登出按钮可清除 Cookie 和登录状态。\n- ★ 新增「签 到」按钮：登录后点击即可完成每日签到，成功后 Toast 提示。\n\n【局限性】\n- 搜索需要登录：未登录访问搜索会跳转登录页，请先登录。\n- 搜索每账号每天限 8 次。\n- 搜索通过 sososhu.com 搜索引擎进行，搜索结果链接到 38 看书网。\n- 网站自身搜索已关闭，原来通过必应搜索，现改用 sososhu.com 搜索。",
+  "bookSourceGroup": "AI,优质",
+  "bookSourceName": "38看书",
+  "bookSourceType": 0,
+  "bookSourceUrl": "https://www.38ksw.com",
+  "bookUrlPattern": "https://www.38ksw.com/\\d+/",
+  "customButton": false,
+  "customOrder": 229,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "总排行榜::/rank/allvisit/\n月排行榜::/rank/monthvisit/\n周排行第::/rank/weekvisit/\n收藏榜::/rank/goodnum/\n全部::/quanben/fenlei/{{page}}/\n玄幻::/fenlei/1/{{page}}/\n奇幻::/fenlei/2/{{page}}/\n武侠::/fenlei/3/{{page}}/\n仙侠::/fenlei/4/{{page}}/\n都市::/fenlei/5/{{page}}/\n军事::/fenlei/6/{{page}}/\n历史::/fenlei/7/{{page}}/\n游戏::/fenlei/8/{{page}}/\n竞技::/fenlei/9/{{page}}/\n科幻::/fenlei/10/{{page}}/\n悬疑::/fenlei/11/{{page}}/\n灵异::/fenlei/12/{{page}}/\n其他::/fenlei/13/{{page}}/\n古代言情::/fenlei/14/{{page}}/\n仙侠奇缘::/fenlei/15/{{page}}/\n现代言情::/fenlei/16/{{page}}/\n浪漫青春::/fenlei/17/{{page}}/\n玄幻言情::/fenlei/18/{{page}}/\n悬疑灵异::/fenlei/19/{{page}}/\n科幻空间::/fenlei/20/{{page}}/\n游戏竞技::/fenlei/21/{{page}}/\n二次元::/fenlei/24/{{page}}/",
+  "header": "{\"User-Agent\":\"Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36\"}",
+  "lastUpdateTime": 1785592000000,
+  "loginUi": "[{\"name\": \"手机号\", \"type\": \"text\"}, {\"name\": \"密码\", \"type\": \"password\"}, {\"name\": \"验证码\", \"type\": \"text\"}, {\"name\": \"刷新验证码\", \"type\": \"button\", \"action\": \"refreshCaptcha()\"}, {\"name\": \"登 录\", \"type\": \"button\", \"action\": \"login(true)\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.5}}, {\"name\": \"登 出\", \"type\": \"button\", \"action\": \"logout()\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.5}}, {\"name\": \"签 到\", \"type\": \"button\", \"action\": \"checkin()\", \"style\": {\"layout_flexGrow\": 1, \"layout_flexBasisPercent\": 0.5}}]",
+  "loginUrl": "function getBaseUrl() { return 'https://www.sososhu.com'; }\n\nfunction refreshCaptcha() {\n    var url = getBaseUrl() + '/?action=captcha_api&t=' + Math.random();\n    java.startBrowser(url, '验证码');\n}\n\nfunction login(b) {\n    if (b == undefined) return true;\n    var info = result;\n    var mobile = info['手机号'];\n    var password = info['密码'];\n    var captcha = info['验证码'];\n    if (!mobile || !password || !captcha) {\n        java.toast('请完整填写手机号、密码和验证码');\n        return;\n    }\n    var url = getBaseUrl() + '/?action=user_api&act=login';\n    var body = 'mobile=' + encodeURIComponent(mobile) + '&password=' + encodeURIComponent(password) + '&captcha=' + encodeURIComponent(captcha);\n    var post = JSON.stringify({\n        method: 'POST',\n        body: body,\n        headers: {\n            'Content-Type': 'application/x-www-form-urlencoded'\n        }\n    });\n    var resp = java.ajax(url + ',' + post);\n    try {\n        var json = JSON.parse(resp);\n        if (json.code === 0) {\n            var cookieString = java.getCookie(getBaseUrl());\n            if (cookieString) {\n                source.putLoginHeader(cookieString);\n            }\n            java.toast('登录成功');\n        } else {\n            java.toast('登录失败：' + json.msg);\n            refreshCaptcha();\n        }\n    } catch(e) {\n        java.toast('登录异常：' + e.message);\n    }\n}\n\nfunction logout() {\n    source.removeLoginHeader();\n    cookie.removeCookie(getBaseUrl());\n    result['手机号'] = '';\n    result['密码'] = '';\n    result['验证码'] = '';\n    source.putLoginInfo(JSON.stringify(result));\n    java.toast('已登出');\n}\n\nfunction checkin() {\n    var url = getBaseUrl() + '/?action=user_api&act=sign_in';\n    var post = JSON.stringify({\n        method: 'POST',\n        headers: {\n            'Content-Type': 'application/x-www-form-urlencoded'\n        }\n    });\n    var resp = java.ajax(url + ',' + post);\n    try {\n        var json = JSON.parse(resp);\n        if (json.code === 0) {\n            java.toast('✅ 签到成功：' + (json.msg || ''));\n        } else {\n            java.toast('❌ 签到失败：' + json.msg);\n        }\n    } catch(e) {\n        java.toast('签到异常：' + e.message);\n    }\n}",
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "class.author@text##作者：",
+    "coverUrl": "class.synopsisArea_detail tag.img@src",
+    "intro": "class.review@text",
+    "kind": "class.sort@text##类别：",
+    "lastChapter": "class.lastchapter tag.a@text",
+    "name": "class.title@text"
+  },
+  "ruleContent": {
+    "content": "id.chaptercontent@html##<p class=\"chapter-page-info\">[\\s\\S]*?</p>|<div style=\"width:100%;text-align:center;\">[\\s\\S]*?</div>|<span>\\d+</span>|<script[\\s\\S]*?</script>|谨记我们的网址[\\s\\S]*?宣传宣传。|本章未完[\\s\\S]*?继续阅读。",
+    "nextContentUrl": "text.下一页@href"
+  },
+  "ruleExplore": {
+    "author": "class.author@text##作者：|（.*?）",
+    "bookList": "class.hot_sale",
+    "bookUrl": "tag.a@href",
+    "intro": "class.review@text##简介：",
+    "name": "class.title@text"
+  },
+  "ruleSearch": {
+    "bookList": "<js>\nvar doc = org.jsoup.Jsoup.parse(result);\nvar bodyText = doc.text();\n\n// 搜索次数检测\nif (bodyText.indexOf(\"已用完\") > -1) {\n    var match = bodyText.match(/(\\d+)次[\\/每]天/);\n    java.longToast(match ? \"⚠️ 今日搜索次数已用完（\" + match[1] + \"次/天），明天再来吧！\" : \"⚠️ 今日搜索次数已用完，明天再来吧！\");\n} else if (bodyText.indexOf(\"需要登录\") > -1 || result.indexOf(\"action=login\") > -1) {\n    java.longToast(\"⚠️ 未检测到登录状态，请先登录！\");\n} else {\n    // 尝试从 profile API 获取搜索次数\n    try {\n        var profile = java.ajax(\"https://www.sososhu.com/?action=user_api&act=profile\");\n        var pJson = JSON.parse(profile);\n        if (pJson.code === 0 && pJson.data) {\n            var d = pJson.data;\n            java.longToast(\"🔍 今日剩余搜索: \" + d.searchRemaining + \"/\" + d.searchMax + \" 次\" + (d.signedToday ? \" | 今日已签到 ✅\" : \" | 今日未签到 ❌\"));\n        }\n    } catch(e) {}\n}\n\n// 提取书籍结果 - 查找指向 38ksw.com 的链接\nvar bookLinks = doc.select(\"a[href*=38ksw]\");\nvar sb = \"\";\nvar seen = {};\nfor (var i = 0; i < bookLinks.size(); i++) {\n    var link = bookLinks.get(i);\n    var href = link.attr(\"abs:href\");\n    if (href.match(/38ksw\\.com\\/\\d+/) && !seen[href]) {\n        seen[href] = true;\n        var name = link.text().trim();\n        name = name.replace(/最新章节.*|全文阅读.*|,.*|_.*/g, \"\").trim();\n        if (name) {\n            sb += '<div class=\"book-item\"><a href=\"' + href + '\">' + name + '</a></div>';\n        }\n    }\n}\nresult = sb;\n</js>\n.book-item",
+    "bookUrl": "a@href",
+    "name": "a@text##最新章节.*|全文阅读.*|,.*|_.*"
+  },
+  "ruleToc": {
+    "chapterList": "class.recommend.1@class.directoryArea@tag.p@tag.a",
+    "chapterName": "text",
+    "chapterUrl": "href",
+    "nextTocUrl": "text.下一页@href"
+  },
+  "searchUrl": "<js>\nvar url = \"https://www.sososhu.com/?s=\" + encodeURIComponent(key) + \"&web=38kanshu\";\nif (page > 1) {\n    url += \"&page=\" + page;\n}\nurl + ',{\"webView\":true}';\n</js>",
+  "weight": 0
+}

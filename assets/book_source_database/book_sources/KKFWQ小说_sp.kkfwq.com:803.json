@@ -1,0 +1,55 @@
+{
+  "bookSourceGroup": "AI",
+  "bookSourceName": "KKFWQ小说",
+  "bookSourceType": 0,
+  "bookSourceUrl": "http://sp.kkfwq.com:803",
+  "bookUrlPattern": "http://sp.kkfwq.com:803/modules/article/articleinfo.php?id=\\d+",
+  "customButton": false,
+  "customOrder": 183,
+  "enabled": true,
+  "enabledCookieJar": true,
+  "enabledExplore": true,
+  "eventListener": false,
+  "exploreUrl": "全部文章::/modules/article/articlelist.php?class=&page={{page}}\n玄幻奇幻::/modules/article/articlelist.php?class=1&page={{page}}\n武侠仙侠::/modules/article/articlelist.php?class=2&page={{page}}\n都市言情::/modules/article/articlelist.php?class=3&page={{page}}\n历史军事::/modules/article/articlelist.php?class=4&page={{page}}\n推理灵异::/modules/article/articlelist.php?class=5&page={{page}}\n科幻网游::/modules/article/articlelist.php?class=6&page={{page}}\n同人小说::/modules/article/articlelist.php?class=7&page={{page}}\n其他类型::/modules/article/articlelist.php?class=8&page={{page}}\n总排行榜::/modules/article/toplist.php?sort=allvisit&page={{page}}\n总推荐榜::/modules/article/toplist.php?sort=allvote&page={{page}}\n月排行榜::/modules/article/toplist.php?sort=monthvisit&page={{page}}\n月推荐榜::/modules/article/toplist.php?sort=monthvote&page={{page}}\n周排行榜::/modules/article/toplist.php?sort=weekvisit&page={{page}}\n周推荐榜::/modules/article/toplist.php?sort=weekvote&page={{page}}\n最新入库::/modules/article/toplist.php?sort=postdate&page={{page}}\n最近更新::/modules/article/toplist.php?sort=lastupdate&page={{page}}\n总收藏榜::/modules/article/toplist.php?sort=goodnum&page={{page}}\n字数排行::/modules/article/toplist.php?sort=size&page={{page}}",
+  "lastUpdateTime": 1784993663101,
+  "respondTime": 180000,
+  "ruleBookInfo": {
+    "author": "table[width=\"96%\"][align=\"center\"] tr:nth-child(2) td:nth-child(2)@text##.*[：:]",
+    "coverUrl": "img[src*=\"/files/article/image/\"]@src",
+    "intro": "td:contains(内容简介)[1]@text##.*?内容简介：|作品关键字：.*##",
+    "kind": "table[width=\"96%\"][align=\"center\"] tr:nth-child(2) td:nth-child(1)@text##.*[：:]",
+    "lastChapter": "span.hottext:contains(最近章节) + a@text",
+    "name": "span[style*=\"font-size:16px\"]@text",
+    "tocUrl": "a.btnlink[href*=\"reader.php\"]@href",
+    "wordCount": "table[width=\"96%\"][align=\"center\"] tr:nth-child(2) td:nth-child(4)@text##.*[：:]"
+  },
+  "ruleContent": {
+    "content": "#content@textNodes",
+    "nextContentUrl": "a:contains(下一页)@href"
+  },
+  "ruleExplore": {
+    "author": "td:nth-child(3)@text",
+    "bookList": "table.grid tr:has(td.odd)",
+    "bookUrl": "td.odd a@href",
+    "lastChapter": "td:nth-child(2) a@text",
+    "name": "td.odd a@text",
+    "wordCount": "td:nth-child(4)@text"
+  },
+  "ruleSearch": {
+    "author": "tr:nth-child(2) td:nth-child(2)@text##.*[：:]",
+    "bookList": "table[width=\"96%\"][align=\"center\"]",
+    "coverUrl": "img[src*=\"/files/article/image/\"]@src",
+    "intro": "td:contains(内容简介)[1]@text##.*?内容简介：|作品关键字：.*##",
+    "kind": "tr:nth-child(2) td:nth-child(1)@text##.*[：:]",
+    "lastChapter": "span.hottext:contains(最近章节) + a@text",
+    "name": "span[style*=\"font-size:16px\"]@text",
+    "wordCount": "tr:nth-child(2) td:nth-child(4)@text##.*[：:]"
+  },
+  "ruleToc": {
+    "chapterList": "table.acss a",
+    "chapterName": "@text",
+    "chapterUrl": "@href"
+  },
+  "searchUrl": "@js:'/modules/article/search.php,'+JSON.stringify({method:'POST',body:'searchtype=articlename&searchkey='+key,charset:'GBK'})",
+  "weight": 0
+}
